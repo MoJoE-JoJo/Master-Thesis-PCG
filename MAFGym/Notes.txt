@@ -1,0 +1,4 @@
+Observartions are in a discrete grid of a fixed size of what is on the screen
+
+Handle vectorizing the environment on the Java-Side, as it seems a little finicky to get the Py4J library to actually use different ports 
+(handle with threads in Java, outcome should be more or less the same, as there will still only be one agent in python, that is just using several environments run simultaneously in Java)

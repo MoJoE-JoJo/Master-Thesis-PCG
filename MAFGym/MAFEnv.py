@@ -26,7 +26,7 @@ class MAFEnv(gym.Env):
     super(MAFEnv, self).__init__()
     self.useRender = initRender
     self.action_space = spaces.MultiBinary(5)
-    self.observation_space = spaces.Box(low=-100, high=100, shape=(16, 16, 1), dtype=np.uint8)
+    self.observation_space = spaces.Box(low=-100, high=100, shape=(16, 16), dtype=np.uint8)
     print(os.path.dirname(os.path.realpath(__file__)))
     current_dir = os.path.dirname(os.path.realpath(__file__))
     subprocess.call([current_dir + '\\RunJar.bat'])
@@ -35,13 +35,28 @@ class MAFEnv(gym.Env):
 
   def step(self, action):
     # Execute one time step within the environment
-    LEFT,RIGHT,DOWN,SPEED,JUMP = action[0], action[1], action[2], action[3], action[4]
+    LEFT,RIGHT,DOWN,SPEED,JUMP = bool(action[0]), bool(action[1]), bool(action[2]), bool(action[3]), bool(action[4])
     returnVal = self.marioGym.step(LEFT,RIGHT,DOWN,SPEED,JUMP)
-    return returnVal.getState(), returnVal.getReward(), returnVal.getDone(), returnVal.getInfo()
+    javaState = returnVal.getState()
+    state = np.empty(shape=(16,16))
+    state.fill(0)
+    for i in range(16):
+      for j in range(16):
+        state[i][j] = javaState[i][j]
+    javaDict = returnVal.getInfo()
+    dict = {"Yolo": javaDict.get("Yolo")}
+    return state, returnVal.getReward(), returnVal.getDone(), dict
 
   def reset(self):
     # Reset the state of the environment to an initial state
-    self.marioGym.reset(self.useRender)
+    returnVal = self.marioGym.reset(self.useRender)
+    javaState = returnVal.getState()
+    state = np.empty(shape=(16,16))
+    state.fill(0)
+    for i in range(16):
+      for j in range(16):
+        state[i][j] = javaState[i][j]
+    return state
 
   def render(self, mode='human', close=False):
     # Render the environment to the screen

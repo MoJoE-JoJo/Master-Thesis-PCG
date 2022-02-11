@@ -1,4 +1,3 @@
-from py4j.java_gateway import JavaGateway
 import time
 import os
 
@@ -15,12 +14,12 @@ for i in range(100):
     timestart = time.time()
     while not done:
         obs, reward, done, info = gymgym.step(action)
-    #print(obs[0][0])
+        #print(obs[0][0])
         #print(reward)
         #print(done)
-        #print(info[0])
+        print(info.get("Yolo"))
         gymgym.render()
-    print(time.time()-timestart)
+    #print(time.time()-timestart)
 
     gymgym.reset()
     done = False

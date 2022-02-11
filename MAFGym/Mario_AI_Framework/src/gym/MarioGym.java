@@ -135,7 +135,7 @@ public class MarioGym {
         //return new MarioResult(this.world, gameEvents, agentEvents);
     }
 
-    public static void reset(boolean visual){
+    public static StepReturnType reset(boolean visual){
         agent = new Py4JAgent();
         world = new MarioWorld(null);
 
@@ -167,6 +167,13 @@ public class MarioGym {
         agentEvents = new ArrayList<>();
 
         System.out.println("Gym Reset");
+
+        StepReturnType returnVal = new StepReturnType();
+        returnVal.done = false;
+        returnVal.reward = 0;
+        returnVal.state = world.getMergedObservation(world.mario.x, world.mario.y, 0, 0);
+        returnVal.info = new ArrayList<String>();
+        return returnVal;
     }
 
     public static void render(){

@@ -4,7 +4,7 @@ import numpy as np
 import subprocess
 from py4j.java_gateway import JavaGateway
 import os
-from util import readLevelFile
+from MAFGym.util import readLevelFile
 import random
 
 import numpy
@@ -51,7 +51,7 @@ class MAFRandEnv(gym.Env):
 
   def reset(self):
     # Reset the state of the environment to an initial state
-    self.setLevel(random.choice(self.trainLevels))
+    self.setLevel(readLevelFile(random.choice(self.trainLevels)))
     returnVal = self.marioGym.reset(self.useRender)
     javaState = returnVal.getState()
     state = np.frombuffer(javaState, dtype=np.int32)

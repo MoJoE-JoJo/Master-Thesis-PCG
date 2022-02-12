@@ -1,0 +1,1 @@
+The outermost img folder, is only needed for the TestPlay script to work

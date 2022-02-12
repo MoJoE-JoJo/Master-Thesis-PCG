@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MarioGym {
     static String level;
@@ -63,8 +64,10 @@ public class MarioGym {
         //State value
         returnVal.state = world.getMergedObservation(world.mario.x, world.mario.y, 0, 0);
         //Info values
-        returnVal.info = new ArrayList<String>();
-        returnVal.info.add("Yolo swaggins");
+        returnVal.info = new HashMap<>();
+        if(world.gameStatus == GameStatus.WIN) returnVal.info.put("Result", "Win");
+        else if (world.gameStatus == GameStatus.LOSE) returnVal.info.put("Result", "Lose");
+        returnVal.info.put("Yolo","Swaggins");
         return returnVal;
     }
 
@@ -121,18 +124,6 @@ public class MarioGym {
             System.out.println("Postion reward: " + rewardPos + ", Time reward: " + rewardTimePenalty + ", Death reward: " + rewardDeathPenalty);
 
         }
-            /*
-            //check if delay needed
-            if (this.getDelay(fps) > 0) {
-                try {
-                    currentTime += this.getDelay(fps);
-                    Thread.sleep(Math.max(0, currentTime - System.currentTimeMillis()));
-                } catch (InterruptedException e) {
-                    break;
-                }
-            }
-            */
-        //return new MarioResult(this.world, gameEvents, agentEvents);
     }
 
     public static StepReturnType reset(boolean visual){
@@ -172,7 +163,7 @@ public class MarioGym {
         returnVal.done = false;
         returnVal.reward = 0;
         returnVal.state = world.getMergedObservation(world.mario.x, world.mario.y, 0, 0);
-        returnVal.info = new ArrayList<String>();
+        returnVal.info = new HashMap<>();
         return returnVal;
     }
 
@@ -199,15 +190,19 @@ public class MarioGym {
         render.renderWorld(world, renderTarget, backBuffer, currentBuffer);
     }
 
-    public static void playGame(String levelFile, int time, int marioState, boolean visuals){
+    public static void playGame(String level, int time, int marioState, boolean visuals){
         MarioGame game = new MarioGame();
         agent = new Py4JAgent();
-        printResults(game.runGame(agent, getLevel(levelFile), time, marioState, visuals));
+        printResults(game.runGame(agent, level, time, marioState, visuals));
     }
 
     public static void agentInput(boolean left, boolean right, boolean down, boolean speed, boolean jump){
         boolean[] actions = new boolean[]{left, right, down, speed, jump};
         agent.setActions(actions);
+    }
+
+    public static void setLevel(String levelParam){
+        level = levelParam;
     }
 
     private static String getLevel(String filepath) {

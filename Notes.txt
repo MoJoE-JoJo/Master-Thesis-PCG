@@ -1,1 +1,3 @@
-The outermost img folder, is only needed for the TestPlay script to work
+The outermost img folder, is only needed for the TestPlay script to work.
+
+The agents run overnight are with the modified version that has a large reward for winning and a large penalty for loosing

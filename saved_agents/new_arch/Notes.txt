@@ -1,0 +1,2 @@
+Trained by updating the netwrosk every 256 steps
+and by having seperate Q- and V-networks consiisting of 2x512 hidden layers

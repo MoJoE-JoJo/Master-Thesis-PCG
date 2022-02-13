@@ -10,7 +10,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import Tensor
 
-from stable_baselines.common.policies import MlpPolicy, FeedForwardPolicy
+from stable_baselines.common.policies import CnnPolicy, FeedForwardPolicy
 from stable_baselines.common import make_vec_env
 from stable_baselines.common.vec_env import DummyVecEnv
 from stable_baselines import PPO2, PPO1
@@ -26,8 +26,8 @@ from stable_baselines import PPO2, PPO1
 env_count = 1
 #steps = 3000
 #batch = 64
-layers = [512,512]
-
+#layers = [512,512,512,512]
+layers = [dict(vf=[512,512], pi=[512,512])]
 
 class MarioPolicy(FeedForwardPolicy):
     def __init__(self, *args, **kwargs):
@@ -37,12 +37,15 @@ class MarioPolicy(FeedForwardPolicy):
                                             feature_extraction="mlp")
 #FeedForwardPolicy()
 #model = PPO1(MarioPolicy, env, verbose=1)
-def train(steps, saveFolder, env):
-    num_of_steps = 1000
-    num_of_times = 1
-    model = PPO2(MarioPolicy, env, verbose=1, n_steps=steps, learning_rate=0.00025)
+def train(steps, saveFolder, env, learn, startNetwork):
+    num_of_steps = 100000
+    num_of_times = 10
+    if startNetwork == 0: model = PPO2(MarioPolicy, env, verbose=1, n_steps=steps, learning_rate=learn)
+    else: 
+        env = DummyVecEnv([lambda: env])
+        model = PPO2.load(saveFolder+"Mario_"+str(startNetwork), env)
     for i in range(num_of_times):
-        file = saveFolder + "mario_" + str((i+1)*num_of_steps)
+        file = saveFolder + "mario_" + str(startNetwork + (i+1) * num_of_steps)
         model.learn(num_of_steps)
         model.save(file)
 
@@ -60,9 +63,29 @@ def play(path, env):
 
 levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
 levelString = readLevelFile(levelFilePath)
-normal_env = MAFEnv(levelString, 100, True)
+#normal_env = MAFEnv(levelString, 100, True)
 random_env = MAFRandEnv(100, True)
 
-train(256,"saved_agents/single_level/", normal_env)
-train(256,"saved_agents/multiple_levels/", random_env)
-#play("saved_agents/mario_100000_2")
+train(256,"saved_agents/new_arch/multiple/e-5/", random_env, 0.00001, 0)
+train(256,"saved_agents/new_arch/multiple/e-5/", random_env, 0.00001, 1000000)
+train(256,"saved_agents/new_arch/multiple/e-5/", random_env, 0.00001, 2000000)
+
+train(256,"saved_agents/new_arch/multiple/e-6/", random_env, 0.00001, 0)
+train(256,"saved_agents/new_arch/multiple/e-6/", random_env, 0.00001, 1000000)
+train(256,"saved_agents/new_arch/multiple/e-6/", random_env, 0.00001, 2000000)
+
+train(256,"saved_agents/new_arch/multiple/e-5/", random_env, 0.00001, 3000000)
+train(256,"saved_agents/new_arch/multiple/e-6/", random_env, 0.00001, 3000000)
+
+train(256,"saved_agents/new_arch/multiple/e-5/", random_env, 0.00001, 4000000)
+train(256,"saved_agents/new_arch/multiple/e-6/", random_env, 0.00001, 4000000)
+#play("saved_agents/new_arch/single/e-6/mario_3000000", normal_env)
+
+#train(256,"saved_agents/multiple_levels/", random_env, 0.00025)
+#train(256,"saved_agents/single_level_learn_0_0001/", normal_env, 0.0001)
+#train(256,"saved_agents/multiple_levels_learn_0_0001/", random_env, 0.0001)
+
+#train(512,"saved_agents/single_level_512/", normal_env, 0.00025)
+#train(512,"saved_agents/multiple_levels_512/", random_env, 0.00025)
+#train(512,"saved_agents/single_level_512_learn_0_0001/", normal_env, 0.0001)
+#train(512,"saved_agents/multiple_levels_512_learn_0_0001/", random_env, 0.0001)

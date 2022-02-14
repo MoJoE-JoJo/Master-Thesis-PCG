@@ -1,0 +1,8 @@
+name: master_thesis_tf1
+dependencies:
+- python=3.7
+- tensorflow=1.15.0
+- tensorflow-gpu=1.15.0
+- py4j
+- gym
+- numpy

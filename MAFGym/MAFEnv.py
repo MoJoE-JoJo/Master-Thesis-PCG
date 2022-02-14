@@ -14,6 +14,7 @@ class MAFEnv(gym.Env):
   gateway = JavaGateway() 
   marioGym = gateway.entry_point
   useRender = False
+  levelString = ""
 
   def __init__(self, levelFile, gameTime, initRender, sceneDetail, enemyDetail):
     """
@@ -30,6 +31,7 @@ class MAFEnv(gym.Env):
     :param enemyDetail: How much detail should the observations return regarding enemies in the level: 0 is all detail, 1 is less detail (different pickup items and whether enemy can be stomped or not), and 2 is binary (friendly or enemy)
     """
     super(MAFEnv, self).__init__()
+    self.levelString = levelFile
     self.useRender = initRender
     self.action_space = spaces.MultiBinary(5)
     self.observation_space = spaces.Box(low=-100, high=100, shape=(16, 16), dtype=np.uint8)
@@ -52,6 +54,7 @@ class MAFEnv(gym.Env):
 
   def reset(self):
     # Reset the state of the environment to an initial state
+    self.setLevel(self.levelString)
     returnVal = self.marioGym.reset(self.useRender)
     javaState = returnVal.getState()
     state = np.frombuffer(javaState, dtype=np.int32)

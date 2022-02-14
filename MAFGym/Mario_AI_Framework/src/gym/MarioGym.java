@@ -42,6 +42,12 @@ public class MarioGym {
     static int rewardTimePenalty = 0;
     static int rewardDeathPenalty = 0;
 
+    static int winLooseReward = 15;
+    static int sceneDetail = 0;
+    static int enemyDetail = 0;
+
+    static int totalReward = 0;
+
 
     public static void main(String[] args) {
         MarioGym gym = new MarioGym();
@@ -60,22 +66,25 @@ public class MarioGym {
         else returnVal.done = true;
         //Reward value
         returnVal.reward = (int) rewardPos + rewardTimePenalty + rewardDeathPenalty;
-        returnVal.reward = Math.max(-15, Math.min(15, returnVal.reward));
+        returnVal.reward = Math.max(-winLooseReward, Math.min(winLooseReward, returnVal.reward));
         //State value
-        returnVal.state = world.getMergedObservation(world.mario.x, world.mario.y, 0, 0);
+        returnVal.state = world.getMergedObservation(world.mario.x, world.mario.y, sceneDetail, enemyDetail);
         //Info values
         returnVal.info = new HashMap<>();
         if(world.gameStatus == GameStatus.WIN) returnVal.info.put("Result", "Win");
         else if (world.gameStatus == GameStatus.LOSE) returnVal.info.put("Result", "Lose");
         returnVal.info.put("Yolo","Swaggins");
+        totalReward += returnVal.reward;
         return returnVal;
     }
 
-    public static void init(String paramLevel, String imageDirectory, int timer, int paramMarioState, boolean visual){
+    public static void init(String paramLevel, String imageDirectory, int timer, int paramMarioState, boolean visual, int paramSceneDetail, int paramEnemyDetail){
         level = paramLevel;
         gameSeconds = timer;
         marioState = paramMarioState;
         Assets.img = imageDirectory;
+        sceneDetail = paramSceneDetail;
+        enemyDetail = paramEnemyDetail;
 
         if (visual) {
             window = new JFrame("Mario AI Framework");
@@ -119,9 +128,10 @@ public class MarioGym {
             //Calculate reward components
             rewardPos = marioXAfterUpdate - marioXBeforeUpdate;
             rewardTimePenalty = tickBeforeUpdate - tickAfterUpdate;
-            if(world.gameStatus == GameStatus.LOSE) rewardDeathPenalty = -15;
+            if(world.gameStatus == GameStatus.LOSE) rewardDeathPenalty = -winLooseReward;
+            else if(world.gameStatus == GameStatus.WIN) rewardDeathPenalty = winLooseReward;
             else rewardDeathPenalty = 0;
-            System.out.println("Postion reward: " + rewardPos + ", Time reward: " + rewardTimePenalty + ", Death reward: " + rewardDeathPenalty);
+            //System.out.println("Postion reward: " + rewardPos + ", Time reward: " + rewardTimePenalty + ", Death reward: " + rewardDeathPenalty);
 
         }
     }
@@ -157,12 +167,13 @@ public class MarioGym {
         gameEvents = new ArrayList<>();
         agentEvents = new ArrayList<>();
 
-        System.out.println("Gym Reset");
+        System.out.println("Gym Reset : Return=" + totalReward);
+        totalReward = 0;
 
         StepReturnType returnVal = new StepReturnType();
         returnVal.done = false;
         returnVal.reward = 0;
-        returnVal.state = world.getMergedObservation(world.mario.x, world.mario.y, 0, 0);
+        returnVal.state = world.getMergedObservation(world.mario.x, world.mario.y, sceneDetail, enemyDetail);
         returnVal.info = new HashMap<>();
         return returnVal;
     }

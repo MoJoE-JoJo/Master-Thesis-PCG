@@ -15,7 +15,7 @@ class MAFEnv(gym.Env):
   marioGym = gateway.entry_point
   useRender = False
 
-  def __init__(self, levelFile, gameTime, initRender):
+  def __init__(self, levelFile, gameTime, initRender, sceneDetail, enemyDetail):
     """
     Constructs the MAFEnv Gym Environment object.
     
@@ -24,6 +24,10 @@ class MAFEnv(gym.Env):
     :param gameTime: The amount of seconds that the game should be allowed to run for.
     
     :param initRender: Whether or not to initialize the renderer. Should be set to True if Render() is to be called, otherwise it can be set to False, and the environment will initialize a little faster.
+    
+    :param sceneDetail: How much detail should the observations return regarding the blocks in the level: 0 is all detail, 1 is less detail (some different functional groupings), and 2 is binary (whether it can be jumped though or not)
+
+    :param enemyDetail: How much detail should the observations return regarding enemies in the level: 0 is all detail, 1 is less detail (different pickup items and whether enemy can be stomped or not), and 2 is binary (friendly or enemy)
     """
     super(MAFEnv, self).__init__()
     self.useRender = initRender
@@ -32,7 +36,7 @@ class MAFEnv(gym.Env):
     print(os.path.dirname(os.path.realpath(__file__)))
     current_dir = os.path.dirname(os.path.realpath(__file__))
     subprocess.call([current_dir + '\\RunJar.bat'])
-    self.marioGym.init(levelFile, current_dir + "\\img\\", gameTime, 0, self.useRender)
+    self.marioGym.init(levelFile, current_dir + "\\img\\", gameTime, 0, self.useRender, sceneDetail, enemyDetail)
 
 
   def step(self, action):

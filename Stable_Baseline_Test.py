@@ -63,23 +63,23 @@ def play(path, env):
 
 levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
 levelString = readLevelFile(levelFilePath)
-normal_env = MAFEnv(levelString, 100, False)
+normal_env = MAFEnv(levelString, 100, True)
 #random_env = MAFRandEnv(100, True)
 
-train(256,"saved_agents/new_arch/single/1e-4/", normal_env, 0.0001, 0)
-train(256,"saved_agents/new_arch/single/1e-4/", normal_env, 0.0001, 1000000)
-train(256,"saved_agents/new_arch/single/1e-4/", normal_env, 0.0001, 2000000)
+#train(256,"saved_agents/new_arch/single/1e-4/", normal_env, 0.0001, 0)
+#train(256,"saved_agents/new_arch/single/1e-4/", normal_env, 0.0001, 1000000)
+#train(256,"saved_agents/new_arch/single/1e-4/", normal_env, 0.0001, 2000000)
 
-train(256,"saved_agents/new_arch/single/1e-3/", normal_env, 0.001, 0)
-train(256,"saved_agents/new_arch/single/1e-3/", normal_env, 0.001, 1000000)
-train(256,"saved_agents/new_arch/single/1e-3/", normal_env, 0.001, 2000000)
+#train(256,"saved_agents/new_arch/single/1e-3/", normal_env, 0.001, 0)
+#train(256,"saved_agents/new_arch/single/1e-3/", normal_env, 0.001, 1000000)
+#train(256,"saved_agents/new_arch/single/1e-3/", normal_env, 0.001, 2000000)
 
-train(256,"saved_agents/new_arch/single/1e-4/", normal_env, 0.0001, 3000000)
-train(256,"saved_agents/new_arch/single/1e-3/", normal_env, 0.001, 3000000)
+#train(256,"saved_agents/new_arch/single/1e-4/", normal_env, 0.0001, 3000000)
+#train(256,"saved_agents/new_arch/single/1e-3/", normal_env, 0.001, 3000000)
 
-train(256,"saved_agents/new_arch/single/1e-4/", normal_env, 0.0001, 4000000)
-train(256,"saved_agents/new_arch/single/1e-3/", normal_env, 0.001, 4000000)
-#play("saved_agents/new_arch/single/1e-5/mario_5000000", normal_env)
+#train(256,"saved_agents/new_arch/single/1e-4/", normal_env, 0.0001, 4000000)
+#train(256,"saved_agents/new_arch/single/1e-3/", normal_env, 0.001, 4000000)
+play("saved_agents/new_arch/multiple/1e-5/mario_2500000", normal_env)
 
 #train(256,"saved_agents/multiple_levels/", random_env, 0.00025)
 #train(256,"saved_agents/single_level_learn_0_0001/", normal_env, 0.0001)

@@ -49,7 +49,7 @@ class MAFEnv(gym.Env):
     state = np.frombuffer(javaState, dtype=np.int32)
     state = state.reshape((16, 16))
     javaDict = returnVal.getInfo()
-    dict = {"Yolo": javaDict.get("Yolo")}
+    dict = {"Yolo": javaDict.get("Yolo"), "Result" : javaDict.get("Result"), "ReturnScore": javaDict.get("ReturnScore")}
     return state, returnVal.getReward(), returnVal.getDone(), dict
 
   def reset(self):

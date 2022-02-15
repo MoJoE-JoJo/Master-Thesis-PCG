@@ -53,12 +53,11 @@ def validate_agent(env, agent_path, num_of_val_plays, saveName):
         csvwriter.writerow(header) # 4. write the header
         csvwriter.writerows(data) # 5. write the rest of the data
 
-    
 
 
 levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
 levelString = readLevelFile(levelFilePath)
-env = MAFEnv(levelString, 10, False, 0, 0)
+env = MAFEnv(levelString, 60, False, 0, 0)
 
 validate_agent(env, "saved_agents/new_arch/single/1e-4", 100, "new_arch;single;1e-4;lvl-1")
 validate_agent(env, "saved_agents/new_arch/single/1e-5", 100, "new_arch;single;1e-5;lvl-1")

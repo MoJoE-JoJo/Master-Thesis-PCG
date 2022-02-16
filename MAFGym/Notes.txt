@@ -7,3 +7,14 @@ For the generator action space, 3 different types are needed, the start slices, 
 (the start-slices contains a M, and the end-slices contains a F)
 
 Need to handle tubes (t,T)
+
+wedsneday night: run lvl 1,2,7,8 as trained on a signle level in the old environment
+tursday night: run lvl 1,2,7,8 as trained on multiple levels in the old environment
+
+thursday: Implement one-hot encoding in the gym-environment, and streamline it into 1 environment
+Friday: Finish up the one-hot encoding, and potentially make gym support vectorization
+Friday night:  run lvl 1,2,7,8 as trained on a signle level in the new environment
+Saturday: Make a trello with tasks
+Saturday: run lvl 1,2,7,8 as trained on multiple levels in the new environment
+Saturday night: Run evaluations so it is ready to make graphs on sunday
+Sunday: Make graphs

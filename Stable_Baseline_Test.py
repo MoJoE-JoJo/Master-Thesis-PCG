@@ -63,49 +63,33 @@ def play(path, env):
 
 levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
 levelString = readLevelFile(levelFilePath)
-#normal_env = MAFEnv(levelString, 100, True, 0, 0)
+normal_env = MAFEnv(levelString, 100, True, 1, 1)
 #random_env = MAFRandEnv(100, True, 0, 0)
 
-#play("saved_agents/new_arch/single/1e-5/mario_3000000", normal_env)
+levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-3.txt"
+levelString = readLevelFile(levelFilePath)
+normal_env.setLevel(levelString)
+normal_env = MAFEnv(levelString, 100, True, 1, 1)
+play("saved_agents/less_detail/single/1e-4/mario_5000000", normal_env)
 
 
-#train(256,"saved_agents/new_arch/single/1e-6/", normal_env, 0.000001, 0)
-#train(256,"saved_agents/new_arch/single/1e-6/", normal_env, 0.000001, 1000000)
-#train(256,"saved_agents/new_arch/single/1e-6/", normal_env, 0.000001, 2000000)
 
-#train(256,"saved_agents/new_arch/multiple/1e-4/", random_env, 0.0001, 0)
-#train(256,"saved_agents/new_arch/multiple/1e-4/", random_env, 0.0001, 1000000)
-#train(256,"saved_agents/new_arch/multiple/1e-4/", random_env, 0.0001, 2000000)
-
-#train(256,"saved_agents/new_arch/multiple/1e-6/", random_env, 0.000001, 0)
-#train(256,"saved_agents/new_arch/multiple/1e-6/", random_env, 0.000001, 1000000)
-#train(256,"saved_agents/new_arch/multiple/1e-6/", random_env, 0.000001, 2000000)
-
-#train(256,"saved_agents/new_arch/single/1e-6/", normal_env, 0.000001, 3000000)
-#train(256,"saved_agents/new_arch/multiple/1e-4/", random_env, 0.0001, 3000000)
-#train(256,"saved_agents/new_arch/multiple/1e-6/", random_env, 0.000001, 3000000)
-
-#train(256,"saved_agents/new_arch/single/1e-6/", normal_env, 0.000001, 4000000)
-#train(256,"saved_agents/new_arch/multiple/1e-4/", random_env, 0.0001, 4000000)
-#train(256,"saved_agents/new_arch/multiple/1e-6/", random_env, 0.000001, 4000000)
+#ls_norm_env = MAFEnv(levelString, 100, True, 1, 1)
+#train(256,"saved_agents/less_detail/single/1e-4/", ls_norm_env, 0.0001, 4000000)
+#train(256,"saved_agents/less_detail/single/1e-5/", ls_norm_env, 0.00001, 0)
+#train(256,"saved_agents/less_detail/single/1e-5/", ls_norm_env, 0.00001, 1000000)
+#train(256,"saved_agents/less_detail/single/1e-5/", ls_norm_env, 0.00001, 2000000)
+#train(256,"saved_agents/less_detail/single/1e-5/", ls_norm_env, 0.00001, 3000000)
+#train(256,"saved_agents/less_detail/single/1e-5/", ls_norm_env, 0.00001, 4000000)
 
 
-ls_norm_env = MAFEnv(levelString, 100, True, 1, 1)
-train(256,"saved_agents/less_detail/single/1e-4/", ls_norm_env, 0.0001, 4000000)
-train(256,"saved_agents/less_detail/single/1e-5/", ls_norm_env, 0.00001, 0)
-train(256,"saved_agents/less_detail/single/1e-5/", ls_norm_env, 0.00001, 1000000)
-train(256,"saved_agents/less_detail/single/1e-5/", ls_norm_env, 0.00001, 2000000)
-train(256,"saved_agents/less_detail/single/1e-5/", ls_norm_env, 0.00001, 3000000)
-train(256,"saved_agents/less_detail/single/1e-5/", ls_norm_env, 0.00001, 4000000)
-
-
-ls_rand_env = MAFRandEnv(100, True, 1, 1)
-train(256,"saved_agents/less_detail/multiple/1e-4/", ls_rand_env, 0.0001, 4000000)
-train(256,"saved_agents/less_detail/multiple/1e-5/", ls_rand_env, 0.00001, 0)
-train(256,"saved_agents/less_detail/multiple/1e-5/", ls_rand_env, 0.00001, 1000000)
-train(256,"saved_agents/less_detail/multiple/1e-5/", ls_rand_env, 0.00001, 2000000)
-train(256,"saved_agents/less_detail/multiple/1e-5/", ls_rand_env, 0.00001, 3000000)
-train(256,"saved_agents/less_detail/multiple/1e-5/", ls_rand_env, 0.00001, 4000000)
+#ls_rand_env = MAFRandEnv(100, True, 1, 1)
+#train(256,"saved_agents/less_detail/multiple/1e-4/", ls_rand_env, 0.0001, 4000000)
+#train(256,"saved_agents/less_detail/multiple/1e-5/", ls_rand_env, 0.00001, 0)
+#train(256,"saved_agents/less_detail/multiple/1e-5/", ls_rand_env, 0.00001, 1000000)
+#train(256,"saved_agents/less_detail/multiple/1e-5/", ls_rand_env, 0.00001, 2000000)
+#train(256,"saved_agents/less_detail/multiple/1e-5/", ls_rand_env, 0.00001, 3000000)
+#train(256,"saved_agents/less_detail/multiple/1e-5/", ls_rand_env, 0.00001, 4000000)
 
 #train(256,"saved_agents/less_detail/single/1e-4/", ls_norm_env, 0.0001, 3000000)
 #train(256,"saved_agents/less_detail/multiple/1e-4/", ls_rand_env, 0.0001, 3000000)

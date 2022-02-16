@@ -67,3 +67,4 @@ class MAFEnv(gym.Env):
   
   def setLevel(self, levelString):
     self.marioGym.setLevel(levelString)
+    self.levelString = levelString

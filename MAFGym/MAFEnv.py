@@ -34,7 +34,7 @@ class MAFEnv(gym.Env):
     self.levelString = levelFile
     self.useRender = initRender
     self.action_space = spaces.MultiBinary(5)
-    self.observation_space = spaces.Box(low=-100, high=100, shape=(16, 16), dtype=np.uint8)
+    self.observation_space = spaces.Box(low=-100, high=100, shape=(16, 16, 1), dtype=np.uint8)
     print(os.path.dirname(os.path.realpath(__file__)))
     current_dir = os.path.dirname(os.path.realpath(__file__))
     subprocess.call([current_dir + '\\RunJar.bat'])
@@ -47,7 +47,7 @@ class MAFEnv(gym.Env):
     returnVal = self.marioGym.step(LEFT,RIGHT,DOWN,SPEED,JUMP)
     javaState = returnVal.getState()
     state = np.frombuffer(javaState, dtype=np.int32)
-    state = state.reshape((16, 16))
+    state = state.reshape((16, 16, 1))
     javaDict = returnVal.getInfo()
     dict = {"Yolo": javaDict.get("Yolo"), "Result" : javaDict.get("Result"), "ReturnScore": javaDict.get("ReturnScore")}
     return state, returnVal.getReward(), returnVal.getDone(), dict
@@ -58,7 +58,7 @@ class MAFEnv(gym.Env):
     returnVal = self.marioGym.reset(self.useRender)
     javaState = returnVal.getState()
     state = np.frombuffer(javaState, dtype=np.int32)
-    state = state.reshape((16, 16))
+    state = state.reshape((16, 16, 1))
     return state
 
   def render(self, mode='human', close=False):

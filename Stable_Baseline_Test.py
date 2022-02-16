@@ -38,8 +38,8 @@ class MarioPolicy(FeedForwardPolicy):
 #FeedForwardPolicy()
 #model = PPO1(MarioPolicy, env, verbose=1)
 def train(steps, saveFolder, env, learn, startNetwork):
-    num_of_steps = 100000
-    num_of_times = 10
+    num_of_steps = 500000
+    num_of_times = 2
     if startNetwork == 0: model = PPO2(MarioPolicy, env, verbose=1, n_steps=steps, learning_rate=learn)
     else: 
         env = DummyVecEnv([lambda: env])
@@ -63,44 +63,38 @@ def play(path, env):
 
 levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
 levelString = readLevelFile(levelFilePath)
-normal_env = MAFEnv(levelString, 100, True, 1, 1)
-#random_env = MAFRandEnv(100, True, 0, 0)
+#normal_env = MAFEnv(levelString, 100, True, 1, 1)
 
-levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-3.txt"
-levelString = readLevelFile(levelFilePath)
-normal_env.setLevel(levelString)
-normal_env = MAFEnv(levelString, 100, True, 1, 1)
-play("saved_agents/less_detail/single/1e-4/mario_5000000", normal_env)
-
-
-
-#ls_norm_env = MAFEnv(levelString, 100, True, 1, 1)
-#train(256,"saved_agents/less_detail/single/1e-4/", ls_norm_env, 0.0001, 4000000)
-#train(256,"saved_agents/less_detail/single/1e-5/", ls_norm_env, 0.00001, 0)
-#train(256,"saved_agents/less_detail/single/1e-5/", ls_norm_env, 0.00001, 1000000)
-#train(256,"saved_agents/less_detail/single/1e-5/", ls_norm_env, 0.00001, 2000000)
-#train(256,"saved_agents/less_detail/single/1e-5/", ls_norm_env, 0.00001, 3000000)
-#train(256,"saved_agents/less_detail/single/1e-5/", ls_norm_env, 0.00001, 4000000)
-
-
-#ls_rand_env = MAFRandEnv(100, True, 1, 1)
-#train(256,"saved_agents/less_detail/multiple/1e-4/", ls_rand_env, 0.0001, 4000000)
-#train(256,"saved_agents/less_detail/multiple/1e-5/", ls_rand_env, 0.00001, 0)
-#train(256,"saved_agents/less_detail/multiple/1e-5/", ls_rand_env, 0.00001, 1000000)
-#train(256,"saved_agents/less_detail/multiple/1e-5/", ls_rand_env, 0.00001, 2000000)
-#train(256,"saved_agents/less_detail/multiple/1e-5/", ls_rand_env, 0.00001, 3000000)
-#train(256,"saved_agents/less_detail/multiple/1e-5/", ls_rand_env, 0.00001, 4000000)
-
-#train(256,"saved_agents/less_detail/single/1e-4/", ls_norm_env, 0.0001, 3000000)
-#train(256,"saved_agents/less_detail/multiple/1e-4/", ls_rand_env, 0.0001, 3000000)
+#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-3.txt"
+#levelString = readLevelFile(levelFilePath)
+#normal_env.setLevel(levelString)
+#normal_env = MAFEnv(levelString, 100, True, 1, 1)
+#play("saved_agents/less_detail/single/1e-4/mario_5000000", normal_env)
 
 
 
-#train(256,"saved_agents/multiple_levels/", random_env, 0.00025)
-#train(256,"saved_agents/single_level_learn_0_0001/", normal_env, 0.0001)
-#train(256,"saved_agents/multiple_levels_learn_0_0001/", random_env, 0.0001)
+#env = MAFEnv(levelString, 60, True, 1, 1)
+random_env = MAFRandEnv(60, True, 1, 1)
+train(256,"saved_agents/multiple_5e-5/", random_env, 0.00001, 0)
+train(256,"saved_agents/multiple_5e-5/", random_env, 0.00001, 1000000)
+train(256,"saved_agents/multiple_5e-5/", random_env, 0.00001, 2000000)
+train(256,"saved_agents/multiple_5e-5/", random_env, 0.00001, 3000000)
+train(256,"saved_agents/multiple_5e-5/", random_env, 0.00001, 4000000)
 
-#train(512,"saved_agents/single_level_512/", normal_env, 0.00025)
-#train(512,"saved_agents/multiple_levels_512/", random_env, 0.00025)
-#train(512,"saved_agents/single_level_512_learn_0_0001/", normal_env, 0.0001)
-#train(512,"saved_agents/multiple_levels_512_learn_0_0001/", random_env, 0.0001)
+train(256,"saved_agents/multiple_5e-5/", random_env, 0.00001, 5000000)
+train(256,"saved_agents/multiple_5e-5/", random_env, 0.00001, 6000000)
+train(256,"saved_agents/multiple_5e-5/", random_env, 0.00001, 7000000)
+train(256,"saved_agents/multiple_5e-5/", random_env, 0.00001, 8000000)
+train(256,"saved_agents/multiple_5e-5/", random_env, 0.00001, 9000000)
+
+train(256,"saved_agents/multiple_5e-5/", random_env, 0.00001, 10000000)
+train(256,"saved_agents/multiple_5e-5/", random_env, 0.00001, 11000000)
+train(256,"saved_agents/multiple_5e-5/", random_env, 0.00001, 12000000)
+train(256,"saved_agents/multiple_5e-5/", random_env, 0.00001, 13000000)
+train(256,"saved_agents/multiple_5e-5/", random_env, 0.00001, 14000000)
+
+train(256,"saved_agents/multiple_5e-5/", random_env, 0.00001, 15000000)
+train(256,"saved_agents/multiple_5e-5/", random_env, 0.00001, 16000000)
+train(256,"saved_agents/multiple_5e-5/", random_env, 0.00001, 17000000)
+train(256,"saved_agents/multiple_5e-5/", random_env, 0.00001, 18000000)
+train(256,"saved_agents/multiple_5e-5/", random_env, 0.00001, 19000000)

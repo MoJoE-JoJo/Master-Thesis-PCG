@@ -39,12 +39,12 @@ def play(num_of_val_plays, env, model):
 
 
 def validate_agent(env, agent_path, num_of_val_plays, saveName):
-    allCheckpoints = [f for f in listdir(agent_path) if isfile(join(agent_path, f))]
+    allCheckpoints = ["mario_100000","mario_200000","mario_300000","mario_400000","mario_500000","mario_600000","mario_700000","mario_800000","mario_900000","mario_1000000","mario_1500000","mario_2000000","mario_2500000","mario_3000000","mario_3500000","mario_4000000","mario_4500000","mario_5000000"]
     filename = "agent_validations/" + saveName + ".csv"
     data = []
     for checkpoint in allCheckpoints:
         model = PPO2.load(agent_path+ "/" +checkpoint)
-        step = int(checkpoint.replace("mario_","").replace(".zip",""))
+        step = int(checkpoint.replace("mario_",""))
         returnScore, winScore = play(num_of_val_plays, env, model)
         data.append([step, returnScore, winScore])
     header = ['Steps', 'Avg. Return', 'WinRate']
@@ -57,18 +57,28 @@ def validate_agent(env, agent_path, num_of_val_plays, saveName):
 
 levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
 levelString = readLevelFile(levelFilePath)
-env = MAFEnv(levelString, 60, False, 0, 0)
+env = MAFEnv(levelString, 30, False, 0, 0)
 
 validate_agent(env, "saved_agents/new_arch/single/1e-4", 100, "new_arch;single;1e-4;lvl-1")
+print("1 done")
 validate_agent(env, "saved_agents/new_arch/single/1e-5", 100, "new_arch;single;1e-5;lvl-1")
+print("2 done")
+
+env = MAFEnv(levelString, 30, False, 1, 1)
 validate_agent(env, "saved_agents/less_detail/single/1e-4", 100, "less_detail;single;1e-4;lvl-1")
+print("3 done")
 validate_agent(env, "saved_agents/less_detail/multiple/1e-4", 100, "less_detail;multiple;1e-4;lvl-1")
+print("4 done")
 validate_agent(env, "saved_agents/less_detail/multiple/1e-5", 100, "less_detail;multiple;1e-5;lvl-1")
+print("5 done")
 
 
 levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-3.txt"
 levelString = readLevelFile(levelFilePath)
 env.setLevel(levelString)
 validate_agent(env, "saved_agents/less_detail/single/1e-4", 100, "less_detail;single;1e-4;lvl-3")
+print("6 done")
 validate_agent(env, "saved_agents/less_detail/multiple/1e-4", 100, "less_detail;multiple;1e-4;lvl-3")
+print("7 done")
 validate_agent(env, "saved_agents/less_detail/multiple/1e-5", 100, "less_detail;multiple;1e-5;lvl-3")
+print("8 done")

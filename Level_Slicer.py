@@ -29,12 +29,41 @@ def loadLevels(folder_path):
             if slice != []: slices.append(slice)
             #if("\n" in slice[0]):
             #    more_slices = False
-        print("Yolo")
-
-level_folder ="MAFGym/levels/original"
-loadLevels(level_folder)
+    return slices
 
 def sliceComparison(slice1, slice2):
     string1 = "".join(slice1)
     string2 = "".join(slice2)
     return string1 == string2
+
+
+def cleanSlicesTubes(slices):
+    new_slices = []
+    for slice in slices:
+        malformed_slice = False
+        for line in slice:
+            if (line[0] == "t" and line[1] != "t") or (line[0] == "T" and line[1] != "T") or (line[15] == "t" and line[14] != "t") or (line[15] == "T" and line[14] != "T"):
+                malformed_slice = True
+        if not malformed_slice:
+            new_slices.append(slice)
+    return new_slices
+
+def cleanSlicesDuplicates(slices):
+    new_slices = []
+    for slice in slices:
+        if slice not in new_slices:
+            new_slices.append(slice)
+    return new_slices
+
+
+level_folder ="MAFGym/levels/original"
+slices = loadLevels(level_folder)
+
+print(len(slices))
+
+slices = cleanSlicesTubes(slices)
+print(len(slices))
+
+slices = cleanSlicesDuplicates(slices)
+print(len(slices))
+

@@ -18,3 +18,17 @@ Saturday: Make a trello with tasks
 Saturday: run lvl 1,2,7,8 as trained on multiple levels in the new environment
 Saturday night: Run evaluations so it is ready to make graphs on sunday
 Sunday: Make graphs
+
+
+Layers needed in one-hot-encoding:
+Fireball
+Special Item
+Stompable Enemy
+Non-stompable enemy
+Solid
+Cannon
+Pipe
+Brick
+Question Block
+Coin
+Platform

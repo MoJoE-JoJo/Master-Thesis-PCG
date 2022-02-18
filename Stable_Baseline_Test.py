@@ -109,11 +109,11 @@ normal_env = MAFEnv(levelString, 60, False, 1, 1)
 #train(256,"saved_agents/old_new_env/old_env/lvl_8/", normal_env, 0.00005, 4000000)
 
 
-levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-11.txt"
+levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-3.txt"
 levelString = readLevelFile(levelFilePath)
 normal_env.setLevel(levelString)
-train(256,"saved_agents/old_new_env/old_env/lvl_11/", normal_env, 0.00005, 0)
-train(256,"saved_agents/old_new_env/old_env/lvl_11/", normal_env, 0.00005, 1000000)
-train(256,"saved_agents/old_new_env/old_env/lvl_11/", normal_env, 0.00005, 2000000)
-train(256,"saved_agents/old_new_env/old_env/lvl_11/", normal_env, 0.00005, 3000000)
-train(256,"saved_agents/old_new_env/old_env/lvl_11/", normal_env, 0.00005, 4000000)
+train(256,"saved_agents/old_new_env/old_env/lvl_3/", normal_env, 0.00005, 0)
+train(256,"saved_agents/old_new_env/old_env/lvl_3/", normal_env, 0.00005, 1000000)
+train(256,"saved_agents/old_new_env/old_env/lvl_3/", normal_env, 0.00005, 2000000)
+train(256,"saved_agents/old_new_env/old_env/lvl_3/", normal_env, 0.00005, 3000000)
+train(256,"saved_agents/old_new_env/old_env/lvl_3/", normal_env, 0.00005, 4000000)

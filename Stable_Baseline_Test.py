@@ -63,7 +63,10 @@ def play(path, env):
 
 levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
 levelString = readLevelFile(levelFilePath)
-normal_env = MAFEnv(levelString, 60, False, 1, 1)
+env1 = MAFEnv([levelString], 60, False)
+env2 = MAFEnv([levelString], 60, False)
+
+vec_env = DummyVecEnv([lambda: env1, lambda: env2])
 
 #levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-3.txt"
 #levelString = readLevelFile(levelFilePath)
@@ -73,9 +76,7 @@ normal_env = MAFEnv(levelString, 60, False, 1, 1)
 
 
 
-#env = MAFEnv(levelString, 60, True, 1, 1)
-#random_env = MAFRandEnv(60, True, 1, 1)
-#train(256,"saved_agents/old_new_env/old_env/lvl_1/", normal_env, 0.00005, 0)
+train(256,"saved_agents/old_new_env/old_env/lvl_1/", vec_env, 0.00005, 0)
 #train(256,"saved_agents/old_new_env/old_env/lvl_1/", normal_env, 0.00005, 1000000)
 #train(256,"saved_agents/old_new_env/old_env/lvl_1/", normal_env, 0.00005, 2000000)
 #train(256,"saved_agents/old_new_env/old_env/lvl_1/", normal_env, 0.00005, 3000000)
@@ -109,11 +110,10 @@ normal_env = MAFEnv(levelString, 60, False, 1, 1)
 #train(256,"saved_agents/old_new_env/old_env/lvl_8/", normal_env, 0.00005, 4000000)
 
 
-levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-11.txt"
-levelString = readLevelFile(levelFilePath)
-normal_env.setLevel(levelString)
-train(256,"saved_agents/old_new_env/old_env/lvl_11/", normal_env, 0.00005, 0)
-train(256,"saved_agents/old_new_env/old_env/lvl_11/", normal_env, 0.00005, 1000000)
-train(256,"saved_agents/old_new_env/old_env/lvl_11/", normal_env, 0.00005, 2000000)
-train(256,"saved_agents/old_new_env/old_env/lvl_11/", normal_env, 0.00005, 3000000)
-train(256,"saved_agents/old_new_env/old_env/lvl_11/", normal_env, 0.00005, 4000000)
+#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-11.txt"
+#levelString = readLevelFile(levelFilePath)
+#train(256,"saved_agents/old_new_env/old_env/lvl_11/", normal_env, 0.00005, 0)
+#train(256,"saved_agents/old_new_env/old_env/lvl_11/", normal_env, 0.00005, 1000000)
+#train(256,"saved_agents/old_new_env/old_env/lvl_11/", normal_env, 0.00005, 2000000)
+#train(256,"saved_agents/old_new_env/old_env/lvl_11/", normal_env, 0.00005, 3000000)
+#train(256,"saved_agents/old_new_env/old_env/lvl_11/", normal_env, 0.00005, 4000000)

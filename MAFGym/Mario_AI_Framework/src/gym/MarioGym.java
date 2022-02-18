@@ -16,39 +16,39 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MarioGym {
-    static String level;
-    static int gameSeconds;
-    static int marioState;
+    String level;
+    int gameSeconds;
+    int marioState;
     //static boolean visual;
 
     //Visualisation
-    static JFrame window = null;
-    static MarioRender render = null;
-    static VolatileImage renderTarget = null;
-    static Graphics backBuffer = null;
-    static Graphics currentBuffer = null;
+    JFrame window = null;
+    MarioRender render = null;
+    VolatileImage renderTarget = null;
+    Graphics backBuffer = null;
+    Graphics currentBuffer = null;
 
     //Game and character
-    static MarioWorld world = null;
-    static Py4JAgent agent = null;
-    static MarioTimer agentTimer = null;
+    MarioWorld world = null;
+    Py4JAgent agent = null;
+    MarioTimer agentTimer = null;
 
     //GameLoop
-    static ArrayList<MarioEvent> gameEvents = null;
-    static ArrayList<MarioAgentEvent> agentEvents = null;
+    ArrayList<MarioEvent> gameEvents = null;
+    ArrayList<MarioAgentEvent> agentEvents = null;
 
     //Step related
-    static float rewardPos = 0;
-    static int rewardTimePenalty = 0;
-    static int rewardDeathPenalty = 0;
+    float rewardPos = 0;
+    int rewardTimePenalty = 0;
+    int rewardDeathPenalty = 0;
 
-    static int winLooseReward = 15;
-    static int sceneDetail = 0;
-    static int enemyDetail = 0;
+    int winLooseReward = 15;
+    int sceneDetail = 0;
+    int enemyDetail = 0;
 
-    static int totalReward = 0;
+    int totalReward = 0;
 
-
+    /*
     public static void main(String[] args) {
         MarioGym gym = new MarioGym();
         // app is now the gateway.entry_point
@@ -56,8 +56,9 @@ public class MarioGym {
         server.start();
         System.out.println("Gateway Started");
     }
+    */
 
-    public static StepReturnType step(boolean left, boolean right, boolean down, boolean speed, boolean jump){
+    public StepReturnType step(boolean left, boolean right, boolean down, boolean speed, boolean jump){
         agentInput(left, right, down, speed, jump);
         gameUpdate();
         StepReturnType returnVal = new StepReturnType();
@@ -68,23 +69,24 @@ public class MarioGym {
         returnVal.reward = (int) rewardPos + rewardTimePenalty + rewardDeathPenalty;
         returnVal.reward = Math.max(-winLooseReward, Math.min(winLooseReward, returnVal.reward));
         //State value
-        returnVal.state = world.getMergedObservation(world.mario.x, world.mario.y, sceneDetail, enemyDetail);
+        returnVal.state = world.getOneHotObservation(world.mario.x, world.mario.y);
         //Info values
         returnVal.info = new HashMap<>();
         if(world.gameStatus == GameStatus.WIN) returnVal.info.put("Result", "Win");
         else if (world.gameStatus == GameStatus.LOSE) returnVal.info.put("Result", "Lose");
         returnVal.info.put("Yolo","Swaggins");
         totalReward += returnVal.reward;
+        returnVal.info.put("ReturnScore", String.valueOf(totalReward));
         return returnVal;
     }
 
-    public static void init(String paramLevel, String imageDirectory, int timer, int paramMarioState, boolean visual, int paramSceneDetail, int paramEnemyDetail){
+    public void init(String paramLevel, String imageDirectory, int timer, int paramMarioState, boolean visual){
         level = paramLevel;
         gameSeconds = timer;
         marioState = paramMarioState;
         Assets.img = imageDirectory;
-        sceneDetail = paramSceneDetail;
-        enemyDetail = paramEnemyDetail;
+        sceneDetail = 1;
+        enemyDetail = 1;
 
         if (visual) {
             window = new JFrame("Mario AI Framework");
@@ -101,7 +103,7 @@ public class MarioGym {
         System.out.println("Gym initialised");
     }
 
-    public static void gameUpdate(){
+    public void gameUpdate(){
         if (world.gameStatus == GameStatus.RUNNING) {
             //System.out.println(currentTime);
             //get actions
@@ -136,7 +138,7 @@ public class MarioGym {
         }
     }
 
-    public static StepReturnType reset(boolean visual){
+    public StepReturnType reset(boolean visual){
         agent = new Py4JAgent();
         world = new MarioWorld(null);
 
@@ -173,71 +175,21 @@ public class MarioGym {
         StepReturnType returnVal = new StepReturnType();
         returnVal.done = false;
         returnVal.reward = 0;
-        returnVal.state = world.getMergedObservation(world.mario.x, world.mario.y, sceneDetail, enemyDetail);
+        returnVal.state = world.getOneHotObservation(world.mario.x, world.mario.y);
         returnVal.info = new HashMap<>();
         return returnVal;
     }
 
-    public static void render(){
-        /*
-        if (firstRender) {
-            window = new JFrame("Mario AI Framework");
-            render = new MarioRender(2);
-            window.setContentPane(render);
-            window.pack();
-            window.setResizable(false);
-            window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            render.init();
-            window.setVisible(true);
-            world.initializeVisuals(render.getGraphicsConfiguration());
-            renderTarget = render.createVolatileImage(MarioGame.width, MarioGame.height);
-            backBuffer = render.getGraphics();
-            currentBuffer = renderTarget.getGraphics();
-            render.addFocusListener(render); //TODO: Maybe not needed
-            firstRender = false;
-        }
-        */
-
+    public void render(){
         render.renderWorld(world, renderTarget, backBuffer, currentBuffer);
     }
 
-    public static void playGame(String level, int time, int marioState, boolean visuals){
-        MarioGame game = new MarioGame();
-        agent = new Py4JAgent();
-        printResults(game.runGame(agent, level, time, marioState, visuals));
-    }
-
-    public static void agentInput(boolean left, boolean right, boolean down, boolean speed, boolean jump){
+    public void agentInput(boolean left, boolean right, boolean down, boolean speed, boolean jump){
         boolean[] actions = new boolean[]{left, right, down, speed, jump};
         agent.setActions(actions);
     }
 
-    public static void setLevel(String levelParam){
+    public void setLevel(String levelParam){
         level = levelParam;
-    }
-
-    private static String getLevel(String filepath) {
-        String content = "";
-        try {
-            content = new String(Files.readAllBytes(Paths.get(filepath)));
-        } catch (IOException e) {
-        }
-        return content;
-    }
-
-    private static void printResults(MarioResult result) {
-        System.out.println("****************************************************************");
-        System.out.println("Game Status: " + result.getGameStatus().toString() +
-                " Percentage Completion: " + result.getCompletionPercentage());
-        System.out.println("Lives: " + result.getCurrentLives() + " Coins: " + result.getCurrentCoins() +
-                " Remaining Time: " + (int) Math.ceil(result.getRemainingTime() / 1000f));
-        System.out.println("Mario State: " + result.getMarioMode() +
-                " (Mushrooms: " + result.getNumCollectedMushrooms() + " Fire Flowers: " + result.getNumCollectedFireflower() + ")");
-        System.out.println("Total Kills: " + result.getKillsTotal() + " (Stomps: " + result.getKillsByStomp() +
-                " Fireballs: " + result.getKillsByFire() + " Shells: " + result.getKillsByShell() +
-                " Falls: " + result.getKillsByFall() + ")");
-        System.out.println("Bricks: " + result.getNumDestroyedBricks() + " Jumps: " + result.getNumJumps() +
-                " Max X Jump: " + result.getMaxXJump() + " Max Air Time: " + result.getMaxJumpAirTime());
-        System.out.println("****************************************************************");
     }
 }

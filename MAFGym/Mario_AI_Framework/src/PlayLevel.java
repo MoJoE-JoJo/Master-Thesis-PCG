@@ -35,7 +35,7 @@ public class PlayLevel {
         MarioGame game = new MarioGame();
         // printResults(game.playGame(getLevel("../levels/original/lvl-1.txt"), 200, 0));
         try{
-            printResults(game.runGame(new agents.robinBaumgarten.Agent(), getLevel("./levels/original/lvl-1.txt"), 20, 0, true));
+            printResults(game.runGame(new agents.robinBaumgarten.Agent(), getLevel("./levels/original/lvl-3.txt"), 30, 0, true));
         }catch (Exception e){
             System.out.println(e);
         }

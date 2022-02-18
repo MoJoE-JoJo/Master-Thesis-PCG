@@ -240,6 +240,91 @@ public class MarioWorld {
         return ret;
     }
 
+    public int[][][] getOneHotObservation(float centerX, float centerY){
+        int sceneDetail = 1;
+        int enemiesDetail = 1;
+        int channelNumber = 11;
+
+        int[][][] ret = new int[MarioGame.tileWidth][MarioGame.tileHeight][channelNumber];
+        int centerXInMap = (int) centerX / 16;
+        int centerYInMap = (int) centerY / 16;
+
+        for (int y = centerYInMap - MarioGame.tileHeight / 2, obsY = 0; y < centerYInMap + MarioGame.tileHeight / 2; y++, obsY++) {
+            for (int x = centerXInMap - MarioGame.tileWidth / 2, obsX = 0; x < centerXInMap + MarioGame.tileWidth / 2; x++, obsX++) {
+                int currentX = x;
+                if (currentX < 0) {
+                    currentX = 0;
+                }
+                if (currentX > level.tileWidth - 1) {
+                    currentX = level.tileWidth - 1;
+                }
+                int currentY = y;
+                if (currentY < 0) {
+                    currentY = 0;
+                }
+                if (currentY > level.tileHeight - 1) {
+                    currentY = level.tileHeight - 1;
+                }
+                switch(MarioForwardModel.getBlockValueGeneralization(this.level.getBlock(x, y), sceneDetail)){
+                    case MarioForwardModel.OBS_SOLID:
+                        ret[obsX][obsY][0] = 1;
+                        break;
+                    case MarioForwardModel.OBS_CANNON:
+                        ret[obsX][obsY][1] = 1;
+                        break;
+                    case MarioForwardModel.OBS_PIPE:
+                        ret[obsX][obsY][2] = 1;
+                        break;
+                    case MarioForwardModel.OBS_BRICK:
+                        ret[obsX][obsY][3] = 1;
+                        break;
+                    case MarioForwardModel.OBS_QUESTION_BLOCK:
+                        ret[obsX][obsY][4] = 1;
+                        break;
+                    case MarioForwardModel.OBS_COIN:
+                        ret[obsX][obsY][5] = 1;
+                        break;
+                    case MarioForwardModel.OBS_PLATFORM:
+                        ret[obsX][obsY][6] = 1;
+                        break;
+                }
+            }
+        }
+
+        for (MarioSprite sprite : sprites) {
+            if (sprite.type == SpriteType.MARIO)
+                continue;
+            if (sprite.getMapX() >= 0 &&
+                    sprite.getMapX() > centerXInMap - MarioGame.tileWidth / 2 &&
+                    sprite.getMapX() < centerXInMap + MarioGame.tileWidth / 2 &&
+                    sprite.getMapY() >= 0 &&
+                    sprite.getMapY() > centerYInMap - MarioGame.tileHeight / 2 &&
+                    sprite.getMapY() < centerYInMap + MarioGame.tileHeight / 2) {
+                int obsX = sprite.getMapX() - centerXInMap + MarioGame.tileWidth / 2;
+                int obsY = sprite.getMapY() - centerYInMap + MarioGame.tileHeight / 2;
+                int tmp = MarioForwardModel.getSpriteTypeGeneralization(sprite.type, enemiesDetail);
+                if (tmp != SpriteType.NONE.getValue()) {
+                    switch(tmp){
+                        case MarioForwardModel.OBS_FIREBALL:
+                            ret[obsX][obsY][7] = 1;
+                            break;
+                        case MarioForwardModel.OBS_SPECIAL_ITEM:
+                            ret[obsX][obsY][8] = 1;
+                            break;
+                        case MarioForwardModel.OBS_STOMPABLE_ENEMY:
+                            ret[obsX][obsY][9] = 1;
+                            break;
+                        case MarioForwardModel.OBS_NONSTOMPABLE_ENEMY:
+                            ret[obsX][obsY][10] = 1;
+                            break;
+                    }
+                }
+            }
+        }
+
+        return ret;
+    }
+
     public int[][] getMergedObservation(float centerX, float centerY, int sceneDetail, int enemiesDetail) {
         int[][] ret = new int[MarioGame.tileWidth][MarioGame.tileHeight];
         int centerXInMap = (int) centerX / 16;

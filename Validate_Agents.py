@@ -39,12 +39,12 @@ def play(num_of_val_plays, env, model):
 
 
 def validate_agent(env, agent_path, num_of_val_plays, saveName):
-    allCheckpoints = ["mario_100000","mario_200000","mario_300000","mario_400000","mario_500000","mario_600000","mario_700000","mario_800000","mario_900000","mario_1000000","mario_1500000","mario_2000000","mario_2500000","mario_3000000","mario_3500000","mario_4000000","mario_4500000","mario_5000000"]
+    allCheckpoints = [f for f in listdir(agent_path) if isfile(join(agent_path, f))]
     filename = "agent_validations/" + saveName + ".csv"
     data = []
     for checkpoint in allCheckpoints:
         model = PPO2.load(agent_path +checkpoint)
-        step = int(checkpoint.replace("mario_",""))
+        step = int(checkpoint.replace("mario_","").replace(".zip",""))
         returnScore, winScore = play(num_of_val_plays, env, model)
         data.append([step, returnScore, winScore])
     header = ['Steps', 'Avg. Return', 'WinRate']
@@ -76,23 +76,35 @@ def validate_agent(env, agent_path, num_of_val_plays, saveName):
 levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
 levelString = readLevelFile(levelFilePath)
 env = MAFEnv([levelString], 60, False)
-validate_agent(env, "saved_agents/old_new_env/old_env/lvl_1/", 100, "5e-5;lvl_1")
+validate_agent(env, "saved_agents/old_new_env/new_env/lvl_1/", 100, "new_env;5e-5;lvl_1")
 print("1 done")
 
 levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-2.txt"
 levelString = readLevelFile(levelFilePath)
 env = MAFEnv([levelString], 60, False)
-validate_agent(env, "saved_agents/old_new_env/old_env/lvl_2/", 100, "5e-5;lvl_2")
+validate_agent(env, "saved_agents/old_new_env/new_env/lvl_2/", 100, "new_env;5e-5;lvl_2")
 print("2 done")
 
 levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"
 levelString = readLevelFile(levelFilePath)
 env = MAFEnv([levelString], 60, False)
-validate_agent(env, "saved_agents/old_new_env/old_env/lvl_7/", 100, "5e-5;lvl_7")
+validate_agent(env, "saved_agents/old_new_env/new_env/lvl_7/", 100, "new_env;5e-5;lvl_7")
 print("7 done")
 
 levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-8.txt"
 levelString = readLevelFile(levelFilePath)
 env = MAFEnv([levelString], 60, False)
-validate_agent(env, "saved_agents/old_new_env/old_env/lvl_8/", 100, "5e-5;lvl_8")
+validate_agent(env, "saved_agents/old_new_env/new_env/lvl_8/", 100, "new_env;5e-5;lvl_8")
 print("8 done")
+
+#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-11.txt"
+#levelString = readLevelFile(levelFilePath)
+#env = MAFEnv([levelString], 60, False)
+#validate_agent(env, "saved_agents/old_new_env/new_env/lvl_11/", 100, "new_env;5e-5;lvl_11")
+#print("11 done")
+
+#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-3.txt"
+#levelString = readLevelFile(levelFilePath)
+#env = MAFEnv([levelString], 60, False)
+#validate_agent(env, "saved_agents/old_new_env/new_env/lvl_3/", 100, "new_env;5e-5;lvl_3")
+#print("3 done")

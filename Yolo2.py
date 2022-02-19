@@ -7,10 +7,10 @@ from MAFGym.util import readLevelFile
 levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
 levelString = readLevelFile(levelFilePath)
 
-gymgym = MAFEnv(levelString, 100, True, 1, 1)
+gymgym = MAFEnv([levelString], 60, True)
 
-levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-3.txt"
-levelString = readLevelFile(levelFilePath)
+#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-3.txt"
+#levelString = readLevelFile(levelFilePath)
 action = [False, True, False, False, False]
 done = False
 for i in range(100):
@@ -26,6 +26,6 @@ for i in range(100):
 
     gymgym.reset()
     done = False
-    gymgym.setLevel(levelString)
+    #gymgym.setLevel(levelString)
 
 

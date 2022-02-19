@@ -1,6 +1,5 @@
 import gym
 from MAFGym.MAFEnv import MAFEnv
-from MAFGym.MAFRandEnv import MAFRandEnv
 from MAFGym.util import readLevelFile
 import os
 from time import sleep
@@ -54,12 +53,12 @@ def validate_agent(env, agent_path, num_of_val_plays, saveName):
         csvwriter.writerows(data) # 5. write the rest of the data
 
 
-#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
-#levelString = readLevelFile(levelFilePath)
-#env = MAFEnv(levelString, 30, False, 1, 1)
+levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
+levelString = readLevelFile(levelFilePath)
+env = MAFEnv([levelString], 60, False)
 
 
-#validate_agent(env, "saved_agents/new_arch/single/1e-4", 100, "new_arch;single;1e-4;lvl-1")
+validate_agent(env, "saved_agents/cnn/lvl_1/", 100, "cnn2;single;5e-5;lvl-1")
 #print("1 done")
 #validate_agent(env, "saved_agents/new_arch/single/1e-5", 100, "new_arch;single;1e-5;lvl-1")
 #print("2 done")
@@ -73,29 +72,29 @@ def validate_agent(env, agent_path, num_of_val_plays, saveName):
 #print("5 done")
 
 
-levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
-levelString = readLevelFile(levelFilePath)
-env = MAFEnv([levelString], 60, False)
-validate_agent(env, "saved_agents/old_new_env/new_env/lvl_1/", 100, "new_env;5e-5;lvl_1")
-print("1 done")
+#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
+#levelString = readLevelFile(levelFilePath)
+#env = MAFEnv([levelString], 60, False)
+#validate_agent(env, "saved_agents/old_new_env/new_env/lvl_1/", 100, "new_env;5e-5;lvl_1")
+#print("1 done")
 
-levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-2.txt"
-levelString = readLevelFile(levelFilePath)
-env = MAFEnv([levelString], 60, False)
-validate_agent(env, "saved_agents/old_new_env/new_env/lvl_2/", 100, "new_env;5e-5;lvl_2")
-print("2 done")
+#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-2.txt"
+#levelString = readLevelFile(levelFilePath)
+#env = MAFEnv([levelString], 60, False)
+#validate_agent(env, "saved_agents/old_new_env/new_env/lvl_2/", 100, "new_env;5e-5;lvl_2")
+#print("2 done")
 
-levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"
-levelString = readLevelFile(levelFilePath)
-env = MAFEnv([levelString], 60, False)
-validate_agent(env, "saved_agents/old_new_env/new_env/lvl_7/", 100, "new_env;5e-5;lvl_7")
-print("7 done")
+#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"
+#levelString = readLevelFile(levelFilePath)
+#env = MAFEnv([levelString], 60, False)
+#validate_agent(env, "saved_agents/old_new_env/new_env/lvl_7/", 100, "new_env;5e-5;lvl_7")
+#print("7 done")
 
-levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-8.txt"
-levelString = readLevelFile(levelFilePath)
-env = MAFEnv([levelString], 60, False)
-validate_agent(env, "saved_agents/old_new_env/new_env/lvl_8/", 100, "new_env;5e-5;lvl_8")
-print("8 done")
+#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-8.txt"
+#levelString = readLevelFile(levelFilePath)
+#env = MAFEnv([levelString], 60, False)
+#validate_agent(env, "saved_agents/old_new_env/new_env/lvl_8/", 100, "new_env;5e-5;lvl_8")
+#print("8 done")
 
 #levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-11.txt"
 #levelString = readLevelFile(levelFilePath)

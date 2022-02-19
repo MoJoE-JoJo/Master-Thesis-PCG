@@ -1,6 +1,5 @@
 import gym
 from MAFGym.MAFEnv import MAFEnv
-from MAFGym.MAFRandEnv import MAFRandEnv
 from MAFGym.util import readLevelFile
 import os
 from time import sleep
@@ -32,8 +31,8 @@ layers = [dict(vf=[512,512], pi=[512,512])]
 
 def modified_cnn(scaled_images, **kwargs):
     activ = tf.nn.relu
-    layer_1 = activ(conv(scaled_images, 'c1', n_filters=256, filter_size=9, stride=1, init_scale=np.sqrt(2), **kwargs))
-    layer_2 = activ(conv(layer_1, 'c2', n_filters=128, filter_size=5, stride=1, init_scale=np.sqrt(2), **kwargs))
+    layer_1 = activ(conv(scaled_images, 'c1', n_filters=32, filter_size=3, stride=1, init_scale=np.sqrt(2), **kwargs))
+    layer_2 = activ(conv(layer_1, 'c2', n_filters=64, filter_size=3, stride=1, init_scale=np.sqrt(2), **kwargs))
     layer_3 = activ(conv(layer_2, 'c3', n_filters=64, filter_size=3, stride=1, init_scale=np.sqrt(2), **kwargs))
     layer_3 = conv_to_fc(layer_3)
     return activ(linear(layer_3, 'fc1', n_hidden=1024, init_scale=np.sqrt(2)))

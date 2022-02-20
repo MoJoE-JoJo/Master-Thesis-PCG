@@ -62,9 +62,9 @@ levelString1 = readLevelFile(levelFilePath1)
 env1 = MAFEnv([levelString1], 60, False)
 
 
-validate_agent(env, "saved_agents/basic_network/lvl_7/", 100, "basic;single;5e-5;lvl-7")
-print("7 done")
-validate_agent(env1, "saved_agents/basic_nework/lvl_1/", 100, "basic;single;5e-5;lvl-1")
+#validate_agent(env, "saved_agents/basic_network/lvl_7/", 100, "basic;single;5e-5;lvl-7")
+#print("7 done")
+validate_agent(env1, "saved_agents/basic_network/lvl_1/different_scale2/", 100, "basic_scale2;single;5e-5;lvl-1")
 print("1 done")
 
 #env = MAFEnv(levelString, 30, False, 1, 1)

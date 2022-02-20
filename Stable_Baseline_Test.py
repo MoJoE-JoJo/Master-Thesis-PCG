@@ -69,7 +69,7 @@ def play(path, env):
         sleep(0.033)
 
 
-levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"
+levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
 levelString = readLevelFile(levelFilePath)
 env1 = MAFEnv([levelString], 60, False)
 #env2 = MAFEnv([levelString], 60, False)
@@ -91,15 +91,15 @@ env = DummyVecEnv([lambda: env1])#,lambda: env2,lambda: env3,lambda: env4,lambda
 #levelString = readLevelFile(levelFilePath)
 #normal_env.setLevel(levelString)
 #normal_env = MAFEnv(levelString, 100, True, 1, 1)
-#play("saved_agents/less_detail/single/1e-4/mario_5000000", normal_env)
+#play("saved_agents/basic_network/lvl_7/mario_5000000", env)
 
 
 
-train(256,"saved_agents/cnn/lvl_7/", env, 0.00005, 0)
-train(256,"saved_agents/cnn/lvl_7/", env, 0.00005, 1000000)
-train(256,"saved_agents/cnn/lvl_7/", env, 0.00005, 2000000)
-train(256,"saved_agents/cnn/lvl_7/", env, 0.00005, 3000000)
-train(256,"saved_agents/cnn/lvl_7/", env, 0.00005, 4000000)
+train(256,"saved_agents/basic_network/lvl_1/different_scale2/", env, 0.00005, 0)
+#train(256,"saved_agents/basic_network/lvl_1/different_scale/", env, 0.00005, 1000000)
+#train(256,"saved_agents/basic_network/lvl_1/different_scale/", env, 0.00005, 2000000)
+#train(256,"saved_agents/basic_network/lvl_1/different_scale/", env, 0.00005, 3000000)
+#train(256,"saved_agents/basic_network/lvl_1/different_scale/", env, 0.00005, 4000000)
 
 
 #levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"

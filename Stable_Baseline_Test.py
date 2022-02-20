@@ -69,7 +69,7 @@ class MarioLstmPolicy(LstmPolicy):
 def train(steps, saveFolder, env, learn, startNetwork):
     num_of_steps = 500000
     num_of_times = 2
-    if startNetwork == 0: model = PPO2(MarioLstmPolicy, env, verbose=1, n_steps=steps, learning_rate=learn, nminibatches=1)
+    if startNetwork == 0: model = PPO2(MarioCnnPolicy, env, verbose=1, n_steps=steps, learning_rate=learn)
     else: 
         model = PPO2.load(saveFolder+"Mario_"+str(startNetwork), env)
     for i in range(num_of_times):
@@ -115,7 +115,7 @@ env = DummyVecEnv([lambda: env1])#,lambda: env2,lambda: env3,lambda: env4,lambda
 
 
 
-train(256,"saved_agents/lstm/lvl_1/", env, 0.00005, 0)
+train(256,"saved_agents/cnn/lvl_1/", env, 0.00005, 0)
 #train(256,"saved_agents/basic_network/lvl_1/different_scale/", env, 0.00005, 1000000)
 #train(256,"saved_agents/basic_network/lvl_1/different_scale/", env, 0.00005, 2000000)
 #train(256,"saved_agents/basic_network/lvl_1/different_scale/", env, 0.00005, 3000000)

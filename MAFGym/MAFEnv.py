@@ -44,7 +44,7 @@ class MAFEnv(gym.Env):
 
     self.useRender = initRender
     self.action_space = spaces.MultiBinary(5)
-    self.observation_space = spaces.Box(low=0, high=255, shape=(16, 16, 1), dtype=np.uint8)
+    self.observation_space = spaces.Box(low=-100, high=100, shape=(16, 16, 1), dtype=np.uint8)
     current_dir = os.path.dirname(os.path.realpath(__file__))
     if (self.gymID == 0):
       gateway = JavaGateway() 

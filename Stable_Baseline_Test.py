@@ -15,6 +15,8 @@ from stable_baselines.common.tf_layers import conv, linear, conv_to_fc
 from stable_baselines.common.vec_env import DummyVecEnv
 from stable_baselines import PPO2, PPO1
 
+from Validate_Agents import validate_agent
+
 #env = make_vec_env('CartPole-v1', n_envs=4)
 #obs = env.reset()
 # Optional: PPO2 requires a vectorized environment to run
@@ -89,7 +91,7 @@ def play(path, env):
         sleep(0.033)
 
 
-levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"
+levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
 levelString = readLevelFile(levelFilePath)
 env1 = MAFEnv([levelString], 60, False)
 #env2 = MAFEnv([levelString], 60, False)
@@ -115,22 +117,27 @@ env = DummyVecEnv([lambda: env1])#,lambda: env2,lambda: env3,lambda: env4,lambda
 
 
 
-train(256,"saved_agents/rew_shap/lvl_7/", env, 0.00005, 0)
-train(256,"saved_agents/rew_shap/lvl_7/", env, 0.00005, 1000000)
-train(256,"saved_agents/rew_shap/lvl_7/", env, 0.00005, 2000000)
-train(256,"saved_agents/rew_shap/lvl_7/", env, 0.00005, 3000000)
-train(256,"saved_agents/rew_shap/lvl_7/", env, 0.00005, 4000000)
+train(512,"saved_agents/steps/lvl_1/", env, 0.00005, 0)
+train(512,"saved_agents/steps/lvl_1/", env, 0.00005, 1000000)
+train(512,"saved_agents/steps/lvl_1/", env, 0.00005, 2000000)
+train(512,"saved_agents/steps/lvl_1/", env, 0.00005, 3000000)
+train(512,"saved_agents/steps/lvl_1/", env, 0.00005, 4000000)
+validate_agent(env1, "saved_agents/steps/lvl_1/", 100, "steps_512;single;5e-5;lvl-1")
+print("1 done")
 
 
-#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
-#levelString = readLevelFile(levelFilePath)
-#env2 = MAFEnv([levelString], 60, False)
-#env = DummyVecEnv([lambda: env2])
-#train(256,"saved_agents/cnn/lvl_1/", env, 0.00005, 0)
-#train(256,"saved_agents/cnn/lvl_1/", env, 0.00005, 1000000)
-#train(256,"saved_agents/cnn/lvl_1/", env, 0.00005, 2000000)
-#train(256,"saved_agents/cnn/lvl_1/", env, 0.00005, 3000000)
-#train(256,"saved_agents/cnn/lvl_1/", env, 0.00005, 4000000)
+levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"
+levelString = readLevelFile(levelFilePath)
+env2 = MAFEnv([levelString], 60, False)
+env = DummyVecEnv([lambda: env2])
+train(512,"saved_agents/steps/lvl_7/", env, 0.00005, 0)
+train(512,"saved_agents/steps/lvl_7/", env, 0.00005, 1000000)
+train(512,"saved_agents/steps/lvl_7/", env, 0.00005, 2000000)
+train(512,"saved_agents/steps/lvl_7/", env, 0.00005, 3000000)
+train(512,"saved_agents/steps/lvl_7/", env, 0.00005, 4000000)
+validate_agent(env2, "saved_agents/steps/lvl_7/", 100, "steps_512;single;5e-5;lvl-7")
+print("7 done")
+
 
 #levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"
 #levelString = readLevelFile(levelFilePath)

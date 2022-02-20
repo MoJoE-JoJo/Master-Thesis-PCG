@@ -27,7 +27,7 @@ env_count = 1
 #steps = 3000
 #batch = 64
 #layers = [512,512,512,512]
-layers = [dict(vf=[512,512], pi=[512,512])]
+layers = [2048, dict(vf=[512,512], pi=[512,512])]
 
 def modified_cnn(scaled_images, **kwargs):
     activ = tf.nn.relu
@@ -69,7 +69,7 @@ class MarioLstmPolicy(LstmPolicy):
 def train(steps, saveFolder, env, learn, startNetwork):
     num_of_steps = 500000
     num_of_times = 2
-    if startNetwork == 0: model = PPO2(MarioCnnPolicy, env, verbose=1, n_steps=steps, learning_rate=learn)
+    if startNetwork == 0: model = PPO2(MarioPolicy, env, verbose=1, n_steps=steps, learning_rate=learn)
     else: 
         model = PPO2.load(saveFolder+"Mario_"+str(startNetwork), env)
     for i in range(num_of_times):

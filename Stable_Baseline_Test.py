@@ -31,19 +31,19 @@ layers = [dict(vf=[512,512], pi=[512,512])]
 
 def modified_cnn(scaled_images, **kwargs):
     activ = tf.nn.relu
-    layer_1 = activ(conv(scaled_images, 'c1', n_filters=32, filter_size=3, stride=1, init_scale=np.sqrt(2), **kwargs))
-    layer_2 = activ(conv(layer_1, 'c2', n_filters=64, filter_size=3, stride=1, init_scale=np.sqrt(2), **kwargs))
-    layer_3 = activ(conv(layer_2, 'c3', n_filters=64, filter_size=3, stride=1, init_scale=np.sqrt(2), **kwargs))
+    layer_1 = activ(conv(scaled_images, 'c1', n_filters=32, filter_size=5, stride=1, init_scale=np.sqrt(2), **kwargs))
+    layer_2 = activ(conv(layer_1, 'c2', n_filters=64, filter_size=5, stride=1, init_scale=np.sqrt(2), **kwargs))
+    layer_3 = activ(conv(layer_2, 'c3', n_filters=128, filter_size=3, stride=1, init_scale=np.sqrt(2), **kwargs))
     layer_3 = conv_to_fc(layer_3)
-    return activ(linear(layer_3, 'fc1', n_hidden=1024, init_scale=np.sqrt(2)))
+    return activ(linear(layer_3, 'fc1', n_hidden=4096, init_scale=np.sqrt(2)))
 
 class MarioPolicy(FeedForwardPolicy):
     def __init__(self, *args, **kwargs):
         super(MarioPolicy, self).__init__(*args, **kwargs,
                                             net_arch=layers,
                                             act_fun=tf.nn.relu,
-                                            cnn_extractor=modified_cnn,
-                                            feature_extraction="cnn")
+                                            #cnn_extractor=modified_cnn,
+                                            feature_extraction="mlp")
 #FeedForwardPolicy()
 #model = PPO1(MarioPolicy, env, verbose=1)
 def train(steps, saveFolder, env, learn, startNetwork):
@@ -69,7 +69,7 @@ def play(path, env):
         sleep(0.033)
 
 
-levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
+levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"
 levelString = readLevelFile(levelFilePath)
 env1 = MAFEnv([levelString], 60, False)
 #env2 = MAFEnv([levelString], 60, False)
@@ -95,39 +95,39 @@ env = DummyVecEnv([lambda: env1])#,lambda: env2,lambda: env3,lambda: env4,lambda
 
 
 
-train(256,"saved_agents/cnn/lvl_1/", env, 0.00005, 0)
-train(256,"saved_agents/cnn/lvl_1/", env, 0.00005, 1000000)
-train(256,"saved_agents/cnn/lvl_1/", env, 0.00005, 2000000)
-train(256,"saved_agents/cnn/lvl_1/", env, 0.00005, 3000000)
-train(256,"saved_agents/cnn/lvl_1/", env, 0.00005, 4000000)
-
-
-levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-2.txt"
-levelString = readLevelFile(levelFilePath)
-env2 = MAFEnv([levelString], 60, False)
-env = DummyVecEnv([lambda: env2])
-train(256,"saved_agents/cnn/lvl_2/", env, 0.00005, 0)
-train(256,"saved_agents/cnn/lvl_2/", env, 0.00005, 1000000)
-train(256,"saved_agents/cnn/lvl_2/", env, 0.00005, 2000000)
-train(256,"saved_agents/cnn/lvl_2/", env, 0.00005, 3000000)
-train(256,"saved_agents/cnn/lvl_2/", env, 0.00005, 4000000)
-
-levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"
-levelString = readLevelFile(levelFilePath)
-env3 = MAFEnv([levelString], 60, False)
-env = DummyVecEnv([lambda: env3])
 train(256,"saved_agents/cnn/lvl_7/", env, 0.00005, 0)
 train(256,"saved_agents/cnn/lvl_7/", env, 0.00005, 1000000)
 train(256,"saved_agents/cnn/lvl_7/", env, 0.00005, 2000000)
 train(256,"saved_agents/cnn/lvl_7/", env, 0.00005, 3000000)
 train(256,"saved_agents/cnn/lvl_7/", env, 0.00005, 4000000)
 
-levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-8.txt"
-levelString = readLevelFile(levelFilePath)
-env4 = MAFEnv([levelString], 60, False)
-env = DummyVecEnv([lambda: env4])
-train(256,"saved_agents/cnn/lvl_8/", env, 0.00005, 0)
-train(256,"saved_agents/cnn/lvl_8/", env, 0.00005, 1000000)
-train(256,"saved_agents/cnn/lvl_8/", env, 0.00005, 2000000)
-train(256,"saved_agents/cnn/lvl_8/", env, 0.00005, 3000000)
-train(256,"saved_agents/cnn/lvl_8/", env, 0.00005, 4000000)
+
+#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
+#levelString = readLevelFile(levelFilePath)
+#env2 = MAFEnv([levelString], 60, False)
+#env = DummyVecEnv([lambda: env2])
+#train(256,"saved_agents/cnn/lvl_1/", env, 0.00005, 0)
+#train(256,"saved_agents/cnn/lvl_1/", env, 0.00005, 1000000)
+#train(256,"saved_agents/cnn/lvl_1/", env, 0.00005, 2000000)
+#train(256,"saved_agents/cnn/lvl_1/", env, 0.00005, 3000000)
+#train(256,"saved_agents/cnn/lvl_1/", env, 0.00005, 4000000)
+
+#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"
+#levelString = readLevelFile(levelFilePath)
+#env3 = MAFEnv([levelString], 60, False)
+#env = DummyVecEnv([lambda: env3])
+#train(256,"saved_agents/cnn/lvl_7/", env, 0.00005, 0)
+#train(256,"saved_agents/cnn/lvl_7/", env, 0.00005, 1000000)
+#train(256,"saved_agents/cnn/lvl_7/", env, 0.00005, 2000000)
+#train(256,"saved_agents/cnn/lvl_7/", env, 0.00005, 3000000)
+#train(256,"saved_agents/cnn/lvl_7/", env, 0.00005, 4000000)
+
+#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-8.txt"
+#levelString = readLevelFile(levelFilePath)
+#env4 = MAFEnv([levelString], 60, False)
+#env = DummyVecEnv([lambda: env4])
+#train(256,"saved_agents/cnn/lvl_8/", env, 0.00005, 0)
+#train(256,"saved_agents/cnn/lvl_8/", env, 0.00005, 1000000)
+#train(256,"saved_agents/cnn/lvl_8/", env, 0.00005, 2000000)
+#train(256,"saved_agents/cnn/lvl_8/", env, 0.00005, 3000000)
+#train(256,"saved_agents/cnn/lvl_8/", env, 0.00005, 4000000)

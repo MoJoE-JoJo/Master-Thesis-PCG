@@ -58,10 +58,10 @@ levelString = readLevelFile(levelFilePath)
 env = MAFEnv([levelString], 60, False)
 
 
-validate_agent(env, "saved_agents/cnn/lvl_1/", 100, "cnn2;single;5e-5;lvl-1")
-#print("1 done")
-#validate_agent(env, "saved_agents/new_arch/single/1e-5", 100, "new_arch;single;1e-5;lvl-1")
-#print("2 done")
+validate_agent(env, "saved_agents/cnn/lvl_1/", 100, "big_mlp;single;5e-5;lvl-1")
+print("1 done")
+validate_agent(env, "saved_agents/cnn/lvl_7/", 100, "big_mlp;single;5e-5;lvl-7")
+print("7 done")
 
 #env = MAFEnv(levelString, 30, False, 1, 1)
 #validate_agent(env, "saved_agents/less_detail/single/1e-4", 100, "less_detail;single;1e-4;lvl-1")

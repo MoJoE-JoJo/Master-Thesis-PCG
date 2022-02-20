@@ -9,7 +9,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import Tensor
 
-from stable_baselines.common.policies import CnnPolicy, FeedForwardPolicy
+from stable_baselines.common.policies import CnnPolicy, FeedForwardPolicy, LstmPolicy
 from stable_baselines.common import make_vec_env
 from stable_baselines.common.tf_layers import conv, linear, conv_to_fc
 from stable_baselines.common.vec_env import DummyVecEnv
@@ -31,11 +31,11 @@ layers = [dict(vf=[512,512], pi=[512,512])]
 
 def modified_cnn(scaled_images, **kwargs):
     activ = tf.nn.relu
-    layer_1 = activ(conv(scaled_images, 'c1', n_filters=32, filter_size=5, stride=1, init_scale=np.sqrt(2), **kwargs))
-    layer_2 = activ(conv(layer_1, 'c2', n_filters=64, filter_size=5, stride=1, init_scale=np.sqrt(2), **kwargs))
-    layer_3 = activ(conv(layer_2, 'c3', n_filters=128, filter_size=3, stride=1, init_scale=np.sqrt(2), **kwargs))
+    layer_1 = activ(conv(scaled_images, 'c1', n_filters=32, filter_size=8, stride=1, init_scale=np.sqrt(2), **kwargs))
+    layer_2 = activ(conv(layer_1, 'c2', n_filters=64, filter_size=4, stride=1, init_scale=np.sqrt(2), **kwargs))
+    layer_3 = activ(conv(layer_2, 'c3', n_filters=64, filter_size=3, stride=1, init_scale=np.sqrt(2), **kwargs))
     layer_3 = conv_to_fc(layer_3)
-    return activ(linear(layer_3, 'fc1', n_hidden=4096, init_scale=np.sqrt(2)))
+    return activ(linear(layer_3, 'fc1', n_hidden=1024, init_scale=np.sqrt(2)))
 
 class MarioPolicy(FeedForwardPolicy):
     def __init__(self, *args, **kwargs):
@@ -44,12 +44,32 @@ class MarioPolicy(FeedForwardPolicy):
                                             act_fun=tf.nn.relu,
                                             #cnn_extractor=modified_cnn,
                                             feature_extraction="mlp")
+
+class MarioCnnPolicy(FeedForwardPolicy):
+    def __init__(self, *args, **kwargs):
+        super(MarioCnnPolicy, self).__init__(*args, **kwargs,
+                                            net_arch=layers,
+                                            act_fun=tf.nn.relu,
+                                            cnn_extractor=modified_cnn,
+                                            feature_extraction="cnn")                                            
+
+layers_lstm = ['lstm',dict(vf=[512,512], pi=[512,512])]
+
+class MarioLstmPolicy(LstmPolicy):
+    def __init__(self, *args, **kwargs):
+        super(MarioLstmPolicy, self).__init__(*args, **kwargs,
+                                            net_arch=layers_lstm,
+                                            n_lstm=256,
+                                            act_fun=tf.nn.relu,
+                                            #cnn_extractor=modified_cnn,
+                                            feature_extraction="mlp")
+
 #FeedForwardPolicy()
 #model = PPO1(MarioPolicy, env, verbose=1)
 def train(steps, saveFolder, env, learn, startNetwork):
     num_of_steps = 500000
     num_of_times = 2
-    if startNetwork == 0: model = PPO2(MarioPolicy, env, verbose=1, n_steps=steps, learning_rate=learn)
+    if startNetwork == 0: model = PPO2(MarioLstmPolicy, env, verbose=1, n_steps=steps, learning_rate=learn, nminibatches=1)
     else: 
         model = PPO2.load(saveFolder+"Mario_"+str(startNetwork), env)
     for i in range(num_of_times):
@@ -95,7 +115,7 @@ env = DummyVecEnv([lambda: env1])#,lambda: env2,lambda: env3,lambda: env4,lambda
 
 
 
-train(256,"saved_agents/basic_network/lvl_1/different_scale2/", env, 0.00005, 0)
+train(256,"saved_agents/lstm/lvl_1/", env, 0.00005, 0)
 #train(256,"saved_agents/basic_network/lvl_1/different_scale/", env, 0.00005, 1000000)
 #train(256,"saved_agents/basic_network/lvl_1/different_scale/", env, 0.00005, 2000000)
 #train(256,"saved_agents/basic_network/lvl_1/different_scale/", env, 0.00005, 3000000)

@@ -56,9 +56,9 @@ class MAFEnv(gym.Env):
 
   def step(self, action):
     # Execute one time step within the environment
-    LEFT,RIGHT,DOWN,SPEED,JUMP = bool(action[0]), bool(action[1]), bool(action[2]), bool(action[3]), bool(action[4])
+    #LEFT,RIGHT,DOWN,SPEED,JUMP = bool(action[0]), bool(action[1]), bool(action[2]), bool(action[3]), bool(action[4])
     #print(self.gymID)
-    returnVal = self.marioGym.step(self.gymID, action)
+    returnVal = self.marioGym.step(self.gymID, int(action))
     javaState = returnVal.getState()
     state = np.frombuffer(javaState, dtype=np.int32)
     state = state.reshape((16, 16,1))

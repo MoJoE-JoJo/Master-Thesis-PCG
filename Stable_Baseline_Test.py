@@ -93,7 +93,7 @@ def play(path, env):
 
 levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"
 levelString = readLevelFile(levelFilePath)
-env1 = MAFEnv([levelString], 60, True)
+env1 = MAFEnv([levelString], 60, False)
 env2 = MAFEnv([levelString], 60, False)
 env3 = MAFEnv([levelString], 60, False)
 env4 = MAFEnv([levelString], 60, False)

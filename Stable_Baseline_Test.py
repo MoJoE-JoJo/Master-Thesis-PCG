@@ -117,13 +117,13 @@ env = DummyVecEnv([lambda: env1,lambda: env2,lambda: env3,lambda: env4,lambda: e
 
 
 
-train(512,"saved_agents/vectorized/lvl_1/", env, 0.00005, 0)
-#train(512,"saved_agents/steps/lvl_1/", env, 0.00005, 1000000)
-#train(512,"saved_agents/steps/lvl_1/", env, 0.00005, 2000000)
+#train(512,"saved_agents/vectorized/lvl_1/", env, 0.00005, 0)
+train(512,"saved_agents/steps/lvl_1/", env, 0.00005, 1000000)
+train(512,"saved_agents/steps/lvl_1/", env, 0.00005, 2000000)
 #train(512,"saved_agents/steps/lvl_1/", env, 0.00005, 3000000)
 #train(512,"saved_agents/steps/lvl_1/", env, 0.00005, 4000000)
-#validate_agent(env1, "saved_agents/steps/lvl_1/", 100, "steps_512;single;5e-5;lvl-1")
-#print("1 done")
+validate_agent(env1, "saved_agents/vectorized/lvl_1/", 100, "vec;single;5e-5;lvl-1")
+print("1 done")
 
 
 #levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"

@@ -91,6 +91,18 @@ def play(path, env):
         sleep(0.033)
 
 
+#env2 = MAFEnv([levelString], 60, False)
+
+#vec_env = DummyVecEnv([lambda: env1, lambda: env2])
+
+#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-3.txt"
+#levelString = readLevelFile(levelFilePath)
+#normal_env.setLevel(levelString)
+#normal_env = MAFEnv(levelString, 100, True, 1, 1)
+#play("saved_agents/vectorized/lvl_7/mario_10000000", env1)
+
+#----------------------------------------------------------------------------------------------------------
+"""
 levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"
 levelString = readLevelFile(levelFilePath)
 env1 = MAFEnv([levelString], 60, False)
@@ -104,69 +116,109 @@ env8 = MAFEnv([levelString], 60, False)
 env9 = MAFEnv([levelString], 60, False)
 env10 = MAFEnv([levelString], 60, False)
 
-env = DummyVecEnv([lambda: env1,lambda: env2,lambda: env3,lambda: env4,lambda: env5,lambda: env6,lambda: env7,lambda: env8,lambda: env9,lambda: env10,])
-#env2 = MAFEnv([levelString], 60, False)
+env_7 = DummyVecEnv([lambda: env1,lambda: env2,lambda: env3,lambda: env4,lambda: env5,lambda: env6,lambda: env7,lambda: env8,lambda: env9,lambda: env10,])
 
-#vec_env = DummyVecEnv([lambda: env1, lambda: env2])
-
-#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-3.txt"
-#levelString = readLevelFile(levelFilePath)
-#normal_env.setLevel(levelString)
-#normal_env = MAFEnv(levelString, 100, True, 1, 1)
-#play("saved_agents/vectorized/lvl_7/mario_10000000", env1)
-
-
-
-train(512,"saved_agents/disc_vec/lvl_7/", env, 0.00005, 0)
-train(512,"saved_agents/disc_vec/lvl_7/", env, 0.00005, 1000000)
-train(512,"saved_agents/disc_vec/lvl_7/", env, 0.00005, 2000000)
-train(512,"saved_agents/disc_vec/lvl_7/", env, 0.00005, 3000000)
-train(512,"saved_agents/disc_vec/lvl_7/", env, 0.00005, 4000000)
-train(512,"saved_agents/disc_vec/lvl_7/", env, 0.00005, 5000000)
-train(512,"saved_agents/disc_vec/lvl_7/", env, 0.00005, 6000000)
-train(512,"saved_agents/disc_vec/lvl_7/", env, 0.00005, 7000000)
-train(512,"saved_agents/disc_vec/lvl_7/", env, 0.00005, 8000000)
-train(512,"saved_agents/disc_vec/lvl_7/", env, 0.00005, 9000000)
-#train(512,"saved_agents/norm_vec/lvl_7/", env, 0.00005, 10000000)
-#train(512,"saved_agents/norm_vec/lvl_7/", env, 0.00005, 11000000)
-
-#train(512,"saved_agents/vectorized/lvl_7/", env, 0.00005, 12000000)
-#train(512,"saved_agents/vectorized/lvl_7/", env, 0.00005, 13000000)
-#train(512,"saved_agents/vectorized/lvl_7/", env, 0.00005, 14000000)
+train(512,"saved_agents/disc_vec/lvl_7/", env_7, 0.00005, 0)
+train(512,"saved_agents/disc_vec/lvl_7/", env_7, 0.00005, 1000000)
+train(512,"saved_agents/disc_vec/lvl_7/", env_7, 0.00005, 2000000)
+train(512,"saved_agents/disc_vec/lvl_7/", env_7, 0.00005, 3000000)
+train(512,"saved_agents/disc_vec/lvl_7/", env_7, 0.00005, 4000000)
+train(512,"saved_agents/disc_vec/lvl_7/", env_7, 0.00005, 5000000)
+train(512,"saved_agents/disc_vec/lvl_7/", env_7, 0.00005, 6000000)
+train(512,"saved_agents/disc_vec/lvl_7/", env_7, 0.00005, 7000000)
+train(512,"saved_agents/disc_vec/lvl_7/", env_7, 0.00005, 8000000)
+train(512,"saved_agents/disc_vec/lvl_7/", env_7, 0.00005, 9000000)
 
 validate_agent(env1, "saved_agents/disc_vec/lvl_7/", 100, "disc_vec;single;5e-5;lvl-7")
 print("7 done")
+"""
+#------------------------------------------------------------------------------------------------------------
+levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
+levelString = readLevelFile(levelFilePath)
+env11 = MAFEnv([levelString], 60, False)
+env12 = MAFEnv([levelString], 60, False)
+env13 = MAFEnv([levelString], 60, False)
+env14 = MAFEnv([levelString], 60, False)
+env15 = MAFEnv([levelString], 60, False)
+env16 = MAFEnv([levelString], 60, False)
+env17 = MAFEnv([levelString], 60, False)
+env18 = MAFEnv([levelString], 60, False)
+env19 = MAFEnv([levelString], 60, False)
+env20 = MAFEnv([levelString], 60, False)
+
+env_1 = DummyVecEnv([lambda: env11,lambda: env12,lambda: env13,lambda: env14,lambda: env15,lambda: env16,lambda: env17,lambda: env18,lambda: env19,lambda: env20,])
+
+train(512,"saved_agents/disc_vec/lvl_1/", env_1, 0.00005, 0)
+train(512,"saved_agents/disc_vec/lvl_1/", env_1, 0.00005, 1000000)
+train(512,"saved_agents/disc_vec/lvl_1/", env_1, 0.00005, 2000000)
+train(512,"saved_agents/disc_vec/lvl_1/", env_1, 0.00005, 3000000)
+train(512,"saved_agents/disc_vec/lvl_1/", env_1, 0.00005, 4000000)
+train(512,"saved_agents/disc_vec/lvl_1/", env_1, 0.00005, 5000000)
+train(512,"saved_agents/disc_vec/lvl_1/", env_1, 0.00005, 6000000)
+train(512,"saved_agents/disc_vec/lvl_1/", env_1, 0.00005, 7000000)
+train(512,"saved_agents/disc_vec/lvl_1/", env_1, 0.00005, 8000000)
+train(512,"saved_agents/disc_vec/lvl_1/", env_1, 0.00005, 9000000)
+
+validate_agent(env11, "saved_agents/disc_vec/lvl_1/", 100, "disc_vec;single;5e-5;lvl-1")
+print("1 done")
 
 
-#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"
-#levelString = readLevelFile(levelFilePath)
-#env2 = MAFEnv([levelString], 60, False)
-#env = DummyVecEnv([lambda: env2])
-#train(512,"saved_agents/steps/lvl_7/", env, 0.00005, 0)
-#train(512,"saved_agents/steps/lvl_7/", env, 0.00005, 1000000)
-#train(512,"saved_agents/steps/lvl_7/", env, 0.00005, 2000000)
-#train(512,"saved_agents/steps/lvl_7/", env, 0.00005, 3000000)
-#train(512,"saved_agents/steps/lvl_7/", env, 0.00005, 4000000)
-#validate_agent(env2, "saved_agents/steps/lvl_7/", 100, "steps_512;single;5e-5;lvl-7")
-#print("7 done")
+#------------------------------------------------------------------------------------------------------------
+levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-2.txt"
+levelString = readLevelFile(levelFilePath)
+env21 = MAFEnv([levelString], 60, False)
+env22 = MAFEnv([levelString], 60, False)
+env23 = MAFEnv([levelString], 60, False)
+env24 = MAFEnv([levelString], 60, False)
+env25 = MAFEnv([levelString], 60, False)
+env26 = MAFEnv([levelString], 60, False)
+env27 = MAFEnv([levelString], 60, False)
+env28 = MAFEnv([levelString], 60, False)
+env29 = MAFEnv([levelString], 60, False)
+env30 = MAFEnv([levelString], 60, False)
 
+env_2 = DummyVecEnv([lambda: env21,lambda: env22,lambda: env23,lambda: env24,lambda: env25,lambda: env26,lambda: env27,lambda: env28,lambda: env29,lambda: env30,])
 
-#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"
-#levelString = readLevelFile(levelFilePath)
-#env3 = MAFEnv([levelString], 60, False)
-#env = DummyVecEnv([lambda: env3])
-#train(256,"saved_agents/cnn/lvl_7/", env, 0.00005, 0)
-#train(256,"saved_agents/cnn/lvl_7/", env, 0.00005, 1000000)
-#train(256,"saved_agents/cnn/lvl_7/", env, 0.00005, 2000000)
-#train(256,"saved_agents/cnn/lvl_7/", env, 0.00005, 3000000)
-#train(256,"saved_agents/cnn/lvl_7/", env, 0.00005, 4000000)
+train(512,"saved_agents/disc_vec/lvl_2/", env_2, 0.00005, 0)
+train(512,"saved_agents/disc_vec/lvl_2/", env_2, 0.00005, 1000000)
+train(512,"saved_agents/disc_vec/lvl_2/", env_2, 0.00005, 2000000)
+train(512,"saved_agents/disc_vec/lvl_2/", env_2, 0.00005, 3000000)
+train(512,"saved_agents/disc_vec/lvl_2/", env_2, 0.00005, 4000000)
+train(512,"saved_agents/disc_vec/lvl_2/", env_2, 0.00005, 5000000)
+train(512,"saved_agents/disc_vec/lvl_2/", env_2, 0.00005, 6000000)
+train(512,"saved_agents/disc_vec/lvl_2/", env_2, 0.00005, 7000000)
+train(512,"saved_agents/disc_vec/lvl_2/", env_2, 0.00005, 8000000)
+train(512,"saved_agents/disc_vec/lvl_2/", env_2, 0.00005, 9000000)
 
-#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-8.txt"
-#levelString = readLevelFile(levelFilePath)
-#env4 = MAFEnv([levelString], 60, False)
-#env = DummyVecEnv([lambda: env4])
-#train(256,"saved_agents/cnn/lvl_8/", env, 0.00005, 0)
-#train(256,"saved_agents/cnn/lvl_8/", env, 0.00005, 1000000)
-#train(256,"saved_agents/cnn/lvl_8/", env, 0.00005, 2000000)
-#train(256,"saved_agents/cnn/lvl_8/", env, 0.00005, 3000000)
-#train(256,"saved_agents/cnn/lvl_8/", env, 0.00005, 4000000)
+validate_agent(env21, "saved_agents/disc_vec/lvl_2/", 100, "disc_vec;single;5e-5;lvl-2")
+print("2 done")
+
+#------------------------------------------------------------------------------------------------------------
+levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-8.txt"
+levelString = readLevelFile(levelFilePath)
+env31 = MAFEnv([levelString], 60, False)
+env32 = MAFEnv([levelString], 60, False)
+env33 = MAFEnv([levelString], 60, False)
+env34 = MAFEnv([levelString], 60, False)
+env35 = MAFEnv([levelString], 60, False)
+env36 = MAFEnv([levelString], 60, False)
+env37 = MAFEnv([levelString], 60, False)
+env38 = MAFEnv([levelString], 60, False)
+env39 = MAFEnv([levelString], 60, False)
+env40 = MAFEnv([levelString], 60, False)
+
+env_3 = DummyVecEnv([lambda: env31,lambda: env32,lambda: env33,lambda: env34,lambda: env35,lambda: env36,lambda: env37,lambda: env38,lambda: env39,lambda: env40,])
+
+train(512,"saved_agents/disc_vec/lvl_8/", env_3, 0.00005, 0)
+train(512,"saved_agents/disc_vec/lvl_8/", env_3, 0.00005, 1000000)
+train(512,"saved_agents/disc_vec/lvl_8/", env_3, 0.00005, 2000000)
+train(512,"saved_agents/disc_vec/lvl_8/", env_3, 0.00005, 3000000)
+train(512,"saved_agents/disc_vec/lvl_8/", env_3, 0.00005, 4000000)
+train(512,"saved_agents/disc_vec/lvl_8/", env_3, 0.00005, 5000000)
+train(512,"saved_agents/disc_vec/lvl_8/", env_3, 0.00005, 6000000)
+train(512,"saved_agents/disc_vec/lvl_8/", env_3, 0.00005, 7000000)
+train(512,"saved_agents/disc_vec/lvl_8/", env_3, 0.00005, 8000000)
+train(512,"saved_agents/disc_vec/lvl_8/", env_3, 0.00005, 9000000)
+
+validate_agent(env31, "saved_agents/disc_vec/lvl_8/", 100, "disc_vec;single;5e-5;lvl-8")
+print("8 done")

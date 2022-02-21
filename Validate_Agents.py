@@ -53,19 +53,19 @@ def validate_agent(env, agent_path, num_of_val_plays, saveName):
         csvwriter.writerows(data) # 5. write the rest of the data
 
 
-levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"
-levelString = readLevelFile(levelFilePath)
-env = MAFEnv([levelString], 60, False)
+#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"
+#levelString = readLevelFile(levelFilePath)
+#env = MAFEnv([levelString], 60, False)
 
-levelFilePath1 = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
-levelString1 = readLevelFile(levelFilePath1)
-env1 = MAFEnv([levelString1], 60, False)
+#levelFilePath1 = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
+#levelString1 = readLevelFile(levelFilePath1)
+#env1 = MAFEnv([levelString1], 60, False)
 
 
 #validate_agent(env, "saved_agents/basic_network/lvl_7/", 100, "basic;single;5e-5;lvl-7")
 #print("7 done")
-validate_agent(env1, "saved_agents/cnn/lvl_1/", 100, "mlp_video;single;5e-5;lvl-1")
-print("1 done")
+#validate_agent(env1, "saved_agents/cnn/lvl_1/", 100, "mlp_video;single;5e-5;lvl-1")
+#print("1 done")
 
 #env = MAFEnv(levelString, 30, False, 1, 1)
 #validate_agent(env, "saved_agents/less_detail/single/1e-4", 100, "less_detail;single;1e-4;lvl-1")

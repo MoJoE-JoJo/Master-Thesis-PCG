@@ -43,7 +43,7 @@ class MAFEnv(gym.Env):
     self.currentLevelString = random.choice(self.levelStrings)
 
     self.useRender = initRender
-    self.action_space = spaces.MultiBinary(5)
+    self.action_space = spaces.Discrete(32)
     self.observation_space = spaces.Box(low=-100, high=100, shape=(16, 16, 1), dtype=np.uint8)
     current_dir = os.path.dirname(os.path.realpath(__file__))
     if (self.gymID == 0):
@@ -58,7 +58,7 @@ class MAFEnv(gym.Env):
     # Execute one time step within the environment
     LEFT,RIGHT,DOWN,SPEED,JUMP = bool(action[0]), bool(action[1]), bool(action[2]), bool(action[3]), bool(action[4])
     #print(self.gymID)
-    returnVal = self.marioGym.step(self.gymID, LEFT,RIGHT,DOWN,SPEED,JUMP)
+    returnVal = self.marioGym.step(self.gymID, action)
     javaState = returnVal.getState()
     state = np.frombuffer(javaState, dtype=np.int32)
     state = state.reshape((16, 16,1))

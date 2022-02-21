@@ -69,8 +69,8 @@ class MarioLstmPolicy(LstmPolicy):
 #FeedForwardPolicy()
 #model = PPO1(MarioPolicy, env, verbose=1)
 def train(steps, saveFolder, env, learn, startNetwork):
-    num_of_steps = 500000
-    num_of_times = 2
+    num_of_steps = 1000000
+    num_of_times = 1
     if startNetwork == 0: model = PPO2(MarioPolicy, env, verbose=1, n_steps=steps, learning_rate=learn)
     else: 
         model = PPO2.load(saveFolder+"Mario_"+str(startNetwork), env)
@@ -91,9 +91,9 @@ def play(path, env):
         sleep(0.033)
 
 
-levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
+levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"
 levelString = readLevelFile(levelFilePath)
-env1 = MAFEnv([levelString], 60, False)
+env1 = MAFEnv([levelString], 60, True)
 env2 = MAFEnv([levelString], 60, False)
 env3 = MAFEnv([levelString], 60, False)
 env4 = MAFEnv([levelString], 60, False)
@@ -113,17 +113,29 @@ env = DummyVecEnv([lambda: env1,lambda: env2,lambda: env3,lambda: env4,lambda: e
 #levelString = readLevelFile(levelFilePath)
 #normal_env.setLevel(levelString)
 #normal_env = MAFEnv(levelString, 100, True, 1, 1)
-#play("saved_agents/basic_network/lvl_7/mario_5000000", env)
+#play("saved_agents/vectorized/lvl_7/mario_10000000", env1)
 
 
 
-#train(512,"saved_agents/vectorized/lvl_1/", env, 0.00005, 0)
-train(512,"saved_agents/vectorized/lvl_1/", env, 0.00005, 1000000)
-train(512,"saved_agents/vectorized/lvl_1/", env, 0.00005, 2000000)
-#train(512,"saved_agents/steps/lvl_1/", env, 0.00005, 3000000)
-#train(512,"saved_agents/steps/lvl_1/", env, 0.00005, 4000000)
-validate_agent(env1, "saved_agents/vectorized/lvl_1/", 100, "vec;single;5e-5;lvl-1")
-print("1 done")
+train(512,"saved_agents/disc_vec/lvl_7/", env, 0.00005, 0)
+train(512,"saved_agents/disc_vec/lvl_7/", env, 0.00005, 1000000)
+train(512,"saved_agents/disc_vec/lvl_7/", env, 0.00005, 2000000)
+train(512,"saved_agents/disc_vec/lvl_7/", env, 0.00005, 3000000)
+train(512,"saved_agents/disc_vec/lvl_7/", env, 0.00005, 4000000)
+train(512,"saved_agents/disc_vec/lvl_7/", env, 0.00005, 5000000)
+train(512,"saved_agents/disc_vec/lvl_7/", env, 0.00005, 6000000)
+train(512,"saved_agents/disc_vec/lvl_7/", env, 0.00005, 7000000)
+train(512,"saved_agents/disc_vec/lvl_7/", env, 0.00005, 8000000)
+train(512,"saved_agents/disc_vec/lvl_7/", env, 0.00005, 9000000)
+#train(512,"saved_agents/norm_vec/lvl_7/", env, 0.00005, 10000000)
+#train(512,"saved_agents/norm_vec/lvl_7/", env, 0.00005, 11000000)
+
+#train(512,"saved_agents/vectorized/lvl_7/", env, 0.00005, 12000000)
+#train(512,"saved_agents/vectorized/lvl_7/", env, 0.00005, 13000000)
+#train(512,"saved_agents/vectorized/lvl_7/", env, 0.00005, 14000000)
+
+validate_agent(env1, "saved_agents/disc_vec/lvl_7/", 100, "disc_vec;single;5e-5;lvl-7")
+print("7 done")
 
 
 #levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"

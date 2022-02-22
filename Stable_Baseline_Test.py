@@ -124,7 +124,7 @@ env__8 = MAFEnv([levelString8], 60, False)
 
 env_3 = DummyVecEnv([lambda: env1,lambda: env2,lambda: env3,lambda: env4,lambda: env5,lambda: env6,lambda: env7,lambda: env8,lambda: env9,lambda: env10,])
 
-train(512,"saved_agents/disc_vec/mul_3/", env_3, 0.00005, 0, 10, 1000000)
+train(512,"saved_agents/disc_vec/mul_3/", env_3, 0.00005, 14000000, 1, 1000000)
 
 validate_agent(env__1, "saved_agents/disc_vec/mul_3/", 100, "disc_vec;mul_3;5e-5;lvl-1")
 validate_agent(env__2, "saved_agents/disc_vec/mul_3/", 100, "disc_vec;mul_3;5e-5;lvl-2")

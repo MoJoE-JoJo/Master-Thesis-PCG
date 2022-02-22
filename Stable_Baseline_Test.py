@@ -29,7 +29,7 @@ env_count = 1
 #steps = 3000
 #batch = 64
 #layers = [512,512,512,512]
-layers = [dict(vf=[512,512], pi=[512,512])]
+layers = [dict(vf=[1024,1024], pi=[1024,1024])]
 
 def modified_cnn(scaled_images, **kwargs):
     activ = tf.nn.relu
@@ -127,12 +127,12 @@ env__8 = MAFEnv([levelString8], 60, False)
 
 env_4 = DummyVecEnv([lambda: env1,lambda: env2,lambda: env3,lambda: env4,lambda: env5,lambda: env6,lambda: env7,lambda: env8,lambda: env9,lambda: env10,])
 
-train(512,"saved_agents/disc_vec/mul_4/", env_4, 0.00005, 0, 30, 1000000)
+train(512,"saved_agents/disc_vec/mul_4_big/", env_4, 0.00005, 0, 15, 2000000)
 
-validate_agent(env__1, "saved_agents/disc_vec/mul_4/", 100, "disc_vec;mul_4;5e-5;lvl-1")
-validate_agent(env__2, "saved_agents/disc_vec/mul_4/", 100, "disc_vec;mul_4;5e-5;lvl-2")
-validate_agent(env__7, "saved_agents/disc_vec/mul_4/", 100, "disc_vec;mul_4;5e-5;lvl-7")
-validate_agent(env__8, "saved_agents/disc_vec/mul_4/", 100, "disc_vec;mul_4;5e-5;lvl-8")
+validate_agent(env__1, "saved_agents/disc_vec/mul_4/", 100, "disc_vec_big;mul_4;5e-5;lvl-1")
+validate_agent(env__2, "saved_agents/disc_vec/mul_4/", 100, "disc_vec_big;mul_4;5e-5;lvl-2")
+validate_agent(env__7, "saved_agents/disc_vec/mul_4/", 100, "disc_vec_big;mul_4;5e-5;lvl-7")
+validate_agent(env__8, "saved_agents/disc_vec/mul_4/", 100, "disc_vec_big;mul_4;5e-5;lvl-8")
 
 print("mult_4 done")
 

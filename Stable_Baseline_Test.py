@@ -103,34 +103,38 @@ levelFilePath1 = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels
 levelString1 = readLevelFile(levelFilePath1)
 levelFilePath2 = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-2.txt"
 levelString2 = readLevelFile(levelFilePath2)
+levelFilePath7 = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"
+levelString7 = readLevelFile(levelFilePath7)
 levelFilePath8 = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-8.txt"
 levelString8 = readLevelFile(levelFilePath8)
 
-env1 = MAFEnv([levelString1,levelString2,levelString8], 60, False)
-env2 = MAFEnv([levelString1,levelString2,levelString8], 60, False)
-env3 = MAFEnv([levelString1,levelString2,levelString8], 60, False)
-env4 = MAFEnv([levelString1,levelString2,levelString8], 60, False)
-env5 = MAFEnv([levelString1,levelString2,levelString8], 60, False)
-env6 = MAFEnv([levelString1,levelString2,levelString8], 60, False)
-env7 = MAFEnv([levelString1,levelString2,levelString8], 60, False)
-env8 = MAFEnv([levelString1,levelString2,levelString8], 60, False)
-env9 = MAFEnv([levelString1,levelString2,levelString8], 60, False)
-env10 = MAFEnv([levelString1,levelString2,levelString8], 60, False)
+env1 = MAFEnv([levelString1,levelString2,levelString7,levelString8], 60, False)
+env2 = MAFEnv([levelString1,levelString2,levelString7,levelString8], 60, False)
+env3 = MAFEnv([levelString1,levelString2,levelString7,levelString8], 60, False)
+env4 = MAFEnv([levelString1,levelString2,levelString7,levelString8], 60, False)
+env5 = MAFEnv([levelString1,levelString2,levelString7,levelString8], 60, False)
+env6 = MAFEnv([levelString1,levelString2,levelString7,levelString8], 60, False)
+env7 = MAFEnv([levelString1,levelString2,levelString7,levelString8], 60, False)
+env8 = MAFEnv([levelString1,levelString2,levelString7,levelString8], 60, False)
+env9 = MAFEnv([levelString1,levelString2,levelString7,levelString8], 60, False)
+env10 = MAFEnv([levelString1,levelString2,levelString7,levelString8], 60, False)
 
 env__1 = MAFEnv([levelString1], 60, False)
 env__2 = MAFEnv([levelString2], 60, False)
+env__7 = MAFEnv([levelString7], 60, False)
 env__8 = MAFEnv([levelString8], 60, False)
 
 
-env_3 = DummyVecEnv([lambda: env1,lambda: env2,lambda: env3,lambda: env4,lambda: env5,lambda: env6,lambda: env7,lambda: env8,lambda: env9,lambda: env10,])
+env_4 = DummyVecEnv([lambda: env1,lambda: env2,lambda: env3,lambda: env4,lambda: env5,lambda: env6,lambda: env7,lambda: env8,lambda: env9,lambda: env10,])
 
-train(512,"saved_agents/disc_vec/mul_3/", env_3, 0.00005, 14000000, 1, 1000000)
+train(512,"saved_agents/disc_vec/mul_4/", env_4, 0.00005, 0, 30, 1000000)
 
-validate_agent(env__1, "saved_agents/disc_vec/mul_3/", 100, "disc_vec;mul_3;5e-5;lvl-1")
-validate_agent(env__2, "saved_agents/disc_vec/mul_3/", 100, "disc_vec;mul_3;5e-5;lvl-2")
-validate_agent(env__8, "saved_agents/disc_vec/mul_3/", 100, "disc_vec;mul_3;5e-5;lvl-8")
+validate_agent(env__1, "saved_agents/disc_vec/mul_4/", 100, "disc_vec;mul_4;5e-5;lvl-1")
+validate_agent(env__2, "saved_agents/disc_vec/mul_4/", 100, "disc_vec;mul_4;5e-5;lvl-2")
+validate_agent(env__7, "saved_agents/disc_vec/mul_4/", 100, "disc_vec;mul_4;5e-5;lvl-7")
+validate_agent(env__8, "saved_agents/disc_vec/mul_4/", 100, "disc_vec;mul_4;5e-5;lvl-8")
 
-print("mult_3 done")
+print("mult_4 done")
 
 #----------------------------------------------------------------------------------------------------------
 """

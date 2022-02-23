@@ -139,7 +139,7 @@ validate_agent(env__1, "saved_agents/rew_shap/try_1/lvl_1/", 100, "rew_shap_1;si
 train(512,"saved_agents/rew_shap/try_2/lvl_1/", env_2 , 0.00005, 0, 10, 2000000)
 validate_agent(env__2, "saved_agents/rew_shap/try_2/lvl_1/", 100, "rew_shap_2;single;5e-5;lvl-1")
 
-train(512,"saved_agents/rew_shap/try_2/lvl_1/", env_3 , 0.00005, 0, 10, 2000000)
-validate_agent(env__3, "saved_agents/rew_shap/try_2/lvl_1/", 100, "rew_shap_3;single;5e-5;lvl-1")
+train(512,"saved_agents/rew_shap/try_3/lvl_1/", env_3 , 0.00005, 0, 10, 2000000)
+validate_agent(env__3, "saved_agents/rew_shap/try_3/lvl_1/", 100, "rew_shap_3;single;5e-5;lvl-1")
 
 #----------------------------------------------------------------------------------------------------------

@@ -19,7 +19,7 @@ class MAFEnv(gym.Env):
   currentLevelString = ""
   gymID = 0
 
-  def __init__(self, levelFiles, gameTime, initRender):
+  def __init__(self, levelFiles, gameTime, initRender, rewardFunction=0):
     """
     Constructs the MAFEnv Gym Environment object.
     
@@ -52,7 +52,7 @@ class MAFEnv(gym.Env):
       #print(os.path.dirname(os.path.realpath(__file__)))
       subprocess.call([current_dir + '\\RunJar.bat'])
     
-    self.marioGym.initGym(self.gymID, self.currentLevelString, current_dir + "\\img\\", gameTime, 0, self.useRender)
+    self.marioGym.initGym(self.gymID, self.currentLevelString, current_dir + "\\img\\", gameTime, 0, self.useRender, rewardFunction)
 
   def step(self, action):
     # Execute one time step within the environment

@@ -53,61 +53,25 @@ def validate_agent(env, agent_path, num_of_val_plays, saveName):
         csvwriter.writerows(data) # 5. write the rest of the data
 
 
-#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"
-#levelString = readLevelFile(levelFilePath)
-#env = MAFEnv([levelString], 60, False)
+def sort_csv_data(file_name):
+    with open(file_name, newline="") as csvfile:
+        reader = csv.reader(csvfile, delimiter=",")
+        rows = []
+        header = []
+        counter = 0
+        for row in reader:
+            if counter == 0:
+                for col in row:
+                    header.append(col)
+            else:
+                rows.append([int(row[0]), float(row[1]), int(row[2])])
+            counter += 1
+        rows.sort(key=lambda x: x[0])
+        return header,rows
 
-#levelFilePath1 = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
-#levelString1 = readLevelFile(levelFilePath1)
-#env1 = MAFEnv([levelString1], 60, False)
-
-
-#validate_agent(env, "saved_agents/basic_network/lvl_7/", 100, "basic;single;5e-5;lvl-7")
-#print("7 done")
-#validate_agent(env1, "saved_agents/cnn/lvl_1/", 100, "mlp_video;single;5e-5;lvl-1")
-#print("1 done")
-
-#env = MAFEnv(levelString, 30, False, 1, 1)
-#validate_agent(env, "saved_agents/less_detail/single/1e-4", 100, "less_detail;single;1e-4;lvl-1")
-#print("3 done")
-#validate_agent(env, "saved_agents/less_detail/multiple/1e-4", 100, "less_detail;multiple;1e-4;lvl-1")
-#print("4 done")
-#validate_agent(env, "saved_agents/less_detail/multiple/1e-5", 100, "less_detail;multiple;1e-5;lvl-1")
-#print("5 done")
-
-
-#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-1.txt"
-#levelString = readLevelFile(levelFilePath)
-#env = MAFEnv([levelString], 60, False)
-#validate_agent(env, "saved_agents/old_new_env/new_env/lvl_1/", 100, "new_env;5e-5;lvl_1")
-#print("1 done")
-
-#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-2.txt"
-#levelString = readLevelFile(levelFilePath)
-#env = MAFEnv([levelString], 60, False)
-#validate_agent(env, "saved_agents/old_new_env/new_env/lvl_2/", 100, "new_env;5e-5;lvl_2")
-#print("2 done")
-
-#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-7.txt"
-#levelString = readLevelFile(levelFilePath)
-#env = MAFEnv([levelString], 60, False)
-#validate_agent(env, "saved_agents/old_new_env/new_env/lvl_7/", 100, "new_env;5e-5;lvl_7")
-#print("7 done")
-
-#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-8.txt"
-#levelString = readLevelFile(levelFilePath)
-#env = MAFEnv([levelString], 60, False)
-#validate_agent(env, "saved_agents/old_new_env/new_env/lvl_8/", 100, "new_env;5e-5;lvl_8")
-#print("8 done")
-
-#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-11.txt"
-#levelString = readLevelFile(levelFilePath)
-#env = MAFEnv([levelString], 60, False)
-#validate_agent(env, "saved_agents/old_new_env/new_env/lvl_11/", 100, "new_env;5e-5;lvl_11")
-#print("11 done")
-
-#levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-3.txt"
-#levelString = readLevelFile(levelFilePath)
-#env = MAFEnv([levelString], 60, False)
-#validate_agent(env, "saved_agents/old_new_env/new_env/lvl_3/", 100, "new_env;5e-5;lvl_3")
-#print("3 done")
+def sort_csv_file(file_name):
+    header, rows = sort_csv_data(file_name)
+    with open(file_name, 'w', newline="") as file:
+        csvwriter = csv.writer(file) # 2. create a csvwriter object
+        csvwriter.writerow(header) # 4. write the header
+        csvwriter.writerows(rows) # 5. write the rest of the data

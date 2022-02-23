@@ -129,10 +129,10 @@ env_4 = DummyVecEnv([lambda: env1,lambda: env2,lambda: env3,lambda: env4,lambda:
 
 train(512,"saved_agents/disc_vec/mul_4_big/", env_4, 0.00005, 0, 15, 2000000)
 
-validate_agent(env__1, "saved_agents/disc_vec/mul_4/", 100, "disc_vec_big;mul_4;5e-5;lvl-1")
-validate_agent(env__2, "saved_agents/disc_vec/mul_4/", 100, "disc_vec_big;mul_4;5e-5;lvl-2")
-validate_agent(env__7, "saved_agents/disc_vec/mul_4/", 100, "disc_vec_big;mul_4;5e-5;lvl-7")
-validate_agent(env__8, "saved_agents/disc_vec/mul_4/", 100, "disc_vec_big;mul_4;5e-5;lvl-8")
+validate_agent(env__1, "saved_agents/disc_vec/mul_4_big/", 100, "disc_vec_big;mul_4;5e-5;lvl-1")
+validate_agent(env__2, "saved_agents/disc_vec/mul_4_big/", 100, "disc_vec_big;mul_4;5e-5;lvl-2")
+validate_agent(env__7, "saved_agents/disc_vec/mul_4_big/", 100, "disc_vec_big;mul_4;5e-5;lvl-7")
+validate_agent(env__8, "saved_agents/disc_vec/mul_4_big/", 100, "disc_vec_big;mul_4;5e-5;lvl-8")
 
 print("mult_4 done")
 

@@ -36,23 +36,6 @@ def play(num_of_val_plays, env, model):
     return totalReturn/num_of_val_plays, totalWins
 
 
-
-def validate_agent(env, agent_path, num_of_val_plays, saveName):
-    allCheckpoints = [f for f in listdir(agent_path) if isfile(join(agent_path, f))]
-    filename = "agent_validations/" + saveName + ".csv"
-    data = []
-    for checkpoint in allCheckpoints:
-        model = PPO2.load(agent_path +checkpoint)
-        step = int(checkpoint.replace("mario_","").replace(".zip",""))
-        returnScore, winScore = play(num_of_val_plays, env, model)
-        data.append([step, returnScore, winScore])
-    header = ['Steps', 'Avg. Return', 'WinRate']
-    with open(filename, 'w', newline="") as file:
-        csvwriter = csv.writer(file) # 2. create a csvwriter object
-        csvwriter.writerow(header) # 4. write the header
-        csvwriter.writerows(data) # 5. write the rest of the data
-
-
 def sort_csv_data(file_name):
     with open(file_name, newline="") as csvfile:
         reader = csv.reader(csvfile, delimiter=",")
@@ -75,3 +58,22 @@ def sort_csv_file(file_name):
         csvwriter = csv.writer(file) # 2. create a csvwriter object
         csvwriter.writerow(header) # 4. write the header
         csvwriter.writerows(rows) # 5. write the rest of the data
+
+
+def validate_agent(env, agent_path, num_of_val_plays, saveName):
+    allCheckpoints = [f for f in listdir(agent_path) if isfile(join(agent_path, f))]
+    filename = "agent_validations/" + saveName + ".csv"
+    data = []
+    for checkpoint in allCheckpoints:
+        model = PPO2.load(agent_path +checkpoint)
+        step = int(checkpoint.replace("mario_","").replace(".zip",""))
+        returnScore, winScore = play(num_of_val_plays, env, model)
+        data.append([step, returnScore, winScore])
+    header = ['Steps', 'Avg. Return', 'WinRate']
+    with open(filename, 'w', newline="") as file:
+        csvwriter = csv.writer(file) # 2. create a csvwriter object
+        csvwriter.writerow(header) # 4. write the header
+        csvwriter.writerows(data) # 5. write the rest of the data
+    sort_csv_file(filename)
+
+

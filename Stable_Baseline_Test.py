@@ -125,21 +125,26 @@ levelString8 = readLevelFile(levelFilePath8)
 
 
 
-env__1 = MAFEnv([levelString1], 60, False, 1)
-env__2 = MAFEnv([levelString1], 60, False, 2)
-env__3 = MAFEnv([levelString1], 60, False, 3)
+env__4 = MAFEnv([levelString1], 60, False, 4)
+env__5 = MAFEnv([levelString1], 60, False, 5)
+env__6 = MAFEnv([levelString1], 60, False, 6)
+env__7 = MAFEnv([levelString1], 60, False, 7)
 
-env_1 = make_dummyVecEnv([levelString1], 1)
-env_2 = make_dummyVecEnv([levelString1], 2)
-env_3 = make_dummyVecEnv([levelString1], 3)
+env_4 = make_dummyVecEnv([levelString1], 4)
+env_5 = make_dummyVecEnv([levelString1], 5)
+env_6 = make_dummyVecEnv([levelString1], 6)
+env_7 = make_dummyVecEnv([levelString1], 7)
 
-train(512,"saved_agents/rew_shap/try_1/lvl_1/", env_1 , 0.00005, 4000000, 8, 2000000)
-validate_agent(env__1, "saved_agents/rew_shap/try_1/lvl_1/", 100, "rew_shap_1;single;5e-5;lvl-1")
+train(512,"saved_agents/rew_shap/try_4/lvl_1/", env_4 , 0.00005, 0, 7, 2000000)
+validate_agent(env__4, "saved_agents/rew_shap/try_4/lvl_1/", 100, "rew_shap_4;single;5e-5;lvl-1")
 
-train(512,"saved_agents/rew_shap/try_2/lvl_1/", env_2 , 0.00005, 0, 10, 2000000)
-validate_agent(env__2, "saved_agents/rew_shap/try_2/lvl_1/", 100, "rew_shap_2;single;5e-5;lvl-1")
+train(512,"saved_agents/rew_shap/try_5/lvl_1/", env_5 , 0.00005, 0, 7, 2000000)
+validate_agent(env__5, "saved_agents/rew_shap/try_5/lvl_1/", 100, "rew_shap_5;single;5e-5;lvl-1")
 
-train(512,"saved_agents/rew_shap/try_3/lvl_1/", env_3 , 0.00005, 0, 10, 2000000)
-validate_agent(env__3, "saved_agents/rew_shap/try_3/lvl_1/", 100, "rew_shap_3;single;5e-5;lvl-1")
+train(512,"saved_agents/rew_shap/try_6/lvl_1/", env_6 , 0.00005, 0, 7, 2000000)
+validate_agent(env__6, "saved_agents/rew_shap/try_6/lvl_1/", 100, "rew_shap_6;single;5e-5;lvl-1")
+
+train(512,"saved_agents/rew_shap/try_7/lvl_7/", env_7 , 0.00005, 0, 7, 2000000)
+validate_agent(env__7, "saved_agents/rew_shap/try_7/lvl_1/", 100, "rew_shap_7;single;5e-5;lvl-1")
 
 #----------------------------------------------------------------------------------------------------------

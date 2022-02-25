@@ -125,8 +125,8 @@ levelString8 = readLevelFile(levelFilePath8)
 
 
 
-env__8 = MAFEnv([levelString1], 60, False, 4)
-env__9 = MAFEnv([levelString1], 60, False, 5)
+env__8 = MAFEnv([levelString1], 60, False, 8)
+env__9 = MAFEnv([levelString1], 60, False, 9)
 
 env_8 = make_dummyVecEnv([levelString1], 8)
 env_9 = make_dummyVecEnv([levelString1], 9)

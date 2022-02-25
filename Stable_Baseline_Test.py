@@ -125,26 +125,16 @@ levelString8 = readLevelFile(levelFilePath8)
 
 
 
-env__4 = MAFEnv([levelString1], 60, False, 4)
-env__5 = MAFEnv([levelString1], 60, False, 5)
-env__6 = MAFEnv([levelString1], 60, False, 6)
-env__7 = MAFEnv([levelString1], 60, False, 7)
+env__8 = MAFEnv([levelString1], 60, False, 4)
+env__9 = MAFEnv([levelString1], 60, False, 5)
 
-env_4 = make_dummyVecEnv([levelString1], 4)
-env_5 = make_dummyVecEnv([levelString1], 5)
-env_6 = make_dummyVecEnv([levelString1], 6)
-env_7 = make_dummyVecEnv([levelString1], 7)
+env_8 = make_dummyVecEnv([levelString1], 8)
+env_9 = make_dummyVecEnv([levelString1], 9)
 
-#train(512,"saved_agents/rew_shap/try_4/lvl_1/", env_4 , 0.00005, 0, 7, 2000000)
-#validate_agent(env__4, "saved_agents/rew_shap/try_4/lvl_1/", 100, "rew_shap_4;single;5e-5;lvl-1")
+train(512,"saved_agents/rew_shap/try_8/lvl_1/", env_8 , 0.00005, 0, 7, 2000000)
+validate_agent(env__8, "saved_agents/rew_shap/try_8/lvl_1/", 100, "rew_shap_8;single;5e-5;lvl-1")
 
-#train(512,"saved_agents/rew_shap/try_5/lvl_1/", env_5 , 0.00005, 0, 7, 2000000)
-#validate_agent(env__5, "saved_agents/rew_shap/try_5/lvl_1/", 100, "rew_shap_5;single;5e-5;lvl-1")
-
-#train(512,"saved_agents/rew_shap/try_6/lvl_1/", env_6 , 0.00005, 0, 7, 2000000)
-#validate_agent(env__6, "saved_agents/rew_shap/try_6/lvl_1/", 100, "rew_shap_6;single;5e-5;lvl-1")
-
-#train(512,"saved_agents/rew_shap/try_7/lvl_7/", env_7 , 0.00005, 0, 7, 2000000)
-validate_agent(env__7, "saved_agents/rew_shap/try_7/lvl_1/", 100, "rew_shap_7;single;5e-5;lvl-1")
+train(512,"saved_agents/rew_shap/try_9/lvl_1/", env_9 , 0.00005, 0, 7, 2000000)
+validate_agent(env__9, "saved_agents/rew_shap/try_9/lvl_1/", 100, "rew_shap_9;single;5e-5;lvl-1")
 
 #----------------------------------------------------------------------------------------------------------

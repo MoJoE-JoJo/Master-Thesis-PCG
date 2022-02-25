@@ -135,16 +135,16 @@ env_5 = make_dummyVecEnv([levelString1], 5)
 env_6 = make_dummyVecEnv([levelString1], 6)
 env_7 = make_dummyVecEnv([levelString1], 7)
 
-train(512,"saved_agents/rew_shap/try_4/lvl_1/", env_4 , 0.00005, 0, 7, 2000000)
-validate_agent(env__4, "saved_agents/rew_shap/try_4/lvl_1/", 100, "rew_shap_4;single;5e-5;lvl-1")
+#train(512,"saved_agents/rew_shap/try_4/lvl_1/", env_4 , 0.00005, 0, 7, 2000000)
+#validate_agent(env__4, "saved_agents/rew_shap/try_4/lvl_1/", 100, "rew_shap_4;single;5e-5;lvl-1")
 
-train(512,"saved_agents/rew_shap/try_5/lvl_1/", env_5 , 0.00005, 0, 7, 2000000)
-validate_agent(env__5, "saved_agents/rew_shap/try_5/lvl_1/", 100, "rew_shap_5;single;5e-5;lvl-1")
+#train(512,"saved_agents/rew_shap/try_5/lvl_1/", env_5 , 0.00005, 0, 7, 2000000)
+#validate_agent(env__5, "saved_agents/rew_shap/try_5/lvl_1/", 100, "rew_shap_5;single;5e-5;lvl-1")
 
-train(512,"saved_agents/rew_shap/try_6/lvl_1/", env_6 , 0.00005, 0, 7, 2000000)
-validate_agent(env__6, "saved_agents/rew_shap/try_6/lvl_1/", 100, "rew_shap_6;single;5e-5;lvl-1")
+#train(512,"saved_agents/rew_shap/try_6/lvl_1/", env_6 , 0.00005, 0, 7, 2000000)
+#validate_agent(env__6, "saved_agents/rew_shap/try_6/lvl_1/", 100, "rew_shap_6;single;5e-5;lvl-1")
 
-train(512,"saved_agents/rew_shap/try_7/lvl_7/", env_7 , 0.00005, 0, 7, 2000000)
+#train(512,"saved_agents/rew_shap/try_7/lvl_7/", env_7 , 0.00005, 0, 7, 2000000)
 validate_agent(env__7, "saved_agents/rew_shap/try_7/lvl_1/", 100, "rew_shap_7;single;5e-5;lvl-1")
 
 #----------------------------------------------------------------------------------------------------------

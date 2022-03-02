@@ -68,8 +68,8 @@ class MarioLstmPolicy(LstmPolicy):
 
 #FeedForwardPolicy()
 #model = PPO1(MarioPolicy, env, verbose=1)
-def train(steps, saveFolder, env, learn, startNetwork = 0, num_of_checkpoints = 10, steps_per_checkpoint = 1000000):
-    if startNetwork == 0: model = PPO2(MarioPolicy, env, verbose=1, n_steps=steps, learning_rate=learn)
+def train(steps, saveFolder, env, learn, startNetwork = 0, num_of_checkpoints = 10, steps_per_checkpoint = 1000000, gamma = 0.99):
+    if startNetwork == 0: model = PPO2(MarioPolicy, env, verbose=1, n_steps=steps, learning_rate=learn, gamma=gamma)
     else: 
         model = PPO2.load(saveFolder+"Mario_"+str(startNetwork), env)
     for i in range(num_of_checkpoints):
@@ -131,30 +131,32 @@ levelString8 = readLevelFile(levelFilePath8)
 #env__13 = MAFEnv([levelString1], 60, False, 13)
 #env__14 = MAFEnv([levelString1], 60, False, 14)
 
-
+env__1_10 = MAFEnv([levelString1], 60, False, 10)
+env__2_10 = MAFEnv([levelString2], 60, False, 10)
 env__7_10 = MAFEnv([levelString7], 60, False, 10)
-env__7_11 = MAFEnv([levelString7], 60, False, 11)
-#env__7_12 = MAFEnv([levelString7], 60, False, 12)
-
-#env_9 = make_dummyVecEnv([levelString7], 9)
-#env_10 = make_dummyVecEnv([levelString1], 10)
-#env_11 = make_dummyVecEnv([levelString1], 11)
-#env_12 = make_dummyVecEnv([levelString1], 12)
-#env_13 = make_dummyVecEnv([levelString1], 13)
-#env_14 = make_dummyVecEnv([levelString1], 14)
+env__8_10 = MAFEnv([levelString8], 60, False, 10)
 
 
-env_7_10 = make_dummyVecEnv([levelString7], 10)
-env_7_11 = make_dummyVecEnv([levelString7], 11)
-#env_7_12 = make_dummyVecEnv([levelString7], 12)
+env__1_4 = MAFEnv([levelString1], 60, False, 4)
+env__2_4 = MAFEnv([levelString2], 60, False, 4)
+env__7_4 = MAFEnv([levelString7], 60, False, 4)
+env__8_4 = MAFEnv([levelString8], 60, False, 4)
 
 
-train(512,"saved_agents/rew_shap/try_10/lvl_7/", env_7_10 , 0.00005, 8000000, 6, 2000000)
-validate_agent(env__7_10, "saved_agents/rew_shap/try_10/lvl_7/", 100, "rew_shap_10;single;5e-5;lvl-7")
-
-train(512,"saved_agents/rew_shap/try_11/lvl_7/", env_7_11 , 0.00005, 0, 10, 2000000)
-validate_agent(env__7_11, "saved_agents/rew_shap/try_11/lvl_7/", 100, "rew_shap_11;single;5e-5;lvl-7")
+env_mul_10 = make_dummyVecEnv([levelString1,levelString2,levelString7,levelString8], 10)
+env_mul_4 = make_dummyVecEnv([levelString1,levelString2,levelString7,levelString8], 4)
 
 
+train(512,"saved_agents/rew_shap/mult/10/", env_mul_10 , 0.00005, 0, 10, 2000000, 0.99)
+validate_agent(env__1_10, "saved_agents/rew_shap/mult/10/", 100, "rew_shap_10;mul;5e-5;lvl-1")
+validate_agent(env__2_10, "saved_agents/rew_shap/mult/10/", 100, "rew_shap_10;mul;5e-5;lvl-2")
+validate_agent(env__7_10, "saved_agents/rew_shap/mult/10/", 100, "rew_shap_10;mul;5e-5;lvl-7")
+validate_agent(env__8_10, "saved_agents/rew_shap/mult/10/", 100, "rew_shap_10;mul;5e-5;lvl-8")
+
+train(512,"saved_agents/rew_shap/mult/4/", env_mul_4 , 0.00005, 0, 10, 2000000, 0.99)
+validate_agent(env__1_4, "saved_agents/rew_shap/mult/4/", 100, "rew_shap_4;mul;5e-5;lvl-1")
+validate_agent(env__2_4, "saved_agents/rew_shap/mult/4/", 100, "rew_shap_4;mul;5e-5;lvl-2")
+validate_agent(env__7_4, "saved_agents/rew_shap/mult/4/", 100, "rew_shap_4;mul;5e-5;lvl-7")
+validate_agent(env__8_4, "saved_agents/rew_shap/mult/4/", 100, "rew_shap_4;mul;5e-5;lvl-8")
 
 #----------------------------------------------------------------------------------------------------------

@@ -68,7 +68,7 @@ def validate_agent(env, agent_path, num_of_val_plays, saveName):
         model = PPO2.load(agent_path +checkpoint)
         step = int(checkpoint.replace("mario_","").replace(".zip",""))
         returnScore, winScore = play(num_of_val_plays, env, model)
-        data.append([step, returnScore, winScore])
+        data.append([step, returnScore, winScore/num_of_val_plays])
     header = ['Steps', 'Avg. Return', 'WinRate']
     with open(filename, 'w', newline="") as file:
         csvwriter = csv.writer(file) # 2. create a csvwriter object

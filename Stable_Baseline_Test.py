@@ -147,13 +147,13 @@ env_mul_10 = make_dummyVecEnv([levelString1,levelString2,levelString7,levelStrin
 env_mul_4 = make_dummyVecEnv([levelString1,levelString2,levelString7,levelString8], 4)
 
 
-train(512,"saved_agents/rew_shap/mult/10/", env_mul_10 , 0.00005, 0, 10, 2000000, 0.99)
+train(512,"saved_agents/rew_shap/mult/10/", env_mul_10 , 0.00005, 20000000, 10, 2000000, 0.99)
 validate_agent(env__1_10, "saved_agents/rew_shap/mult/10/", 100, "rew_shap_10;mul;5e-5;lvl-1")
 validate_agent(env__2_10, "saved_agents/rew_shap/mult/10/", 100, "rew_shap_10;mul;5e-5;lvl-2")
 validate_agent(env__7_10, "saved_agents/rew_shap/mult/10/", 100, "rew_shap_10;mul;5e-5;lvl-7")
 validate_agent(env__8_10, "saved_agents/rew_shap/mult/10/", 100, "rew_shap_10;mul;5e-5;lvl-8")
 
-train(512,"saved_agents/rew_shap/mult/4/", env_mul_4 , 0.00005, 0, 10, 2000000, 0.99)
+train(512,"saved_agents/rew_shap/mult/4/", env_mul_4 , 0.00005, 20000000, 10, 2000000, 0.99)
 validate_agent(env__1_4, "saved_agents/rew_shap/mult/4/", 100, "rew_shap_4;mul;5e-5;lvl-1")
 validate_agent(env__2_4, "saved_agents/rew_shap/mult/4/", 100, "rew_shap_4;mul;5e-5;lvl-2")
 validate_agent(env__7_4, "saved_agents/rew_shap/mult/4/", 100, "rew_shap_4;mul;5e-5;lvl-7")

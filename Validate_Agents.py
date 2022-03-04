@@ -47,7 +47,7 @@ def sort_csv_data(file_name):
                 for col in row:
                     header.append(col)
             else:
-                rows.append([int(row[0]), float(row[1]), int(row[2])])
+                rows.append([int(row[0]), float(row[1]), float(row[2])])
             counter += 1
         rows.sort(key=lambda x: x[0])
         return header,rows

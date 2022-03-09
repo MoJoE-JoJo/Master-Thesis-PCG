@@ -1,0 +1,45 @@
+s = (id, num, aux)
+a = id
+
+r_i = dc+sc+mc+ec
+
+in_rew(s,a) return val:
+    min = 3
+    max = 5
+    rew <- 0
+    return duplication_constraint(s,a) + start_constraint(s,a) + min_constraint(s,a) + end_constraint(s,a)
+
+
+duplication_constraint(s,a) return val:
+    rew <- 0
+    if a = s.id: 
+        rew -= c1
+    else if a != s.id: 
+        rew += c2
+    return rew
+
+start_constraint(s,a) return val:
+    rew <- 0
+    if s.num > 0 and a in start_set: 
+        rew -= c1 
+    else if s.num = 0 and a in start_set: 
+        rew += c2
+    else if s.num = 0 and a not in start_set: 
+        rew -= c3
+    return rew
+
+min_constraint(s,a) return val:
+    rew <- 0
+    if s.num < min-1 and a in end_set: 
+        rew -= c1
+    return rew
+    
+
+
+end_constraint(s,a) return val:
+    rew <- 0
+    if s.num >= max: 
+        rew -= c1
+    else if s.num = max-1 and a not in end_set: 
+        rew -= c3
+    return rew

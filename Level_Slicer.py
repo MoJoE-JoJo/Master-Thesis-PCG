@@ -56,7 +56,7 @@ def cleanSlicesDuplicates(slices):
     return new_slices
 
 
-level_folder ="MAFGym/levels/original"
+level_folder ="MAFGym/levels/original/subset/completable"
 slices = loadLevels(level_folder)
 
 print(len(slices))

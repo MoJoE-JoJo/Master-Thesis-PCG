@@ -67,12 +67,20 @@ class MAFPCGEnv(gym.Env):
 
     def reset(self):
         # Reset the state of the environment to an initial state
-        print("Reset : Return: " + str(self.total_reward))
+        first_id = ""
+        if len(self.slice_ids) > 0:
+            first_id = str(self.slice_ids[0])
+        slice_id_string = "["
+        for id in self.slice_ids:
+            slice_id_string += str(id)+", "
+        slice_id_string += "]"
+        print("Reset : Return: " + str(self.total_reward) + " : Start: " + first_id) #+ " : Slice_Ids: " + slice_id_string)
         self.slice_ids = []
         self.num_of_slices = 0
         self.farthest_slice_id = 0
         self.total_reward = 0
-        return [self.num_of_slices, self.aux_input, -1]
+        self.state = [self.num_of_slices, self.aux_input, -1]
+        return self.state
 
     def render(self, mode='human', close=False):
         # Render the environment to the screen

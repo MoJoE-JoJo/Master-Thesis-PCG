@@ -55,15 +55,9 @@ def cleanSlicesDuplicates(slices):
             new_slices.append(slice)
     return new_slices
 
-
-level_folder ="MAFGym/levels/original/subset/completable"
-slices = loadLevels(level_folder)
-
-print(len(slices))
-
-slices = cleanSlicesTubes(slices)
-print(len(slices))
-
-slices = cleanSlicesDuplicates(slices)
-print(len(slices))
+def makeSlices(folder_path):
+    slices = loadLevels(folder_path)
+    slices = cleanSlicesTubes(slices)
+    slices = cleanSlicesDuplicates(slices)
+    return slices
 

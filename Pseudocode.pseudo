@@ -41,5 +41,16 @@ end_constraint(s,a) return val:
     if s.num >= max: 
         rew -= c1
     else if s.num = max-1 and a not in end_set: 
-        rew -= c3
+        rew -= c2
+    else if s.num <= max-1 and s.num >= min-1 and a in end_set:
+        rew += c3
     return rew
+
+
+ex_rew(s,a) return val:
+    rew <- 0
+    history <- s.aux * perf_map.get(a)
+    return rew + history
+
+reward(s,a) return val:
+    return in_rew(s,a) + ex_rew(s,a)

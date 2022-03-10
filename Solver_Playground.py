@@ -3,6 +3,8 @@ from MAFGym.MAFEnv import MAFEnv
 from MAFGym.util import readLevelFile
 import os
 from time import sleep
+from Level_Slicer import makeSlices
+from MAFGym.MAFPCGEnv import MAFPCGEnv
 
 from gym import spaces
 import numpy as np
@@ -123,7 +125,6 @@ levelString7 = readLevelFile(levelFilePath7)
 levelFilePath8 = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-8.txt"
 levelString8 = readLevelFile(levelFilePath8)
 
-
 #env__9 = MAFEnv([levelString7], 60, False, 9)
 #env__10 = MAFEnv([levelString1], 60, False, 10)
 #env__11 = MAFEnv([levelString1], 60, False, 11)
@@ -131,27 +132,27 @@ levelString8 = readLevelFile(levelFilePath8)
 #env__13 = MAFEnv([levelString1], 60, False, 13)
 #env__14 = MAFEnv([levelString1], 60, False, 14)
 
-env__1_10 = MAFEnv([levelString1], 60, False, 10)
-env__2_10 = MAFEnv([levelString2], 60, False, 10)
-env__7_10 = MAFEnv([levelString7], 60, False, 10)
-env__8_10 = MAFEnv([levelString8], 60, False, 10)
+#env__1_10 = MAFEnv([levelString1], 60, False, 10)
+#env__2_10 = MAFEnv([levelString2], 60, False, 10)
+#env__7_10 = MAFEnv([levelString7], 60, False, 10)
+#env__8_10 = MAFEnv([levelString8], 60, False, 10)
 
 
-env__1_4 = MAFEnv([levelString1], 60, False, 4)
-env__2_4 = MAFEnv([levelString2], 60, False, 4)
-env__7_4 = MAFEnv([levelString7], 60, False, 4)
-env__8_4 = MAFEnv([levelString8], 60, False, 4)
+#env__1_4 = MAFEnv([levelString1], 60, False, 4)
+#env__2_4 = MAFEnv([levelString2], 60, False, 4)
+#env__7_4 = MAFEnv([levelString7], 60, False, 4)
+#env__8_4 = MAFEnv([levelString8], 60, False, 4)
 
 
-env_mul_10 = make_dummyVecEnv([levelString1,levelString2,levelString7,levelString8], 10)
-env_mul_4 = make_dummyVecEnv([levelString1,levelString2,levelString7,levelString8], 4)
+#env_mul_10 = make_dummyVecEnv([levelString1,levelString2,levelString7,levelString8], 10)
+#env_mul_4 = make_dummyVecEnv([levelString1,levelString2,levelString7,levelString8], 4)
 
 
 #train(512,"saved_agents/rew_shap/mult/10/", env_mul_10 , 0.00005, 40000000, 30, 2000000, 0.99)
-validate_agent(env__1_10, "saved_agents/rew_shap/mult/10/", 100, "rew_shap_10_2;mul;5e-5;lvl-1")
-validate_agent(env__2_10, "saved_agents/rew_shap/mult/10/", 100, "rew_shap_10_2;mul;5e-5;lvl-2")
-validate_agent(env__7_10, "saved_agents/rew_shap/mult/10/", 100, "rew_shap_10_2;mul;5e-5;lvl-7")
-validate_agent(env__8_10, "saved_agents/rew_shap/mult/10/", 100, "rew_shap_10_2;mul;5e-5;lvl-8")
+#validate_agent(env__1_10, "saved_agents/rew_shap/mult/10/", 100, "rew_shap_10_2;mul;5e-5;lvl-1")
+#validate_agent(env__2_10, "saved_agents/rew_shap/mult/10/", 100, "rew_shap_10_2;mul;5e-5;lvl-2")
+#validate_agent(env__7_10, "saved_agents/rew_shap/mult/10/", 100, "rew_shap_10_2;mul;5e-5;lvl-7")
+#validate_agent(env__8_10, "saved_agents/rew_shap/mult/10/", 100, "rew_shap_10_2;mul;5e-5;lvl-8")
 
 #train(512,"saved_agents/rew_shap/mult/4/", env_mul_4 , 0.00005, 20000000, 10, 2000000, 0.99)
 #validate_agent(env__1_4, "saved_agents/rew_shap/mult/4/", 100, "rew_shap_4;mul;5e-5;lvl-1")
@@ -163,4 +164,32 @@ validate_agent(env__8_10, "saved_agents/rew_shap/mult/10/", 100, "rew_shap_10_2;
 #play("saved_agents/disc_vec/mul_4/mario_30000000", env__2_4)
 #play("saved_agents/rew_shap/mult/10/mario_30000000", env__2_4)
 
+
+level_folder ="MAFGym/levels/original/subset/completable"
+
+slices = makeSlices(level_folder)
+
+generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MAFGym", "") + "\\generated_levels\\"
+env = MAFPCGEnv(0, slices, generated_level_path)
+
+slices = []
+slices.append(env.slice_map[5])
+slices.append(env.slice_map[74])
+slices.append(env.slice_map[188])
+slices.append(env.slice_map[360])
+slices.append(env.slice_map[464])
+
+
+lines = [""] * 16
+for slice in slices:
+    for line_index in range(len(slice)):
+        lines[line_index] += slice[line_index]
+
+levelString = ""
+for line in lines:
+    levelString += line 
+    levelString += "\n"
+
+env_strange = MAFEnv([levelString], 60, True, 10)
+play("saved_agents/rew_shap/mult/10/mario_100000000", env_strange)
 #----------------------------------------------------------------------------------------------------------

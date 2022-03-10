@@ -78,6 +78,6 @@ slices = makeSlices(level_folder)
 generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MAFGym", "") + "\\generated_levels\\"
 env = MAFPCGEnv(0, slices, generated_level_path)
 
-train(32,"saved_pcg/simple/", env , 0.00005, 0, 10, 1000000, 0.99)
+train(32,"saved_pcg/simple2/", env , 0.00005, 0, 100, 100000, 0.99)
 
 #----------------------------------------------------------------------------------------------------------

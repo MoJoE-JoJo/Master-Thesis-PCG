@@ -19,7 +19,7 @@ class MAFEnv(gym.Env):
   currentLevelString = ""
   gymID = 0
 
-  def __init__(self, levelFiles, gameTime, initRender, rewardFunction=0):
+  def __init__(self, levelFiles, gameTime, initRender, rewardFunction=10):
     """
     Constructs the MAFEnv Gym Environment object.
     

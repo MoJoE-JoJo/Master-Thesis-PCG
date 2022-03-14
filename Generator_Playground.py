@@ -4,6 +4,7 @@ from MAFGym.util import readLevelFile
 import os
 from time import sleep
 from Level_Slicer import makeSlices
+from Generator import Generator
 
 from gym import spaces
 import numpy as np
@@ -32,14 +33,6 @@ env_count = 1
 #layers = [512,512,512,512]
 layers = [dict(vf=[512,512], pi=[512,512])]
 
-def modified_cnn(scaled_images, **kwargs):
-    activ = tf.nn.relu
-    layer_1 = activ(conv(scaled_images, 'c1', n_filters=32, filter_size=8, stride=1, init_scale=np.sqrt(2), **kwargs))
-    layer_2 = activ(conv(layer_1, 'c2', n_filters=64, filter_size=4, stride=1, init_scale=np.sqrt(2), **kwargs))
-    layer_3 = activ(conv(layer_2, 'c3', n_filters=64, filter_size=3, stride=1, init_scale=np.sqrt(2), **kwargs))
-    layer_3 = conv_to_fc(layer_3)
-    return activ(linear(layer_3, 'fc1', n_hidden=1024, init_scale=np.sqrt(2)))
-
 class MarioPolicy(FeedForwardPolicy):
     def __init__(self, *args, **kwargs):
         super(MarioPolicy, self).__init__(*args, **kwargs,
@@ -48,36 +41,33 @@ class MarioPolicy(FeedForwardPolicy):
                                             #cnn_extractor=modified_cnn,
                                             feature_extraction="mlp")                                         
 
-layers_lstm = ['lstm',dict(vf=[512,512], pi=[512,512])]
-
-class MarioLstmPolicy(LstmPolicy):
-    def __init__(self, *args, **kwargs):
-        super(MarioLstmPolicy, self).__init__(*args, **kwargs,
-                                            net_arch=layers_lstm,
-                                            n_lstm=256,
-                                            act_fun=tf.nn.relu,
-                                            #cnn_extractor=modified_cnn,
-                                            feature_extraction="mlp")
-
-#FeedForwardPolicy()
-#model = PPO1(MarioPolicy, env, verbose=1)
-def train(steps, saveFolder, env, learn, startNetwork = 0, num_of_checkpoints = 10, steps_per_checkpoint = 1000000, gamma = 0.99):
-    if startNetwork == 0: model = PPO2(MarioPolicy, env, verbose=1, n_steps=steps, learning_rate=learn, gamma=gamma)
-    else: 
-        model = PPO2.load(saveFolder+"PCG_"+str(startNetwork), env)
+def train(saveFolder, generator: Generator, num_of_checkpoints = 10, steps_per_checkpoint = 1000000):
+    model = generator.model
     for i in range(num_of_checkpoints):
-        file = saveFolder + "PCG_" + str(startNetwork + (i+1) * steps_per_checkpoint)
         model.learn(steps_per_checkpoint)
-        model.save(file)
+        generator.increment_steps_trained(steps_per_checkpoint)
+        generator.save(saveFolder)
+
 
 
 level_folder ="MAFGym/levels/original/subset/completable/lvl-1"
 
-slices = makeSlices(level_folder)
-
 generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MAFGym", "") + "\\generated_levels\\"
-env = MAFPCGEnv(0, slices, generated_level_path)
+generator = Generator(load_path=os.getcwd()+"\\saved_pcg\\simple3\\pcg_50000.zip",
+    levels_path=level_folder, 
+    generate_path=generated_level_path, 
+    steps=32, 
+    learn=0.00005,
+    gamma=0.99)
 
-train(32,"saved_pcg/simple2/", env , 0.00005, 0, 100, 100000, 0.99)
+
+#generator.load(os.getcwd()+"\\saved_pcg\\simple3\\pcg_50000.zip")
+
+obs = generator.env.reset()
+for i in range(100):
+    action, _states = generator.model.predict(obs)
+    obs, rewards, done, info = generator.env.step(action)
+    if done:
+        obs = generator.env.reset()
 
 #----------------------------------------------------------------------------------------------------------

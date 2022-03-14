@@ -12,7 +12,7 @@ import time
 import numpy
 
 class MAFPCGEnv(gym.Env):
-    """OpenAI Gym Environment for using the Mario AI Framework"""
+    """OpenAI Gym Environment for generating levels for the Mario AI Framework"""
     metadata = {'render.modes': ['human']}
     slice_ids = []
     num_of_slices = 0
@@ -30,17 +30,22 @@ class MAFPCGEnv(gym.Env):
     end_set = []
 
     slice_map = {}
+    perf_map = {}
     generate_folder_path = ""
 
-    def __init__(self, aux, slices, generate_path):
+    def __init__(self, aux, start_slices, mid_slices, end_slices, slice_map, perf_map, generate_path):
         super(MAFPCGEnv, self).__init__()
         self.generate_folder_path = generate_path
-        self.util_make_slice_sets(slices)
-        self.slice_map = self.util_make_slice_id_map(self.start_set, self.mid_set, self.end_set)
-        self.util_convert_sets_to_ids(self.start_set, self.mid_set, self.end_set)
+        
+        self.start_set = start_slices
+        self.mid_set = mid_slices
+        self.end_set = end_slices
+        self.slice_map = slice_map
+        self.perf_map = perf_map
+        
         self.aux_input = aux
-        self.action_space = spaces.Discrete(len(slices))
-        self.observation_space = spaces.Box(low=-1, high=len(slices), shape=(3,), dtype=np.int32)
+        self.action_space = spaces.Discrete(len(self.slice_map.keys()))
+        self.observation_space = spaces.Box(low=-1, high=len(self.slice_map.keys()), shape=(3,), dtype=np.int32)
         self.state = self.reset()
     
 
@@ -140,6 +145,9 @@ class MAFPCGEnv(gym.Env):
             rew = 200
         return rew
 
+
+
+
     def util_make_slice_sets(self, slices):
         for slice in slices:
             start_or_end = False
@@ -155,7 +163,6 @@ class MAFPCGEnv(gym.Env):
             if not start_or_end:
                 self.mid_set.append(slice)
         
-
     def util_make_slice_id_map(self, start, mid, end):
         counter = 0
         map = {}

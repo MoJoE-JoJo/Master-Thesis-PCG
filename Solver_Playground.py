@@ -191,5 +191,5 @@ for line in lines:
     levelString += "\n"
 
 env_strange = MAFEnv([levelString], 60, True, 10)
-play("saved_agents/rew_shap/mult/10/mario_100000000", env_strange)
+play("saved_agents/rew_shap/mult/10/mario_50000000", env_strange)
 #----------------------------------------------------------------------------------------------------------

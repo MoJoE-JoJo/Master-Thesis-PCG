@@ -7,19 +7,20 @@ import java.util.List;
 
 public class StepReturnType {
     int[][][] state;
-    int reward;
+    float reward;
     boolean done;
     HashMap<String,String> info;
+    float marioPosition;
 
     public byte[] getState(){
         // Set up a ByteBuffer called intBuffer
-        ByteBuffer intBuffer = ByteBuffer.allocate(4*16*16*11); // 4 bytes in an int
+        ByteBuffer intBuffer = ByteBuffer.allocate(4*16*16*1); // 4 bytes in an int
         intBuffer.order(ByteOrder.LITTLE_ENDIAN); // Java's default is big-endian
 
         // Copy ints from intArray into intBuffer as bytes
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++){
-                for (int k = 0; k < 11; k++){
+                for (int k = 0; k < 1; k++){
                     intBuffer.putInt(state[i][j][k]);
                 }
             }
@@ -29,7 +30,7 @@ public class StepReturnType {
         return byteArray;
     }
 
-    public int getReward(){
+    public float getReward(){
         return reward;
     }
 
@@ -39,5 +40,9 @@ public class StepReturnType {
 
     public HashMap<String,String> getInfo(){
         return info;
+    }
+
+    public float getMarioPosition() {
+        return marioPosition;
     }
 }

@@ -11,7 +11,7 @@ gymgym = MAFEnv([levelString], 60, True)
 
 #levelFilePath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\lvl-3.txt"
 #levelString = readLevelFile(levelFilePath)
-action = [False, True, False, False, False]
+action = 8
 done = False
 for i in range(100):
     timestart = time.time()

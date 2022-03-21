@@ -33,7 +33,7 @@ class MAFPCGEnv(gym.Env):
     perf_map = {}
     generate_folder_path = ""
 
-    def __init__(self, aux, start_slices, mid_slices, end_slices, slice_map, perf_map, generate_path):
+    def __init__(self, aux, start_slices, mid_slices, end_slices, slice_map, generate_path):
         super(MAFPCGEnv, self).__init__()
         self.generate_folder_path = generate_path
         
@@ -41,7 +41,6 @@ class MAFPCGEnv(gym.Env):
         self.mid_set = mid_slices
         self.end_set = end_slices
         self.slice_map = slice_map
-        self.perf_map = perf_map
         
         self.aux_input = aux
         self.action_space = spaces.Discrete(len(self.slice_map.keys()))
@@ -122,7 +121,6 @@ class MAFPCGEnv(gym.Env):
             rew = 10
         return rew
         
-
     def start_rew(self, action):
         rew = 0
         if self.state[0] > 0 and action in self.start_set: 
@@ -146,7 +144,8 @@ class MAFPCGEnv(gym.Env):
         return rew
 
 
-
+    def set_perf_map(self, perf_map):
+        self.perf_map = perf_map
 
     def util_make_slice_sets(self, slices):
         for slice in slices:

@@ -27,14 +27,14 @@ public class MarioGymManager {
         System.out.println("Gateway Started");
     }
 
-    public static void initGym(String paramLevel, String imageDirectory, int timer, int paramMarioState, boolean visual){
+    public static void initGym(int gymID,String paramLevel, String imageDirectory, int timer, int paramMarioState, boolean visual, int rewardFunction){
         MarioGym newGym = new MarioGym();
-        newGym.init(paramLevel, imageDirectory, timer, paramMarioState, visual);
+        newGym.init(gymID, paramLevel, imageDirectory, timer, paramMarioState, visual, rewardFunction);
         gyms.add(newGym);
     }
 
-    public static StepReturnType step(int gymID, boolean left, boolean right, boolean down, boolean speed, boolean jump){
-        return gyms.get(gymID).step(left, right, down, speed, jump);
+    public static StepReturnType step(int gymID, int number){
+        return gyms.get(gymID).step(number);
     }
 
     public static StepReturnType reset(int gymID, boolean visual){

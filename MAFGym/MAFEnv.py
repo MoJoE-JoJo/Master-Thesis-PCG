@@ -18,6 +18,7 @@ class MAFEnv(gym.Env):
   levelStrings = []
   currentLevelString = ""
   gymID = 0
+  perf_map = {}
 
   def __init__(self, levelFiles, gameTime, initRender, rewardFunction=10):
     """
@@ -66,6 +67,7 @@ class MAFEnv(gym.Env):
     #state = np.moveaxis(state, 0, 2)
     javaDict = returnVal.getInfo()
     dict = {"Yolo": javaDict.get("Yolo"), "Result" : javaDict.get("Result"), "ReturnScore": javaDict.get("ReturnScore")}
+    print(returnVal.getMarioPosition())
     return state, returnVal.getReward(), returnVal.getDone(), dict
 
   def reset(self):
@@ -83,5 +85,11 @@ class MAFEnv(gym.Env):
   def render(self, mode='human', close=False):
     # Render the environment to the screen
     self.marioGym.render(self.gymID)
+  
+  def setLevel(self, level):
+    self.marioGym.setLevel(self.gymID, level)
+  
+  def set_perf_map(self, perf_map):
+    self.perf_map = perf_map
   
   

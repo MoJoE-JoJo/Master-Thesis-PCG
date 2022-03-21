@@ -15,10 +15,12 @@ class MAFEnv(gym.Env):
   metadata = {'render.modes': ['human']}
   marioGym = None
   useRender = False
+  arl_level = []
   levelStrings = []
   currentLevelString = ""
   gymID = 0
-  perf_map = {}
+  perf_map = None
+  death_perf_penalty = 15
 
   def __init__(self, levelFiles, gameTime, initRender, rewardFunction=10):
     """
@@ -67,8 +69,25 @@ class MAFEnv(gym.Env):
     #state = np.moveaxis(state, 0, 2)
     javaDict = returnVal.getInfo()
     dict = {"Yolo": javaDict.get("Yolo"), "Result" : javaDict.get("Result"), "ReturnScore": javaDict.get("ReturnScore")}
-    print(returnVal.getMarioPosition())
-    return state, returnVal.getReward(), returnVal.getDone(), dict
+    done = returnVal.getDone()
+    reward = returnVal.getReward()
+    if(self.perf_map is not None):
+      if(done):
+        self.update_perf_map(returnVal.getMarioPosition(), dict)
+    return state, reward, done, dict
+
+  def update_perf_map(self, pos, dict):
+    slice_done_index = pos
+    slice_done_index = slice_done_index / 16
+    slice_done_index = slice_done_index / 16
+    if(dict["Result"] == "Win"):
+      self.perf_map[self.arl_level[slice_done_index]] = self.perf_map[self.arl_level[slice_done_index]] + dict["ReturnScore"]/len(self.arl_level)   
+    elif(dict["Result"] == "Lose"):
+      self.perf_map[self.arl_level[slice_done_index]] = self.perf_map[self.arl_level[slice_done_index]] - self.death_perf_penalty
+    
+    if slice_done_index is not 0:
+      for index in range(slice_done_index):
+        self.perf_map[self.arl_level[index]] = self.perf_map[self.arl_level[index]] + dict["ReturnScore"]/len(self.arl_level)   
 
   def reset(self):
     # Reset the state of the environment to an initial state
@@ -89,6 +108,9 @@ class MAFEnv(gym.Env):
   def setLevel(self, level):
     self.marioGym.setLevel(self.gymID, level)
   
+  def setARLLevel(self, level):
+    self.arl_level = level
+
   def set_perf_map(self, perf_map):
     self.perf_map = perf_map
   

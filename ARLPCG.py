@@ -36,13 +36,19 @@ class ARLPCG():
     level = [3, 7, 174]
     dummyLevelString = ""
     solver_type = SolverType.PRETRAINED
+    auxiliary = 0
+    aux_values = [-1, -1, -0.5, 0.5, 1, 1]
+    generator_external_factor = 1
+    generator_internal_factor = 1
 
-    def __init__(self, load_path="", levels_path="", generate_path="", save_name = "pcg", gen_steps = 32, sol_steps = 512, solver_type = SolverType.PRETRAINED):
+    def __init__(self, load_path="", levels_path="", generate_path="", save_name = "pcg", gen_steps = 32, sol_steps = 512, solver_type = SolverType.PRETRAINED, external = 1, internal = 1):
         self.dummyLevelString = os.path.dirname(os.path.realpath(__file__))+"\\ARLDummyLevel.txt"
         self.dummyLevelString = readLevelFile(self.dummyLevelString)
         self.solver_type = solver_type
         self.generator_steps = gen_steps
         self.solver_steps = sol_steps
+        self.generator_internal_factor = internal
+        self.generator_external_factor = external
 
         if generate_path is "":
             self.generate_path = os.path.dirname(os.path.realpath(__file__))
@@ -57,6 +63,8 @@ class ARLPCG():
             #do all the loading things
             self.load(load_path)
         
+        self.env_generator.internal_factor = internal
+        self.env_generator.external_factor = external
 
     def empty_init(self, levels_path):
         slices = Level_Slicer.makeSlices(levels_path)
@@ -64,6 +72,9 @@ class ARLPCG():
         self.slice_map = self.util_make_slice_id_map(self.start_set, self.mid_set, self.end_set)
         self.util_convert_sets_to_ids(self.start_set, self.mid_set, self.end_set)
         
+        for key in self.slice_map.keys():
+            self.perf_map[key] = 0 
+
         self.empty_init_generator()
         self.empty_init_solver()
 
@@ -71,6 +82,7 @@ class ARLPCG():
         self.env_solver = self.util_make_dummyVecEnv([self.dummyLevelString])
         for env in self.env_solver.envs:
             env.set_perf_map(self.perf_map)
+            env.setARLLevel(self.level)
         
         if self.solver_type == SolverType.PRETRAINED:
             self.solver = PPO2.load(os.path.dirname(os.path.realpath(__file__))+"\\ARLStaticSolver", self.env_solver)
@@ -154,7 +166,19 @@ class ARLPCG():
         pass
 
     def train_solver(self, num_of_steps):
-        pass
+        levelString = self.util_convert_level_to_string()
+        for env in self.env_solver.envs:
+            env.setLevel(levelString)
+            env.setARLLevel(self.level)
+        if self.solver_type is SolverType.LEARNING:
+            self.solver.learn(num_of_steps)
+        elif self.solver_type is SolverType.PRETRAINED:
+            obs = self.env_solver.reset()
+            for i in range(num_of_steps):
+                action, _states = self.solver.predict(obs)
+                obs, rewards, done, info = env.step(action)
+                if done:
+                    obs = self.env_solver.reset()
 
     def util_make_slice_sets(self, slices):
         for slice in slices:

@@ -33,6 +33,9 @@ class MAFPCGEnv(gym.Env):
     perf_map = {}
     generate_folder_path = ""
 
+    internal_factor = 1
+    external_factor = 1
+
     def __init__(self, aux, start_slices, mid_slices, end_slices, slice_map, generate_path):
         super(MAFPCGEnv, self).__init__()
         self.generate_folder_path = generate_path
@@ -111,7 +114,7 @@ class MAFPCGEnv(gym.Env):
 
 
     def reward(self, action):  
-        return self.dup_rew(action) + self.start_rew(action) + self.end_rew(action)
+        return self.external_factor * self.perf_rew(action) + self.internal_factor * (self.dup_rew(action) + self.start_rew(action) + self.end_rew(action))
 
     def dup_rew(self, action):
         rew = 0
@@ -143,6 +146,8 @@ class MAFPCGEnv(gym.Env):
             rew = 200
         return rew
 
+    def perf_rew(self, action):
+        return self.aux_input * self.perf_map[action]
 
     def set_perf_map(self, perf_map):
         self.perf_map = perf_map

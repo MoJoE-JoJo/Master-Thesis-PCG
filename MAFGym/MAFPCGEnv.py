@@ -147,7 +147,8 @@ class MAFPCGEnv(gym.Env):
         return rew
 
     def perf_rew(self, action):
-        return self.aux_input * self.perf_map[action]
+        k,m = self.perf_map[action]
+        return self.aux_input * m
 
     def set_perf_map(self, perf_map):
         self.perf_map = perf_map

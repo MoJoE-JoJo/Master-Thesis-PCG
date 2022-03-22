@@ -3,6 +3,7 @@ import Level_Slicer
 import os
 import pickle
 import zipfile
+import random
 from MAFGym.MAFPCGEnv import MAFPCGEnv
 from MAFGym.MAFEnv import MAFEnv
 from MAFGym.util import readLevelFile
@@ -73,13 +74,18 @@ class ARLPCG():
         self.util_convert_sets_to_ids(self.start_set, self.mid_set, self.end_set)
         
         for key in self.slice_map.keys():
-            self.perf_map[key] = 0 
+            self.perf_map[key] = (0,0) 
 
         self.empty_init_generator()
         self.empty_init_solver()
 
     def empty_init_solver(self):
-        self.env_solver = self.util_make_dummyVecEnv([self.dummyLevelString])
+        if(self.solver_type == SolverType.LEARNING):
+            self.env_solver = self.util_make_dummyVecEnv([self.dummyLevelString])
+        elif(self.solver_type == SolverType.PRETRAINED):
+            env1 = MAFEnv([self.dummyLevelString], 60, False)
+            self.env_solver = DummyVecEnv([lambda: env1])
+        
         for env in self.env_solver.envs:
             env.set_perf_map(self.perf_map)
             env.setARLLevel(self.level)
@@ -154,16 +160,31 @@ class ARLPCG():
         return self.solver.predict(state)
 
     def generate_level(self):
-        pass
+        level = []
+        obs = self.env_generator.reset()
+        done = False
+        while not done:
+            action, _states = self.solver.predict(obs)
+            obs, rewards, done, info = self.env_generator.step(action)
+            level.append(action)
+        return level
 
     def increment_steps_trained(self, iterations):
         self.trained_iterations += iterations
 
     def train(self, num_of_iterations):
-        pass
+        generator_steps = 32
+        solver_steps = 512
+        self.train_generator(generator_steps)
+        self.train_solver(solver_steps)
+        self.increment_steps_trained(1)
 
     def train_generator(self, num_of_steps):
-        pass
+        self.auxiliary = random.choice(self.aux_values)
+        self.env_generator.aux_input = self.auxiliary
+        obs = self.env_generator.reset()
+        self.generator.learn(num_of_steps)
+        self.level = self.generate_level()
 
     def train_solver(self, num_of_steps):
         levelString = self.util_convert_level_to_string()

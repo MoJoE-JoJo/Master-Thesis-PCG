@@ -81,13 +81,25 @@ class MAFEnv(gym.Env):
     slice_done_index = slice_done_index / 16
     slice_done_index = slice_done_index / 16
     if(dict["Result"] == "Win"):
-      self.perf_map[self.arl_level[slice_done_index]] = self.perf_map[self.arl_level[slice_done_index]] + dict["ReturnScore"]/len(self.arl_level)   
+      k, m = self.perf_map[self.arl_level[slice_done_index]]
+      k = k+1
+      x = dict["ReturnScore"]/len(self.arl_level) 
+      m = self.calcIterativeAverage(k, m, x)
+      self.perf_map[self.arl_level[slice_done_index]] = (k,m)
     elif(dict["Result"] == "Lose"):
-      self.perf_map[self.arl_level[slice_done_index]] = self.perf_map[self.arl_level[slice_done_index]] - self.death_perf_penalty
+      k, m = self.perf_map[self.arl_level[slice_done_index]]
+      k = k+1
+      x = -1 * self.death_perf_penalty
+      m = self.calcIterativeAverage(k, m, x)
+      self.perf_map[self.arl_level[slice_done_index]] = (k,m)
     
     if slice_done_index is not 0:
       for index in range(slice_done_index):
-        self.perf_map[self.arl_level[index]] = self.perf_map[self.arl_level[index]] + dict["ReturnScore"]/len(self.arl_level)   
+        k, m = self.perf_map[self.arl_level[index]]
+        k = k+1
+        x = dict["ReturnScore"]/len(self.arl_level) 
+        m = self.calcIterativeAverage(k, m, x)
+        self.perf_map[self.arl_level[index]] = (k,m)
 
   def reset(self):
     # Reset the state of the environment to an initial state
@@ -114,4 +126,8 @@ class MAFEnv(gym.Env):
   def set_perf_map(self, perf_map):
     self.perf_map = perf_map
   
-  
+  def calcIterativeAverage(self, k, m, x):
+    if(k == 1):
+      return x
+    else:
+      return m + (x-m)/k

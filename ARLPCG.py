@@ -190,18 +190,18 @@ class ARLPCG():
     def increment_steps_trained(self, iterations):
         self.trained_iterations += iterations
 
-    def train(self, it_counter, its_between_board):
+    def train(self, log_tensorboard):
         generator_steps = 32
         solver_steps = 512
-        self.train_generator(generator_steps, it_counter, its_between_board)
-        self.train_solver(solver_steps, it_counter, its_between_board)
+        self.train_generator(generator_steps, log_tensorboard)
+        self.train_solver(solver_steps)
         self.increment_steps_trained(1)
 
-    def train_generator(self, num_of_steps, it_counter, its_between_board):
+    def train_generator(self, num_of_steps, log_tensorboard):
         self.auxiliary = random.choice(self.aux_values)
         self.env_generator.envs[0].aux_input = self.auxiliary
         obs = self.env_generator.reset()
-        if (it_counter % its_between_board == 0):
+        if (log_tensorboard):
             self.generator.tensorboard_log = "logs/"+self.save_name+"-generator/"
             self.generator.learn(num_of_steps, log_interval=100, tb_log_name="PPO-Generator", reset_num_timesteps=False)
         else:
@@ -209,7 +209,7 @@ class ARLPCG():
             self.generator.learn(num_of_steps, reset_num_timesteps=False)
         self.level = self.generate_level()
 
-    def train_solver(self, num_of_steps, it_counter, its_between_board):
+    def train_solver(self, num_of_steps, its_between_board):
         levelString = self.util_convert_level_to_string()
         for env in self.env_solver.envs:
             env.setLevel(levelString)

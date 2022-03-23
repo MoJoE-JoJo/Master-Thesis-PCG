@@ -4,6 +4,8 @@ import os
 import pickle
 import zipfile
 import random
+import time
+import copy
 from MAFGym.MAFPCGEnv import MAFPCGEnv
 from MAFGym.MAFEnv import MAFEnv
 from MAFGym.util import readLevelFile
@@ -64,8 +66,8 @@ class ARLPCG():
             #do all the loading things
             self.load(load_path)
         
-        self.env_generator.internal_factor = internal
-        self.env_generator.external_factor = external
+        self.env_generator.envs[0].internal_factor = internal
+        self.env_generator.envs[0].external_factor = external
 
     def empty_init(self, levels_path):
         slices = Level_Slicer.makeSlices(levels_path)
@@ -91,22 +93,23 @@ class ARLPCG():
             env.setARLLevel(self.level)
         
         if self.solver_type == SolverType.PRETRAINED:
-            self.solver = PPO2.load(os.path.dirname(os.path.realpath(__file__))+"\\ARLStaticSolver", self.env_solver)
+            self.solver = PPO2.load(os.path.dirname(os.path.realpath(__file__))+"\\ARLStaticSolver", self.env_solver,tensorboard_log="logs/"+self.save_name+"-solver/")
         elif self.solver_type == SolverType.LEARNING:
-            self.solver = PPO2(MarioSolverPolicy, self.env_solver, verbose=1, n_steps=self.solver_steps, learning_rate=0.00005, gamma=0.99)  
+            self.solver = PPO2(MarioSolverPolicy, self.env_solver, verbose=1, n_steps=self.solver_steps, learning_rate=0.00005, gamma=0.99,tensorboard_log="logs/"+self.save_name+"-solver/")  
         elif self.solver_type == SolverType.GAIL:
             raise ValueError("GAIL Solver not implemented")
 
     def empty_init_generator(self):
-        self.env_generator = MAFPCGEnv(0,
+        env1 = MAFPCGEnv(0,
             self.start_set, 
             self.mid_set, 
             self.end_set, 
             self.slice_map,  
             self.generate_path)
-        self.env_generator.set_perf_map(self.perf_map)
+        self.env_generator = DummyVecEnv([lambda: env1])
+        self.env_generator.envs[0].set_perf_map(self.perf_map)
         #self.perf_map[7] = 1
-        self.generator = PPO2(MarioGeneratorPolicy, self.env_generator, verbose=1, n_steps=self.generator_steps, learning_rate=0.00005, gamma=0.99)
+        self.generator = PPO2(MarioGeneratorPolicy, self.env_generator, verbose=1, n_steps=self.generator_steps, learning_rate=0.00005, gamma=0.99,tensorboard_log="logs/"+self.save_name+"-generator/")
 
     def load(self, load_path):
         with zipfile.ZipFile(load_path) as thezip:
@@ -122,11 +125,9 @@ class ARLPCG():
                 self.trained_iterations = train_its
                 self.save_name = save_name
             with thezip.open('generator.zip',mode='r') as generator_file:
-                self.generator = PPO2.load(generator_file, DummyVecEnv([lambda: self.env_generator]))
+                self.generator = PPO2.load(generator_file, self.env_generator,tensorboard_log="logs/"+self.save_name+"-generator/")
             with thezip.open("solver.zip", mode="r") as solver_file:
-                self.solver = PPO2.load(solver_file, DummyVecEnv([lambda: self.env_solver]))
-
-
+                self.solver = PPO2.load(solver_file, self.env_solver,tensorboard_log="logs/"+self.save_name+"-solver/")
 
     def save(self, save_path):
         data = []
@@ -160,33 +161,55 @@ class ARLPCG():
         return self.solver.predict(state)
 
     def generate_level(self):
-        level = []
         obs = self.env_generator.reset()
+        level = self.env_generator.envs[0].slice_ids
         done = False
         while not done:
-            action, _states = self.solver.predict(obs)
+            action, _states = self.generator.predict(obs)
             obs, rewards, done, info = self.env_generator.step(action)
-            level.append(action)
+        #level = [1, 73, 98, 102, 39, 54, 12, 90, 122, 174] #debugging magic
         return level
+
+    def generate_level_to_file(self):
+        level = self.generate_level()
+        lines = [""] * 16
+        for slice_id in level:
+            slice = self.slice_map.get(slice_id)
+            for line_index in range(len(slice)):
+                lines[line_index] += slice[line_index]
+                lines[line_index] += "|"
+             
+        if not os.path.exists(self.generate_path):
+            os.makedirs(self.generate_path)
+
+        open_file = open(self.generate_path + str(time.time_ns())+ ".txt", 'w')
+        for line in lines:
+            open_file.write(line)
+            open_file.write("\n")
 
     def increment_steps_trained(self, iterations):
         self.trained_iterations += iterations
 
-    def train(self, num_of_iterations):
+    def train(self, it_counter, its_between_board):
         generator_steps = 32
         solver_steps = 512
-        self.train_generator(generator_steps)
-        self.train_solver(solver_steps)
+        self.train_generator(generator_steps, it_counter, its_between_board)
+        self.train_solver(solver_steps, it_counter, its_between_board)
         self.increment_steps_trained(1)
 
-    def train_generator(self, num_of_steps):
+    def train_generator(self, num_of_steps, it_counter, its_between_board):
         self.auxiliary = random.choice(self.aux_values)
-        self.env_generator.aux_input = self.auxiliary
+        self.env_generator.envs[0].aux_input = self.auxiliary
         obs = self.env_generator.reset()
-        self.generator.learn(num_of_steps)
+        if (it_counter % its_between_board == 0):
+            self.generator.tensorboard_log = "logs/"+self.save_name+"-generator/"
+            self.generator.learn(num_of_steps, log_interval=100, tb_log_name="PPO-Generator", reset_num_timesteps=False)
+        else:
+            self.generator.tensorboard_log = None
+            self.generator.learn(num_of_steps, reset_num_timesteps=False)
         self.level = self.generate_level()
 
-    def train_solver(self, num_of_steps):
+    def train_solver(self, num_of_steps, it_counter, its_between_board):
         levelString = self.util_convert_level_to_string()
         for env in self.env_solver.envs:
             env.setLevel(levelString)
@@ -197,7 +220,7 @@ class ARLPCG():
             obs = self.env_solver.reset()
             for i in range(num_of_steps):
                 action, _states = self.solver.predict(obs)
-                obs, rewards, done, info = env.step(action)
+                obs, rewards, done, info = self.env_solver.step(action)
                 if done:
                     obs = self.env_solver.reset()
 

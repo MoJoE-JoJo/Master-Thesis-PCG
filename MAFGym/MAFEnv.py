@@ -79,11 +79,11 @@ class MAFEnv(gym.Env):
   def update_perf_map(self, pos, dict):
     slice_done_index = pos
     slice_done_index = slice_done_index / 16
-    slice_done_index = slice_done_index / 16
+    slice_done_index = int(slice_done_index / 16)
     if(dict["Result"] == "Win"):
       k, m = self.perf_map[self.arl_level[slice_done_index]]
       k = k+1
-      x = dict["ReturnScore"]/len(self.arl_level) 
+      x = float(dict["ReturnScore"])/len(self.arl_level) 
       m = self.calcIterativeAverage(k, m, x)
       self.perf_map[self.arl_level[slice_done_index]] = (k,m)
     elif(dict["Result"] == "Lose"):
@@ -97,7 +97,7 @@ class MAFEnv(gym.Env):
       for index in range(slice_done_index):
         k, m = self.perf_map[self.arl_level[index]]
         k = k+1
-        x = dict["ReturnScore"]/len(self.arl_level) 
+        x = float(dict["ReturnScore"])/len(self.arl_level) 
         m = self.calcIterativeAverage(k, m, x)
         self.perf_map[self.arl_level[index]] = (k,m)
 
@@ -118,6 +118,8 @@ class MAFEnv(gym.Env):
     self.marioGym.render(self.gymID)
   
   def setLevel(self, level):
+    self.levelStrings = []
+    self.levelStrings.append(level)
     self.marioGym.setLevel(self.gymID, level)
   
   def setARLLevel(self, level):

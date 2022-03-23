@@ -70,6 +70,13 @@ class MAFPCGEnv(gym.Env):
             done = True
         #print("Reward: " + str(reward))
         dict = {"Yolo": "Yolo", "Result" : "Result", "ReturnScore": "ReturnScore"}
+        if(done):
+            if(self.slice_ids[0] not in self.start_set):
+                print("Repaired start")
+                self.slice_ids[0] = random.choice(self.start_set)
+            if(self.slice_ids[-1] not in self.end_set):
+                print("Repaired end")
+                self.slice_ids[-1] = random.choice(self.end_set)
         return self.state, reward, done, dict
 
     def reset(self):

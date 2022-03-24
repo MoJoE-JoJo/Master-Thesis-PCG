@@ -11,7 +11,7 @@ from ARLPCG import ARLPCG
 #for val in all_validations:
 #    Validate_Agents.sort_csv_file(agent_val_path+val)
 
-level_folder ="MAFGym/levels/original/subset"
+level_folder ="MAFGym/levels/original/subset/completable/"
 
 arl_save_folder = "saved_arl/first/"
 
@@ -31,6 +31,7 @@ while run:
     if(new_time - start_time >= total_runtime):
         arl.train(True)
         arl.save(arl_save_folder)
+        run = False
     elif(new_time - logger_time >= time_between_logs):
         logger_time = new_time
         arl.train(True)

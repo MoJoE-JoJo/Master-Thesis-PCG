@@ -209,7 +209,7 @@ class ARLPCG():
             self.generator.learn(num_of_steps, reset_num_timesteps=False)
         self.level = self.generate_level()
 
-    def train_solver(self, num_of_steps, its_between_board):
+    def train_solver(self, num_of_steps):
         levelString = self.util_convert_level_to_string()
         for env in self.env_solver.envs:
             env.setLevel(levelString)

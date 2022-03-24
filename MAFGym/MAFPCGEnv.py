@@ -20,8 +20,8 @@ class MAFPCGEnv(gym.Env):
     farthest_slice_id = 0
 
     total_reward = 0
-    min = 4
-    max = 6
+    min = 10
+    max = 20
 
     state = []
 

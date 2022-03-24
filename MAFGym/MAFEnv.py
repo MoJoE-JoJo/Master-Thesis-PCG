@@ -57,6 +57,15 @@ class MAFEnv(gym.Env):
     
     self.marioGym.initGym(self.gymID, self.currentLevelString, current_dir + "\\img\\", gameTime, 0, self.useRender, rewardFunction)
 
+  def init_java_gym(self, gameTime = 60, rewardFunction = 10):
+    current_dir = os.path.dirname(os.path.realpath(__file__))
+    gateway = JavaGateway() 
+    MAFEnv.marioGym = gateway.entry_point
+    #print(os.path.dirname(os.path.realpath(__file__)))
+    subprocess.call([current_dir + '\\RunJar.bat'])
+    self.marioGym.initGym(self.gymID, self.currentLevelString, current_dir + "\\img\\", gameTime, 0, self.useRender, rewardFunction)
+
+
   def step(self, action):
     # Execute one time step within the environment
     #LEFT,RIGHT,DOWN,SPEED,JUMP = bool(action[0]), bool(action[1]), bool(action[2]), bool(action[3]), bool(action[4])

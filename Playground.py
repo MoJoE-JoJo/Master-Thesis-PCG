@@ -4,6 +4,7 @@ import time
 from os import listdir
 from os.path import isfile, join
 from ARLPCG import ARLPCG
+from Validate_Agents import validate_arl
 
 #agent_val_path = os.path.dirname(os.path.realpath(__file__)) +"\\agent_validations\\"
 #all_validations = [f for f in listdir(agent_val_path) if isfile(join(agent_val_path, f))]
@@ -13,11 +14,15 @@ from ARLPCG import ARLPCG
 
 level_folder ="MAFGym/levels/original/subset/completable/"
 
-arl_save_folder = "saved_arl/first/"
+arl_save_folder = "saved_arl/second/"
 
 generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MAFGym", "") + "\\generated_levels\\"
 
-arl = ARLPCG(load_path="", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev")
+#arl = ARLPCG(load_path="saved_arl/first/arl-dev_26278.zip", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev")
+
+
+
+arl = ARLPCG(load_path="", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev-sec")
 
 total_runtime = 12*60*60
 time_between_logs = 15*60
@@ -40,3 +45,4 @@ while run:
         arl.train(False)
 
 #arl = ARLPCG(load_path="saved_arl/test/arl-dev_1000.zip", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev")
+validate_arl(arl, 100, 10, "second_arl")

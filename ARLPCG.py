@@ -42,7 +42,7 @@ class ARLPCG():
     auxiliary = 0
     aux_values = [-1, -1, -0.5, 0.5, 1, 1]
     generator_external_factor = 1
-    generator_internal_factor = 1
+    generator_internal_factor = 10
 
     def __init__(self, load_path="", levels_path="", generate_path="", save_name = "pcg", gen_steps = 32, sol_steps = 512, solver_type = SolverType.PRETRAINED, external = 1, internal = 1):
         self.dummyLevelString = os.path.dirname(os.path.realpath(__file__))+"\\ARLDummyLevel.txt"
@@ -124,6 +124,7 @@ class ARLPCG():
                 self.perf_map = perf_map
                 self.trained_iterations = train_its
                 self.save_name = save_name
+                self.env_solver.envs[0].init_java_gym()
             with thezip.open('generator.zip',mode='r') as generator_file:
                 self.generator = PPO2.load(generator_file, self.env_generator,tensorboard_log="logs/"+self.save_name+"-generator/")
             with thezip.open("solver.zip", mode="r") as solver_file:

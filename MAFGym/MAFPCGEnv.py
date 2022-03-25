@@ -47,7 +47,7 @@ class MAFPCGEnv(gym.Env):
         
         self.aux_input = aux
         self.action_space = spaces.Discrete(len(self.slice_map.keys()))
-        self.observation_space = spaces.Box(low=-1, high=len(self.slice_map.keys()), shape=(3,), dtype=np.int32)
+        self.observation_space = spaces.Box(low=-1, high=len(self.slice_map.keys()), shape=(5,), dtype=np.int32)
         self.state = self.reset()
     
 
@@ -88,7 +88,7 @@ class MAFPCGEnv(gym.Env):
         for id in self.slice_ids:
             slice_id_string += str(id)+", "
         slice_id_string += "]"
-        print("Reset : Return: " + str(self.total_reward) + " : Aux: " + self.aux_input + " : Slice_Ids: " + slice_id_string)
+        print("Reset : Return: " + str(self.total_reward) + " : Aux: " + str(self.aux_input) + " : Slice_Ids: " + slice_id_string)
         self.slice_ids = []
         self.num_of_slices = 0
         self.farthest_slice_id = 0

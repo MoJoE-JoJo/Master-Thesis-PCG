@@ -18,14 +18,14 @@ arl_save_folder = "saved_arl/second/"
 
 generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MAFGym", "") + "\\generated_levels\\"
 
-#arl = ARLPCG(load_path="saved_arl/first/arl-dev_26278.zip", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev")
+arl = ARLPCG(load_path="saved_arl/second/arl-dev_28352.zip", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev")
 
 
 
-arl = ARLPCG(load_path="", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev-sec")
+#arl = ARLPCG(load_path="", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev", internal=10, external=1)
 
-total_runtime = 12*60*60
-time_between_logs = 15*60
+total_runtime = 10*60*60
+time_between_logs = 1*30
 start_time = time.time()
 logger_time = time.time()
 arl.train(True)

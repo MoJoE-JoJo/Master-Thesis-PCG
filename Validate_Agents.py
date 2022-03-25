@@ -122,7 +122,7 @@ def validate_arl(arl: ARLPCG, generate_num, try_num, saveName):
         csvwriter = csv.writer(file) # 2. create a csvwriter object
         csvwriter.writerow(header) # 4. write the header
         csvwriter.writerows(results) # 5. write the rest of the data
-    sort_csv_file(filename)
+    #sort_csv_file(filename)
 
     
 

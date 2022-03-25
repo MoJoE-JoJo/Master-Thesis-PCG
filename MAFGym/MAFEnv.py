@@ -59,10 +59,11 @@ class MAFEnv(gym.Env):
 
   def init_java_gym(self, gameTime = 60, rewardFunction = 10):
     current_dir = os.path.dirname(os.path.realpath(__file__))
-    gateway = JavaGateway() 
-    MAFEnv.marioGym = gateway.entry_point
-    #print(os.path.dirname(os.path.realpath(__file__)))
-    subprocess.call([current_dir + '\\RunJar.bat'])
+    if (self.gymID == 0):
+      gateway = JavaGateway() 
+      MAFEnv.marioGym = gateway.entry_point
+      #print(os.path.dirname(os.path.realpath(__file__)))
+      subprocess.call([current_dir + '\\RunJar.bat'])
     self.marioGym.initGym(self.gymID, self.currentLevelString, current_dir + "\\img\\", gameTime, 0, self.useRender, rewardFunction)
 
 

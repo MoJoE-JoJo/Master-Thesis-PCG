@@ -10,7 +10,7 @@ class MarioSolverPolicy(FeedForwardPolicy):
                                             #cnn_extractor=modified_cnn,
                                             feature_extraction="mlp")
 
-layers_generator = [dict(vf=[1024,1024], pi=[1024,1024])]
+layers_generator = [dict(vf=[512,512], pi=[512,512])]
 class MarioGeneratorPolicy(FeedForwardPolicy):
     def __init__(self, *args, **kwargs):
         super(MarioGeneratorPolicy, self).__init__(*args, **kwargs,

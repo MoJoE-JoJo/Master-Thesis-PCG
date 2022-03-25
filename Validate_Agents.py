@@ -90,6 +90,7 @@ def run_arl(arl: ARLPCG, generate_num, try_num, aux):
         levelString = arl.util_convert_level_to_string()
         for env in arl.env_solver.envs:
             env.setLevel(levelString)
+            env.setARLLevel(arl.level)
         for j in range(try_num):
             done = [False]
             obs = arl.env_solver.reset()

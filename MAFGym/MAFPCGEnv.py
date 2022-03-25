@@ -58,7 +58,7 @@ class MAFPCGEnv(gym.Env):
         self.slice_ids.append(action)
 
         self.num_of_slices = len(self.slice_ids)
-        self.state = [self.num_of_slices, self.aux_input, self.slice_ids[-1]]
+        self.state = [self.num_of_slices, self.min, self.max, self.aux_input, self.slice_ids[-1]]
 
         done = False
 
@@ -66,7 +66,7 @@ class MAFPCGEnv(gym.Env):
             done = True
         if(action in self.start_set and self.state[0] > 1):
             done = True
-        if(self.state[0] > self.max*10):
+        if(self.state[0] > self.state[2]*2):
             done = True
         #print("Reward: " + str(reward))
         dict = {"Yolo": "Yolo", "Result" : "Result", "ReturnScore": "ReturnScore"}
@@ -88,12 +88,12 @@ class MAFPCGEnv(gym.Env):
         for id in self.slice_ids:
             slice_id_string += str(id)+", "
         slice_id_string += "]"
-        print("Reset : Return: " + str(self.total_reward) + " : Start: " + first_id + " : Slice_Ids: " + slice_id_string)
+        print("Reset : Return: " + str(self.total_reward) + " : Aux: " + self.aux_input + " : Slice_Ids: " + slice_id_string)
         self.slice_ids = []
         self.num_of_slices = 0
         self.farthest_slice_id = 0
         self.total_reward = 0
-        self.state = [self.num_of_slices, self.aux_input, -1]
+        self.state = [self.num_of_slices, self.min, self.max, self.aux_input, -1]
         return self.state
 
     def render(self, mode='human', close=False):
@@ -120,14 +120,19 @@ class MAFPCGEnv(gym.Env):
 
 
 
-    def reward(self, action):  
-        return self.external_factor * self.perf_rew(action) + self.internal_factor * (self.dup_rew(action) + self.start_rew(action) + self.end_rew(action))
+    def reward(self, action):
+        external_rew = self.external_factor * self.perf_rew(action)
+        dup_rew = self.dup_rew(action)
+        start_rew = self.start_rew(action)
+        end_rew = self.end_rew(action)
+        internal_rew = self.internal_factor * (dup_rew + start_rew + end_rew)
+        return external_rew + internal_rew
 
     def dup_rew(self, action):
         rew = 0
-        if action == self.state[2]: 
+        if action == self.state[4]: 
             rew = -10
-        elif action != self.state[2]: 
+        elif action != self.state[4]: 
             rew = 10
         return rew
         

@@ -109,7 +109,7 @@ class ARLPCG():
         self.env_generator = DummyVecEnv([lambda: env1])
         self.env_generator.envs[0].set_perf_map(self.perf_map)
         #self.perf_map[7] = 1
-        self.generator = PPO2(MarioGeneratorPolicy, self.env_generator, verbose=1, n_steps=self.generator_steps, learning_rate=0.00005, gamma=0.99,tensorboard_log="logs/"+self.save_name+"-generator/")
+        self.generator = PPO2(MarioGeneratorPolicy, self.env_generator, verbose=1, n_steps=self.generator_steps, learning_rate=0.00001, gamma=0.99,tensorboard_log="logs/"+self.save_name+"-generator/")
 
     def load(self, load_path):
         with zipfile.ZipFile(load_path) as thezip:

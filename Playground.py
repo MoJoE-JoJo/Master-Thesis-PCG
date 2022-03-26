@@ -14,7 +14,7 @@ from Validate_Agents import validate_arl
 
 level_folder ="MAFGym/levels/original/subset/completable/"
 
-arl_save_folder = "saved_arl/5/"
+arl_save_folder = "saved_arl/6/"
 
 generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MAFGym", "") + "\\generated_levels\\"
 
@@ -24,7 +24,7 @@ generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MA
 
 arl = ARLPCG(load_path="", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev", internal=20, external=1)
 
-total_runtime = 12*60*60
+total_runtime = 24*60*60
 time_between_logs = 15*60
 start_time = time.time()
 logger_time = time.time()
@@ -45,4 +45,4 @@ while run:
         arl.train(False)
 
 #arl = ARLPCG(load_path="saved_arl/test/arl-dev_1000.zip", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev")
-validate_arl(arl, 100, 10, "5_arl")
+validate_arl(arl, 100, 10, "6_arl")

@@ -1,0 +1,7 @@
+5_arl:
+Smaller networks, ext/int reward scaling 1/20 and min+max level length in observation
+
+More things to try:
+Smaller learning_rate
+Observations using the tile-grid instead of the slice id
+New reward structure running simulation on the terminal action instead of using a performance map

@@ -1,6 +1,9 @@
 5_arl:
 Smaller networks, ext/int reward scaling 1/20 and min+max level length in observation
 
+6_arl:
+learning rate 1e-5
+
 More things to try:
 Smaller learning_rate
 Observations using the tile-grid instead of the slice id

@@ -4,7 +4,15 @@ Smaller networks, ext/int reward scaling 1/20 and min+max level length in observ
 6_arl:
 learning rate 1e-5
 
+7_arl:
+Observation with int grid instead of single id
+
+8_arl:
+New reward structure using only simulation when done with generating level
+
 More things to try:
-Smaller learning_rate
+Smaller learning_rate (Done)
 Observations using the tile-grid instead of the slice id
 New reward structure running simulation on the terminal action instead of using a performance map
+Different ratio between internal and external reward
+

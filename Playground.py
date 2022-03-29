@@ -4,7 +4,7 @@ import os
 import time
 from os import listdir
 from os.path import isfile, join
-from ARLPCG import ARLPCG
+from ARLPCG import ARLPCG, PCGEnvType
 from Validate_Agents import validate_arl
 
 #agent_val_path = os.path.dirname(os.path.realpath(__file__)) +"\\agent_validations\\"
@@ -23,10 +23,10 @@ generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MA
 #arl.train(False)
 
 
-arl = ARLPCG(load_path="", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev", internal=20, external=1, pcg_observation_type=PCGObservationType.GRID)
+arl = ARLPCG(load_path="", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev", internal=20, external=1, pcg_env_type=PCGEnvType.SIM)
 
 total_runtime = 18*60*60
-time_between_logs = 1*60
+time_between_logs = 15*60
 start_time = time.time()
 logger_time = time.time()
 arl.train(True)

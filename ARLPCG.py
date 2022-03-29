@@ -9,6 +9,7 @@ import copy
 import json
 import numpy as np
 from MAFGym.MAFPCGEnv import MAFPCGEnv, PCGObservationType
+from MAFGym.MAFPCGSimEnv import MAFPCGSimEnv
 from MAFGym.MAFEnv import MAFEnv
 from MAFGym.util import readLevelFile
 from stable_baselines import PPO2
@@ -48,12 +49,13 @@ class ARLPCG():
     dummyLevelString = ""
     solver_type = SolverType.PRETRAINED
     pcg_obs_type = PCGObservationType.ID
+    pcg_env_type = PCGEnvType.ID
     auxiliary = 0
     aux_values = [-1, -1, -0.5, 0.5, 1, 1]
     generator_external_factor = 0
     generator_internal_factor = 0
 
-    def __init__(self, load_path="", levels_path="", generate_path="", save_name = "pcg", gen_steps = 32, sol_steps = 512, solver_type = SolverType.PRETRAINED, external = 1, internal = 1, pcg_observation_type = PCGObservationType.ID):
+    def __init__(self, load_path="", levels_path="", generate_path="", save_name = "pcg", gen_steps = 32, sol_steps = 512, solver_type = SolverType.PRETRAINED, external = 1, internal = 1, pcg_env_type = PCGEnvType.ID):
         self.dummyLevelString = os.path.dirname(os.path.realpath(__file__))+"\\ARLDummyLevel.txt"
         self.dummyLevelString = readLevelFile(self.dummyLevelString)
         self.solver_type = solver_type
@@ -61,7 +63,11 @@ class ARLPCG():
         self.solver_steps = sol_steps
         self.generator_internal_factor = internal
         self.generator_external_factor = external
-        self.pcg_obs_type = pcg_observation_type
+        self.pcg_env_type = pcg_env_type
+        if(pcg_env_type == PCGEnvType.GRID):
+            self.pcg_obs_type = PCGObservationType.GRID
+        if(pcg_env_type == PCGEnvType.ID):
+            self.pcg_obs_type = PCGObservationType.ID
 
         if generate_path is "":
             self.generate_path = os.path.dirname(os.path.realpath(__file__))
@@ -89,8 +95,8 @@ class ARLPCG():
             self.perf_map[key] = (0,0) 
         self.util_convert_string_slice_to_integers(self.slice_map[0])
 
-        self.empty_init_generator()
         self.empty_init_solver()
+        self.empty_init_generator()
 
     def empty_init_solver(self):
         if(self.solver_type == SolverType.LEARNING):
@@ -111,18 +117,32 @@ class ARLPCG():
             raise ValueError("GAIL Solver not implemented")
 
     def empty_init_generator(self):
-        env1 = MAFPCGEnv(0,
-            self.start_set, 
-            self.mid_set, 
-            self.end_set, 
-            self.slice_map,  
-            self.generate_path,
-            self.id_map, 
-            self.pcg_obs_type)
-        self.env_generator = DummyVecEnv([lambda: env1])
-        self.env_generator.envs[0].set_perf_map(self.perf_map)
-        #self.perf_map[7] = 1
-        self.generator = PPO2(MarioGeneratorPolicy, self.env_generator, verbose=1, n_steps=self.generator_steps, learning_rate=0.00005, gamma=0.99,tensorboard_log="logs/"+self.save_name+"-generator/")
+        if(self.pcg_env_type == PCGEnvType.GRID or self.pcg_env_type == PCGEnvType.ID):
+            env1 = MAFPCGEnv(0,
+                self.start_set, 
+                self.mid_set, 
+                self.end_set, 
+                self.slice_map,  
+                self.generate_path,
+                self.id_map, 
+                self.pcg_obs_type)
+            self.env_generator = DummyVecEnv([lambda: env1])
+            self.env_generator.envs[0].set_perf_map(self.perf_map)
+            #self.perf_map[7] = 1
+            self.generator = PPO2(MarioGeneratorPolicy, self.env_generator, verbose=1, n_steps=self.generator_steps, learning_rate=0.00005, gamma=0.99,tensorboard_log="logs/"+self.save_name+"-generator/")
+        if(self.pcg_env_type == PCGEnvType.SIM):
+            env1 = MAFPCGSimEnv(0,
+                self.start_set, 
+                self.mid_set, 
+                self.end_set, 
+                self.slice_map,  
+                self.generate_path,
+                self.env_solver,
+                self.solver)
+            self.env_generator = DummyVecEnv([lambda: env1])
+            self.env_solver.envs[0].perf_map = None
+            #self.perf_map[7] = 1
+            self.generator = PPO2(MarioGeneratorPolicy, self.env_generator, verbose=1, n_steps=self.generator_steps, learning_rate=0.00005, gamma=0.99,tensorboard_log="logs/"+self.save_name+"-generator/")
 
     def load(self, load_path):
         with zipfile.ZipFile(load_path) as thezip:
@@ -206,11 +226,16 @@ class ARLPCG():
         self.trained_iterations += iterations
 
     def train(self, log_tensorboard):
-        generator_steps = 32
-        solver_steps = 512
-        self.train_generator(generator_steps, log_tensorboard)
-        self.train_solver(solver_steps)
-        self.increment_steps_trained(1)
+        if(self.pcg_env_type == PCGEnvType.GRID or self.pcg_env_type == PCGEnvType.ID):
+            generator_steps = 32
+            solver_steps = 512
+            self.train_generator(generator_steps, log_tensorboard)
+            self.train_solver(solver_steps)
+            self.increment_steps_trained(1)
+        elif(self.pcg_env_type == PCGEnvType.SIM):
+            generator_steps = 32*1000
+            self.train_generator(generator_steps, log_tensorboard)
+            self.increment_steps_trained(1)
 
     def train_generator(self, num_of_steps, log_tensorboard):
         self.auxiliary = random.choice(self.aux_values)

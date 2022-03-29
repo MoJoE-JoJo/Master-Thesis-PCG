@@ -182,7 +182,7 @@ class MAFPCGEnv(gym.Env):
             slice = self.slice_map.get(slice_id)
             for line_index in range(len(slice)):
                 lines[line_index] += slice[line_index]
-                lines[line_index] += "|"
+                lines[line_index] += "+"
              
         if not os.path.exists(self.generate_folder_path):
             os.makedirs(self.generate_folder_path)

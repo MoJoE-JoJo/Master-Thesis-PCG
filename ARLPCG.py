@@ -93,7 +93,7 @@ class ARLPCG():
         
         for key in self.slice_map.keys():
             self.perf_map[key] = (0,0) 
-        self.util_convert_string_slice_to_integers(self.slice_map[0])
+        #self.util_convert_string_slice_to_integers(self.slice_map[0])
 
         self.empty_init_solver()
         self.empty_init_generator()
@@ -140,16 +140,17 @@ class ARLPCG():
                 self.env_solver,
                 self.solver)
             self.env_generator = DummyVecEnv([lambda: env1])
-            #self.env_solver.envs[0].perf_map = None
+            self.env_solver.envs[0].perf_map = None
             #self.perf_map[7] = 1
             self.generator = PPO2(MarioGeneratorPolicy, self.env_generator, verbose=1, n_steps=self.generator_steps, learning_rate=0.00005, gamma=0.99,tensorboard_log="logs/"+self.save_name+"-generator/")
 
     def load(self, load_path):
         with zipfile.ZipFile(load_path) as thezip:
             with thezip.open('other.pkl',mode='r') as other_file:
-                gen_env, solv_env, start, mid, end, slice_map, perf_map, train_its, save_name = pickle.load(other_file)
-                self.env_generator = gen_env
-                self.env_solver = solv_env
+                solver_type, pcg_env_type, pcg_obs_type, start, mid, end, slice_map, perf_map, train_its, save_name = pickle.load(other_file)
+                self.solver_type = solver_type
+                self.pcg_env_type = pcg_env_type
+                self.pcg_obs_type = pcg_obs_type
                 self.start_set = start
                 self.mid_set = mid
                 self.end_set = end
@@ -157,8 +158,10 @@ class ARLPCG():
                 self.perf_map = perf_map
                 self.trained_iterations = train_its
                 self.save_name = save_name
-                for env in self.env_solver.envs:
-                    env.init_java_gym()
+                #for env in self.env_solver.envs:
+                #    env.init_java_gym()
+            self.empty_init_solver()
+            self.empty_init_generator()
             with thezip.open('generator.zip',mode='r') as generator_file:
                 self.generator = PPO2.load(generator_file, self.env_generator,tensorboard_log="logs/"+self.save_name+"-generator/")
             with thezip.open("solver.zip", mode="r") as solver_file:
@@ -168,8 +171,9 @@ class ARLPCG():
         data = []
         self.generator.save(save_path+"generator")
         self.solver.save(save_path+"solver")
-        #data.append(self.env_generator)
-        data.append(self.env_solver)
+        data.append(self.solver_type)
+        data.append(self.pcg_env_type)
+        data.append(self.pcg_obs_type)
         data.append(self.start_set)
         data.append(self.mid_set)
         data.append(self.end_set)
@@ -233,7 +237,7 @@ class ARLPCG():
             self.train_solver(solver_steps)
             self.increment_steps_trained(1)
         elif(self.pcg_env_type == PCGEnvType.SIM):
-            generator_steps = 32*1000
+            generator_steps = 32*1
             self.train_generator(generator_steps, log_tensorboard)
             self.increment_steps_trained(1)
 

@@ -23,25 +23,25 @@ generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MA
 #arl.train(False)
 
 
-arl = ARLPCG(load_path="", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev", internal=20, external=1, pcg_env_type=PCGEnvType.SIM)
+arl = ARLPCG(load_path="saved_arl/8/arl-dev_1.zip", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev", internal=20, external=1, pcg_env_type=PCGEnvType.SIM)
 
 total_runtime = 18*60*60
 time_between_logs = 15*60
 start_time = time.time()
 logger_time = time.time()
 arl.train(True)
-#arl.save(arl_save_folder)
+arl.save(arl_save_folder)
 run = True
 while run:
     new_time = time.time()
     if(new_time - start_time >= total_runtime):
         arl.train(True)
-        #arl.save(arl_save_folder)
+        arl.save(arl_save_folder)
         run = False
     elif(new_time - logger_time >= time_between_logs):
         logger_time = new_time
         arl.train(True)
-        #arl.save(arl_save_folder)
+        arl.save(arl_save_folder)
     else:
         arl.train(False)
 

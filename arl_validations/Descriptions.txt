@@ -12,7 +12,9 @@ New reward structure using only simulation when done with generating level
 
 More things to try:
 Smaller learning_rate (Done)
-Observations using the tile-grid instead of the slice id
+Observations using the tile-grid instead of the slice id (Done)
 New reward structure running simulation on the terminal action instead of using a performance map
 Different ratio between internal and external reward
+Using vectorized generator environment
+Using lower min-level-length
 

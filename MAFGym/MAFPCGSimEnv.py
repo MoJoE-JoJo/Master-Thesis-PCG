@@ -30,7 +30,6 @@ class MAFPCGSimEnv(gym.Env):
     end_set = []
 
     slice_map = {}
-    perf_map = {}
     generate_folder_path = ""
 
     internal_factor = 1
@@ -80,7 +79,7 @@ class MAFPCGSimEnv(gym.Env):
             #Run simulation
             level_string = self.generate_level_string()
             self.solver_env.envs[0].setLevel(level_string)
-            self.solver_env.envs[0].setARLLevel(self.slice_ids)
+            #self.solver_env.envs[0].setARLLevel(self.slice_ids)
             returns = []
             num_of_sim = 5
             for i in range(num_of_sim):

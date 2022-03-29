@@ -9,7 +9,7 @@ import enum
 import json
 
 import numpy
-from MAFEnv import MAFEnv
+from MAFGym.MAFEnv import MAFEnv
 
 class MAFPCGSimEnv(gym.Env):
     """OpenAI Gym Environment for generating levels for the Mario AI Framework"""
@@ -57,13 +57,15 @@ class MAFPCGSimEnv(gym.Env):
     
 
     def step(self, action):
+        action = int(action)
+        self.slice_ids.append(action)
         done = False
 
         if(action in self.end_set):
             done = True
         if(action in self.start_set and self.state[0] > 1):
             done = True
-        if(self.state[0] > self.state[2]*2):
+        if(self.state[0] >= self.state[2]*2):
             done = True
         
         avg_return = 0
@@ -88,15 +90,14 @@ class MAFPCGSimEnv(gym.Env):
                     obs, reward, solver_done, info = self.solver_env.step(action)
                     solver_done = solver_done[0]
                     if solver_done:
-                        obs = self.solver_env.reset()
+                        #obs = self.solver_env.reset()
                         return_score = float(info[0]["ReturnScore"])
                         returns.append(return_score)
             avg_return = sum(returns)/num_of_sim
         
-        action = int(action)
+
         reward = self.reward(action, avg_return)
         self.total_reward += reward
-        self.slice_ids.append(action)
 
         self.num_of_slices = len(self.slice_ids)
         self.state = [self.num_of_slices, self.min, self.max, self.aux_input, self.slice_ids[-1]]

@@ -170,14 +170,14 @@ level_folder ="MAFGym/levels/original/subset/completable"
 slices = makeSlices(level_folder)
 
 generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MAFGym", "") + "\\generated_levels\\"
-env = MAFPCGEnv(0, slices, generated_level_path)
+#env = MAFPCGEnv(0, slices, generated_level_path)
 
-slices = []
-slices.append(env.slice_map[5])
-slices.append(env.slice_map[74])
-slices.append(env.slice_map[188])
-slices.append(env.slice_map[360])
-slices.append(env.slice_map[464])
+#slices = []
+#slices.append(env.slice_map[5])
+##slices.append(env.slice_map[74])
+#slices.append(env.slice_map[188])
+#slices.append(env.slice_map[360])
+#slices.append(env.slice_map[464])
 
 
 lines = [""] * 16
@@ -190,6 +190,6 @@ for line in lines:
     levelString += line 
     levelString += "\n"
 
-env_strange = MAFEnv([levelString], 60, True, 10)
-play("saved_agents/rew_shap/mult/10/mario_50000000", env_strange)
+env_strange = MAFEnv([levelString8], 60, True, 10)
+play("saved_agents/rew_shap/mult/10/mario_100000000", env_strange)
 #----------------------------------------------------------------------------------------------------------

@@ -102,7 +102,7 @@ class ARLPCG():
         if(self.solver_type == SolverType.LEARNING):
             self.env_solver = self.util_make_dummyVecEnv([self.dummyLevelString])
         elif(self.solver_type == SolverType.PRETRAINED):
-            env1 = MAFEnv([self.dummyLevelString], 60, False)
+            env1 = MAFEnv([self.dummyLevelString], 30, False)
             self.env_solver = DummyVecEnv([lambda: env1])
         
         for env in self.env_solver.envs:
@@ -140,7 +140,7 @@ class ARLPCG():
                 self.env_solver,
                 self.solver)
             self.env_generator = DummyVecEnv([lambda: env1])
-            self.env_solver.envs[0].perf_map = None
+            #self.env_solver.envs[0].perf_map = None
             #self.perf_map[7] = 1
             self.generator = PPO2(MarioGeneratorPolicy, self.env_generator, verbose=1, n_steps=self.generator_steps, learning_rate=0.00005, gamma=0.99,tensorboard_log="logs/"+self.save_name+"-generator/")
 
@@ -168,7 +168,7 @@ class ARLPCG():
         data = []
         self.generator.save(save_path+"generator")
         self.solver.save(save_path+"solver")
-        data.append(self.env_generator)
+        #data.append(self.env_generator)
         data.append(self.env_solver)
         data.append(self.start_set)
         data.append(self.mid_set)

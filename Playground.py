@@ -30,18 +30,18 @@ time_between_logs = 15*60
 start_time = time.time()
 logger_time = time.time()
 arl.train(True)
-arl.save(arl_save_folder)
+#arl.save(arl_save_folder)
 run = True
 while run:
     new_time = time.time()
     if(new_time - start_time >= total_runtime):
         arl.train(True)
-        arl.save(arl_save_folder)
+        #arl.save(arl_save_folder)
         run = False
     elif(new_time - logger_time >= time_between_logs):
         logger_time = new_time
         arl.train(True)
-        arl.save(arl_save_folder)
+        #arl.save(arl_save_folder)
     else:
         arl.train(False)
 

@@ -80,8 +80,9 @@ class MAFPCGSimEnv(gym.Env):
             #Run simulation
             level_string = self.generate_level_string()
             self.solver_env.envs[0].setLevel(level_string)
+            self.solver_env.envs[0].setARLLevel(self.slice_ids)
             returns = []
-            num_of_sim = 10
+            num_of_sim = 5
             for i in range(num_of_sim):
                 obs = self.solver_env.reset()
                 solver_done = False

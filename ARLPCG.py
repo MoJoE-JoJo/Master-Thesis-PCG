@@ -20,6 +20,11 @@ class SolverType(enum.Enum):
     LEARNING = 1
     GAIL = 2
 
+class PCGEnvType(enum.Enum):
+    ID = 0
+    GRID = 1
+    SIM = 2
+
 class ARLPCG():
     solver = None
     generator = None

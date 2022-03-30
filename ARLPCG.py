@@ -102,7 +102,7 @@ class ARLPCG():
         if(self.solver_type == SolverType.LEARNING):
             self.env_solver = self.util_make_dummyVecEnv([self.dummyLevelString])
         elif(self.solver_type == SolverType.PRETRAINED):
-            env1 = MAFEnv([self.dummyLevelString], 30, True)
+            env1 = MAFEnv([self.dummyLevelString], 30, False)
             self.env_solver = DummyVecEnv([lambda: env1])
         
         for env in self.env_solver.envs:

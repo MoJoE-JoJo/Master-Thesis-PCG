@@ -226,26 +226,48 @@ class MAFPCGEnv(gym.Env):
         return rew
         
     def start_rew(self, action):
-        rew = 0
-        if self.state[0][0] > 0 and action in self.start_set: 
-            rew = -20 
-        elif self.state[0][0] == 0 and action in self.start_set: 
-            rew = 200
-        elif self.state[0][0] == 0 and action not in self.start_set: 
-            rew = -20
-        return rew
+        if(self.observation_type == PCGObservationType.ID):
+            rew = 0
+            if self.state[0] > 0 and action in self.start_set: 
+                rew = -20 
+            elif self.state[0] == 0 and action in self.start_set: 
+                rew = 200
+            elif self.state[0] == 0 and action not in self.start_set: 
+                rew = -20
+            return rew
+        elif(self.observation_type == PCGObservationType.GRID):
+            rew = 0
+            if self.state[0][0] > 0 and action in self.start_set: 
+                rew = -20 
+            elif self.state[0][0] == 0 and action in self.start_set: 
+                rew = 200
+            elif self.state[0][0] == 0 and action not in self.start_set: 
+                rew = -20
+            return rew
     
     def end_rew(self, action):
-        rew = 0
-        if self.state[0][0] >= self.max: 
-            rew  = -20
-        elif self.state[0][0] < self.min-1 and action in self.end_set: 
-            rew = -20
-        elif self.state[0][0] == self.max-1 and action not in self.end_set: 
-            rew = -20
-        elif self.state[0][0] <= self.max-1 and self.state[0][0] >= self.min-1 and action in self.end_set:
-            rew = 200
-        return rew
+        if(self.observation_type == PCGObservationType.ID):
+            rew = 0
+            if self.state[0] >= self.max: 
+                rew  = -20
+            elif self.state[0] < self.min-1 and action in self.end_set: 
+                rew = -20
+            elif self.state[0] == self.max-1 and action not in self.end_set: 
+                rew = -20
+            elif self.state[0] <= self.max-1 and self.state[0][0] >= self.min-1 and action in self.end_set:
+                rew = 200
+            return rew
+        elif(self.observation_type == PCGObservationType.GRID):
+            rew = 0
+            if self.state[0][0] >= self.max: 
+                rew  = -20
+            elif self.state[0][0] < self.min-1 and action in self.end_set: 
+                rew = -20
+            elif self.state[0][0] == self.max-1 and action not in self.end_set: 
+                rew = -20
+            elif self.state[0][0] <= self.max-1 and self.state[0][0] >= self.min-1 and action in self.end_set:
+                rew = 200
+            return rew
 
     def perf_rew(self, action):
         k,m = self.perf_map[action]

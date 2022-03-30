@@ -102,7 +102,7 @@ class ARLPCG():
         if(self.solver_type == SolverType.LEARNING):
             self.env_solver = self.util_make_dummyVecEnv([self.dummyLevelString])
         elif(self.solver_type == SolverType.PRETRAINED):
-            env1 = MAFEnv([self.dummyLevelString], 30, False)
+            env1 = MAFEnv([self.dummyLevelString], 30, True)
             self.env_solver = DummyVecEnv([lambda: env1])
         
         for env in self.env_solver.envs:
@@ -166,6 +166,8 @@ class ARLPCG():
                 self.generator = PPO2.load(generator_file, self.env_generator,tensorboard_log="logs/"+self.save_name+"-generator/")
             with thezip.open("solver.zip", mode="r") as solver_file:
                 self.solver = PPO2.load(solver_file, self.env_solver,tensorboard_log="logs/"+self.save_name+"-solver/")
+            if(self.pcg_env_type == PCGEnvType.SIM):
+                self.env_generator.envs[0].solver_agent = self.solver
 
     def save(self, save_path):
         data = []
@@ -202,8 +204,8 @@ class ARLPCG():
     def generate_level(self):
         obs = self.env_generator.reset()
         level = self.env_generator.envs[0].slice_ids
-        done = False
-        while not done:
+        done = [False]
+        while not done[0]:
             action, _states = self.generator.predict(obs)
             obs, rewards, done, info = self.env_generator.step(action)
         #level = [1, 73, 98, 102, 39, 54, 12, 90, 122, 174] #debugging magic

@@ -85,7 +85,7 @@ def run_arl(arl: ARLPCG, generate_num, try_num, aux):
     return_score = 0
     avg_length = 0
     for i in range(generate_num):
-        arl.generate_level()
+        arl.level = arl.generate_level()
         avg_length += len(arl.level)
         levelString = arl.util_convert_level_to_string()
         for env in arl.env_solver.envs:
@@ -97,6 +97,7 @@ def run_arl(arl: ARLPCG, generate_num, try_num, aux):
             while not done[0]:
                 action, _states = arl.solver.predict(obs)
                 obs, rewards, done, info = arl.env_solver.step(action)
+                arl.env_solver.render()
                 if done[0]:
                     return_score += float(info[0]["ReturnScore"])
                     if info[0]["Result"] == "Win":

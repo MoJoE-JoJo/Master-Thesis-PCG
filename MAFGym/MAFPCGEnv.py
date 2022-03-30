@@ -254,7 +254,7 @@ class MAFPCGEnv(gym.Env):
                 rew = -20
             elif self.state[0] == self.max-1 and action not in self.end_set: 
                 rew = -20
-            elif self.state[0] <= self.max-1 and self.state[0][0] >= self.min-1 and action in self.end_set:
+            elif self.state[0] <= self.max-1 and self.state[0] >= self.min-1 and action in self.end_set:
                 rew = 200
             return rew
         elif(self.observation_type == PCGObservationType.GRID):

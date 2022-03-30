@@ -10,6 +10,9 @@ Observation with int grid instead of single id
 8_arl:
 New reward structure using only simulation when done with generating level
 
+9_arl:
+Rerun of 5_arl, where loading is fixed to work with the new version
+
 More things to try:
 Smaller learning_rate (Done)
 Observations using the tile-grid instead of the slice id (Done)

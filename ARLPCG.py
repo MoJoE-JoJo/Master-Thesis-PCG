@@ -229,6 +229,11 @@ class ARLPCG():
     def increment_steps_trained(self, iterations):
         self.trained_iterations += iterations
 
+    def set_aux(self, aux):
+        self.auxiliary = aux
+        for env in self.env_generator.envs:
+            env.aux_input = aux
+
     def train(self, log_tensorboard):
         if(self.pcg_env_type == PCGEnvType.GRID or self.pcg_env_type == PCGEnvType.ID):
             generator_steps = 32
@@ -237,7 +242,7 @@ class ARLPCG():
             self.train_solver(solver_steps)
             self.increment_steps_trained(1)
         elif(self.pcg_env_type == PCGEnvType.SIM):
-            generator_steps = 32*1000
+            generator_steps = 32*100
             self.train_generator(generator_steps, log_tensorboard)
             self.increment_steps_trained(1)
 

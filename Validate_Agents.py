@@ -80,7 +80,7 @@ def validate_agent(env, agent_path, num_of_val_plays, saveName):
 
 
 def run_arl(arl: ARLPCG, generate_num, try_num, aux):
-    arl.auxiliary = aux
+    arl.set_aux(aux)
     wins = 0
     return_score = 0
     avg_length = 0

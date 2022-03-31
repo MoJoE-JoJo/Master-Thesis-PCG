@@ -23,8 +23,8 @@ generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MA
 #arl.train(False)
 
 
-arl = ARLPCG(load_path="", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev", internal=20, external=1, pcg_env_type=PCGEnvType.ID)
-
+arl = ARLPCG(load_path="saved_arl/9/arl-dev_28830.zip", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev", internal=20, external=1, pcg_env_type=PCGEnvType.ID)
+"""
 total_runtime = 12*60*60
 time_between_logs = 15*60
 start_time = time.time()
@@ -44,8 +44,8 @@ while run:
         arl.save(arl_save_folder)
     else:
         arl.train(False)
+"""
 
-#arl = ARLPCG(load_path="saved_arl/test/arl-dev_1000.zip", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev")
 validate_arl(arl, 100, 10, "9_arl")
 
 

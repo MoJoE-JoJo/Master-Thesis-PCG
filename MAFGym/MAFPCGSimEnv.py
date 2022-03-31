@@ -149,7 +149,7 @@ class MAFPCGSimEnv(gym.Env):
 
 
     def reward(self, action, avg_return):
-        external_rew = self.external_factor * avg_return
+        external_rew = self.external_factor * avg_return * self.aux_input
         dup_rew = self.dup_rew(action)
         start_rew = self.start_rew(action)
         end_rew = self.end_rew(action)

@@ -205,7 +205,7 @@ class ARLPCG():
         obs = self.env_generator.reset()
         level = self.env_generator.envs[0].slice_ids
         done = [False]
-        while not done[0]:
+        while not done[0]: #I think that the array shenanigans here have made perf_map better, as when generating the levels now, it can actually see when the level is properly done generating, and thus that would enable actually learning things 
             action, _states = self.generator.predict(obs)
             obs, rewards, done, info = self.env_generator.step(action)
         #level = [1, 73, 98, 102, 39, 54, 12, 90, 122, 174] #debugging magic

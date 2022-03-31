@@ -97,7 +97,7 @@ def run_arl(arl: ARLPCG, generate_num, try_num, aux):
             while not done[0]:
                 action, _states = arl.solver.predict(obs)
                 obs, rewards, done, info = arl.env_solver.step(action)
-                arl.env_solver.render()
+                #arl.env_solver.render()
                 if done[0]:
                     return_score += float(info[0]["ReturnScore"])
                     if info[0]["Result"] == "Win":

@@ -120,14 +120,14 @@ class MAFPCGEnv(gym.Env):
         if(self.observation_type == PCGObservationType.ID):
             if(action in self.end_set):
                 done = True
-            if(action in self.start_set and self.state[0] > 1):
+            if(action in self.start_set and self.state[0] >= 1):
                 done = True
             if(self.state[0] > self.state[2]*2):
                 done = True
         elif(self.observation_type == PCGObservationType.GRID):
             if(action in self.end_set):
                 done = True
-            if(action in self.start_set and self.state[0][0] > 1):
+            if(action in self.start_set and self.state[0][0] >= 1):
                 done = True
             if(self.state[0][0] > self.state[2][0]*2):
                 done = True

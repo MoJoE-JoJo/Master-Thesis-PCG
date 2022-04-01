@@ -62,7 +62,7 @@ class MAFPCGSimEnv(gym.Env):
 
         if(action in self.end_set):
             done = True
-        if(action in self.start_set and self.state[0] > 1):
+        if(action in self.start_set and self.state[0] >= 1):
             done = True
         if(self.state[0] >= self.state[2]*2):
             done = True

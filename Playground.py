@@ -15,7 +15,7 @@ from Validate_Agents import validate_arl
 
 level_folder ="MAFGym/levels/original/subset/completable/"
 
-arl_save_folder = "saved_arl/10/"
+arl_save_folder = "saved_arl/11/"
 
 generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MAFGym", "") + "\\generated_levels\\"
 
@@ -23,7 +23,7 @@ generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MA
 #arl.train(False)
 
 
-arl = ARLPCG(load_path="", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev", internal=10, external=1, pcg_env_type=PCGEnvType.SIM)
+arl = ARLPCG(load_path="", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev", internal=5, external=1, pcg_env_type=PCGEnvType.SIM)
 
 total_runtime = 12*60*60
 time_between_logs = 15*60
@@ -48,14 +48,14 @@ while run:
 
 #validate_arl(arl, 100, 10, "9_arl")
 
-validate_arl(arl, 100, 10, "10_arl")
+validate_arl(arl, 100, 10, "11_arl")
 
 
-arl = ARLPCG(load_path="saved_arl/8/arl-dev_43.zip", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev", internal=20, external=1, pcg_env_type=PCGEnvType.SIM)
+#arl = ARLPCG(load_path="saved_arl/8/arl-dev_43.zip", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev", internal=20, external=1, pcg_env_type=PCGEnvType.SIM)
 
 
 
 
-validate_arl(arl, 100, 10, "8_arl")
+#validate_arl(arl, 100, 10, "8_arl")
 
 

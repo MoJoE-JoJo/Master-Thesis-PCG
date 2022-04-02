@@ -16,6 +16,9 @@ Rerun of 5_arl, where loading is fixed to work with the new version
 10_arl:
 same as 8 but with internal = 10 and external = 1
 
+11_arl:
+same as 8, but internal 5 and external 1 (gonna be something different, this one didn't actually really work)
+
 More things to try:
 Smaller learning_rate (Done)
 Observations using the tile-grid instead of the slice id (Done)

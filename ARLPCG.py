@@ -244,7 +244,7 @@ class ARLPCG():
             self.train_solver(solver_steps)
             self.increment_steps_trained(1)
         elif(self.pcg_env_type == PCGEnvType.SIM):
-            generator_steps = 32*100
+            generator_steps = 32*10
             self.train_generator(generator_steps, log_tensorboard)
             self.increment_steps_trained(1)
 

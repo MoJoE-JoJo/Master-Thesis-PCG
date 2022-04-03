@@ -17,7 +17,7 @@ Rerun of 5_arl, where loading is fixed to work with the new version
 same as 8 but with internal = 10 and external = 1
 
 11_arl:
-same as 8, but internal 5 and external 1 (gonna be something different, this one didn't actually really work)
+Binary reward structure. If all constraints met, is equal to solver return times aux, else it gets -2500 for each of the 4 unmet constraints
 
 More things to try:
 Smaller learning_rate (Done)

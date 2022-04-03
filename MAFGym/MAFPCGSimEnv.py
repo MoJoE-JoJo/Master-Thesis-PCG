@@ -11,6 +11,10 @@ import json
 import numpy
 from MAFGym.MAFEnv import MAFEnv
 
+class GeneratorRewardType(enum.Enum):
+    NORMAL = 0
+    BINARY = 1
+
 class MAFPCGSimEnv(gym.Env):
     """OpenAI Gym Environment for generating levels for the Mario AI Framework"""
     metadata = {'render.modes': ['human']}
@@ -18,10 +22,16 @@ class MAFPCGSimEnv(gym.Env):
     num_of_slices = 0
     aux_input = 0
     farthest_slice_id = 0
+    reward_type = GeneratorRewardType.BINARY
 
     total_reward = 0
-    min = 10
+    min = 4
     max = 20
+
+    start_constraint = True
+    end_constraint = True
+    length_constraint = True
+    duplication_constraint = True
 
     state = []
 
@@ -73,14 +83,17 @@ class MAFPCGSimEnv(gym.Env):
             if(self.slice_ids[0] not in self.start_set):
                 print("Repaired start")
                 self.slice_ids[0] = random.choice(self.start_set)
+                self.start_constraint = False
             if(self.slice_ids[-1] not in self.end_set):
                 print("Repaired end")
                 self.slice_ids[-1] = random.choice(self.end_set)
+                self.end_constraint = False
             #Run simulation
             level_string = self.generate_level_string()
             self.solver_env.envs[0].setLevel(level_string)
             #self.solver_env.envs[0].setARLLevel(self.slice_ids)
             returns = []
+            wins = 0
             num_of_sim = 5
             for i in range(num_of_sim):
                 obs = self.solver_env.reset()
@@ -92,11 +105,14 @@ class MAFPCGSimEnv(gym.Env):
                     if solver_done:
                         #obs = self.solver_env.reset()
                         return_score = float(info[0]["ReturnScore"])
+                        if info[0]["Result"] == "Win":
+                            wins += 1
                         returns.append(return_score)
             avg_return = sum(returns)/num_of_sim
+            win_rate = wins/num_of_sim
         
 
-        reward = self.reward(action, avg_return)
+        reward = self.reward(action, avg_return, win_rate, done)
         self.total_reward += reward
 
         self.num_of_slices = len(self.slice_ids)
@@ -121,6 +137,10 @@ class MAFPCGSimEnv(gym.Env):
         self.num_of_slices = 0
         self.farthest_slice_id = 0
         self.total_reward = 0
+        self.start_constraint = True
+        self.end_constraint = True
+        self.length_constraint = True
+        self.duplication_constraint = True
         self.state = [self.num_of_slices, self.min, self.max, self.aux_input, -1]
         return self.state
 
@@ -148,13 +168,41 @@ class MAFPCGSimEnv(gym.Env):
 
 
 
-    def reward(self, action, avg_return):
-        external_rew = self.external_factor * avg_return * self.aux_input
-        dup_rew = self.dup_rew(action)
-        start_rew = self.start_rew(action)
-        end_rew = self.end_rew(action)
-        internal_rew = self.internal_factor * (dup_rew + start_rew + end_rew)
-        return external_rew + internal_rew
+    def reward(self, action, avg_return, win_rate, done):
+        if self.reward_type == GeneratorRewardType.BINARY:
+            return self.binary_rew(avg_return, win_rate, done)
+        elif self.reward_type == GeneratorRewardType.NORMAL:
+            external_rew = self.external_factor * avg_return * self.aux_input
+            dup_rew = self.dup_rew(action)
+            start_rew = self.start_rew(action)
+            end_rew = self.end_rew(action)
+            internal_rew = self.internal_factor * (dup_rew + start_rew + end_rew)
+            return external_rew + internal_rew
+
+    def binary_rew(self, avg_return, win_rate, done):
+        reward = 0
+        if done:
+            current_slice = -1
+            for slice in self.slice_ids:
+                if slice == current_slice:
+                    self.duplication_constraint = False
+                    break
+                current_slice = slice
+            if len(self.slice_ids) < self.min or len(self.slice_ids) > self.max:
+                self.length_constraint = False
+            
+            if self.length_constraint and self.duplication_constraint and self.start_constraint and self.end_constraint:
+              reward = avg_return * self.aux_input
+            if not self.length_constraint:
+                reward -= 2500
+            if not self.duplication_constraint:
+                reward -= 2500
+            if not self.start_constraint:
+                reward -= 2500
+            if not self.end_constraint:
+                reward -= 2500  
+        return reward
+            
 
     def dup_rew(self, action):
         rew = 0

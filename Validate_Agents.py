@@ -85,7 +85,7 @@ def run_arl(arl: ARLPCG, generate_num, try_num, aux):
     return_score = 0
     avg_length = 0
     for i in range(generate_num):
-        arl.level = arl.generate_level()
+        arl.level = arl.generate_level(True)
         avg_length += len(arl.level)
         levelString = arl.util_convert_level_to_string()
         for env in arl.env_solver.envs:

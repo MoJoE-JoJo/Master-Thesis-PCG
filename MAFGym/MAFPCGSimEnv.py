@@ -46,6 +46,7 @@ class MAFPCGSimEnv(gym.Env):
     external_factor = 1
     solver_env = None
     solver_agent = None
+    run_sim = True
 
     def __init__(self, aux, start_slices, mid_slices, end_slices, slice_map, generate_path, solver_env:MAFEnv, solver_agent):
         super(MAFPCGSimEnv, self).__init__()
@@ -78,6 +79,7 @@ class MAFPCGSimEnv(gym.Env):
             done = True
         
         avg_return = 0
+        win_rate = 0
 
         if(done):
             if(self.slice_ids[0] not in self.start_set):
@@ -94,22 +96,23 @@ class MAFPCGSimEnv(gym.Env):
             #self.solver_env.envs[0].setARLLevel(self.slice_ids)
             returns = []
             wins = 0
-            num_of_sim = 5
-            for i in range(num_of_sim):
-                obs = self.solver_env.reset()
-                solver_done = False
-                while not solver_done:
-                    action, _states = self.solver_agent.predict(obs)
-                    obs, reward, solver_done, info = self.solver_env.step(action)
-                    solver_done = solver_done[0]
-                    if solver_done:
-                        #obs = self.solver_env.reset()
-                        return_score = float(info[0]["ReturnScore"])
-                        if info[0]["Result"] == "Win":
-                            wins += 1
-                        returns.append(return_score)
-            avg_return = sum(returns)/num_of_sim
-            win_rate = wins/num_of_sim
+            if self.run_sim:
+                num_of_sim = 5
+                for i in range(num_of_sim):
+                    obs = self.solver_env.reset()
+                    solver_done = False
+                    while not solver_done:
+                        action, _states = self.solver_agent.predict(obs)
+                        obs, reward, solver_done, info = self.solver_env.step(action)
+                        solver_done = solver_done[0]
+                        if solver_done:
+                            #obs = self.solver_env.reset()
+                            return_score = float(info[0]["ReturnScore"])
+                            if info[0]["Result"] == "Win":
+                                wins += 1
+                            returns.append(return_score)
+                avg_return = sum(returns)/num_of_sim
+                win_rate = wins/num_of_sim
         
 
         reward = self.reward(action, avg_return, win_rate, done)

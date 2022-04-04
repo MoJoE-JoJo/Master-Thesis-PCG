@@ -92,7 +92,7 @@ class MAFPCGSimEnv(gym.Env):
                 self.end_constraint = False
             #Run simulation
             level_string = self.generate_level_string()
-            self.solver_env.setLevel(level_string)
+            self.solver_env.envs[0].setLevel(level_string)
             #self.solver_env.envs[0].setARLLevel(self.slice_ids)
             returns = []
             wins = 0
@@ -104,11 +104,11 @@ class MAFPCGSimEnv(gym.Env):
                     while not solver_done:
                         action, _states = self.solver_agent.predict(obs)
                         obs, reward, solver_done, info = self.solver_env.step(action)
-                        #solver_done = solver_done
+                        solver_done = solver_done[0]
                         if solver_done:
                             #obs = self.solver_env.reset()
-                            return_score = float(info["ReturnScore"])
-                            if info["Result"] == "Win":
+                            return_score = float(info[0]["ReturnScore"])
+                            if info[0]["Result"] == "Win":
                                 wins += 1
                             returns.append(return_score)
                 avg_return = sum(returns)/num_of_sim

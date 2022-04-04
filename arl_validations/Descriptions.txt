@@ -21,6 +21,12 @@ Binary reward structure. If all constraints met, is equal to solver return times
 Min length has also been set to 4
 It also switches between aux_inputs 10 times more often
 
+12_arl:
+Same as 10, vectorized with 10 pcg environments that use the same solver environment (should be properly reset), and a min level length of 4
+
+13_arl:
+same as 10, but min level length of 4
+
 
 More things to try:
 Smaller learning_rate (Done)

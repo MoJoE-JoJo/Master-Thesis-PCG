@@ -14,18 +14,11 @@ from Validate_Agents import validate_arl
 #    Validate_Agents.sort_csv_file(agent_val_path+val)
 
 level_folder ="MAFGym/levels/original/subset/completable/"
-
 arl_save_folder = "saved_arl/12/"
-
 generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MAFGym", "") + "\\generated_levels\\"
-
-#arl = ARLPCG(load_path="saved_arl/4/arl-dev_6932.zip", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev", internal = 10, external = 0.1)
-#arl.train(False)
-
-
 arl = ARLPCG(load_path="", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev", internal=10, external=1, pcg_env_type=PCGEnvType.SIM_VEC)
 
-total_runtime = 12*60*60
+total_runtime = 8*60*60
 time_between_logs = 15*60
 start_time = time.time()
 logger_time = time.time()
@@ -44,18 +37,32 @@ while run:
         arl.save(arl_save_folder)
     else:
         arl.train(False)
-
-
-#validate_arl(arl, 100, 10, "9_arl")
-
 validate_arl(arl, 100, 10, "12_arl")
 
 
-#arl = ARLPCG(load_path="saved_arl/8/arl-dev_43.zip", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev", internal=20, external=1, pcg_env_type=PCGEnvType.SIM)
+#--------------------------------------------------------------------------------------------
+arl_save_folder = "saved_arl/13/"
+generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MAFGym", "") + "\\generated_levels\\"
+arl = ARLPCG(load_path="", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev", internal=10, external=1, pcg_env_type=PCGEnvType.SIM)
 
-
-
-
-#validate_arl(arl, 100, 10, "8_arl")
-
+total_runtime = 8*60*60
+time_between_logs = 15*60
+start_time = time.time()
+logger_time = time.time()
+arl.train(True)
+arl.save(arl_save_folder)
+run = True
+while run:
+    new_time = time.time()
+    if(new_time - start_time >= total_runtime):
+        arl.train(True)
+        arl.save(arl_save_folder)
+        run = False
+    elif(new_time - logger_time >= time_between_logs):
+        logger_time = new_time
+        arl.train(True)
+        arl.save(arl_save_folder)
+    else:
+        arl.train(False)
+validate_arl(arl, 100, 10, "13_arl")
 

@@ -104,7 +104,9 @@ class ARLPCG():
         if(self.solver_type == SolverType.LEARNING):
             self.env_solver = self.util_make_dummyVecEnv_solver([self.dummyLevelString])
         elif(self.solver_type == SolverType.PRETRAINED and self.pcg_env_type == PCGEnvType.SIM_VEC):
-            self.env_solver = self.util_make_dummyVecEnv_solver([self.dummyLevelString])
+            env1 = MAFEnv([self.dummyLevelString], 30, False)
+            self.env_solver = DummyVecEnv([lambda: env1])
+            #self.env_solver = self.util_make_dummyVecEnv_solver([self.dummyLevelString])
         elif(self.solver_type == SolverType.PRETRAINED):
             env1 = MAFEnv([self.dummyLevelString], 30, False)
             self.env_solver = DummyVecEnv([lambda: env1])
@@ -143,7 +145,7 @@ class ARLPCG():
                 self.end_set, 
                 self.slice_map,  
                 self.generate_path,
-                self.env_solver.envs[0],
+                self.env_solver,
                 self.solver)
             self.env_generator = DummyVecEnv([lambda: env1])
             for env in self.env_solver.envs:
@@ -154,8 +156,8 @@ class ARLPCG():
             self.env_generator = self.util_make_dummyVecEnv_generator_sim()
             for env in self.env_solver.envs:
                 env.perf_map = None
-            for i in range(10):
-                self.env_generator.envs[i].solver_env = self.env_solver.envs[i]
+            #for i in range(10):
+            #    self.env_generator.envs[i].solver_env = self.env_solver.envs[i]
             self.generator = PPO2(MarioGeneratorPolicy, self.env_generator, verbose=1, n_steps=self.generator_steps, learning_rate=0.00005, gamma=0.99,tensorboard_log="logs/"+self.save_name+"-generator/")
             
 
@@ -271,7 +273,7 @@ class ARLPCG():
             self.train_generator(generator_steps, log_tensorboard)
             self.increment_steps_trained(1)
         elif(self.pcg_env_type == PCGEnvType.SIM_VEC):
-            generator_steps = 32*100
+            generator_steps = 32*50
             self.train_generator(generator_steps, log_tensorboard)
             self.increment_steps_trained(1)
 
@@ -364,16 +366,16 @@ class ARLPCG():
         return env_1
 
     def util_make_dummyVecEnv_generator_sim(self):
-        env1 = MAFPCGSimEnv(0, self.start_set, self.mid_set, self.end_set, self.slice_map, self.generate_path, self.env_solver.envs[0], self.solver)
-        env2 = MAFPCGSimEnv(0, self.start_set, self.mid_set, self.end_set, self.slice_map, self.generate_path, self.env_solver.envs[0], self.solver)
-        env3 = MAFPCGSimEnv(0, self.start_set, self.mid_set, self.end_set, self.slice_map, self.generate_path, self.env_solver.envs[0], self.solver)
-        env4 = MAFPCGSimEnv(0, self.start_set, self.mid_set, self.end_set, self.slice_map, self.generate_path, self.env_solver.envs[0], self.solver)
-        env5 = MAFPCGSimEnv(0, self.start_set, self.mid_set, self.end_set, self.slice_map, self.generate_path, self.env_solver.envs[0], self.solver)
-        env6 = MAFPCGSimEnv(0, self.start_set, self.mid_set, self.end_set, self.slice_map, self.generate_path, self.env_solver.envs[0], self.solver)
-        env7 = MAFPCGSimEnv(0, self.start_set, self.mid_set, self.end_set, self.slice_map, self.generate_path, self.env_solver.envs[0], self.solver)
-        env8 = MAFPCGSimEnv(0, self.start_set, self.mid_set, self.end_set, self.slice_map, self.generate_path, self.env_solver.envs[0], self.solver)
-        env9 = MAFPCGSimEnv(0, self.start_set, self.mid_set, self.end_set, self.slice_map, self.generate_path, self.env_solver.envs[0], self.solver)
-        env10 = MAFPCGSimEnv(0, self.start_set, self.mid_set, self.end_set, self.slice_map, self.generate_path, self.env_solver.envs[0], self.solver)
+        env1 = MAFPCGSimEnv(0, self.start_set, self.mid_set, self.end_set, self.slice_map, self.generate_path, self.env_solver, self.solver)
+        env2 = MAFPCGSimEnv(0, self.start_set, self.mid_set, self.end_set, self.slice_map, self.generate_path, self.env_solver, self.solver)
+        env3 = MAFPCGSimEnv(0, self.start_set, self.mid_set, self.end_set, self.slice_map, self.generate_path, self.env_solver, self.solver)
+        env4 = MAFPCGSimEnv(0, self.start_set, self.mid_set, self.end_set, self.slice_map, self.generate_path, self.env_solver, self.solver)
+        env5 = MAFPCGSimEnv(0, self.start_set, self.mid_set, self.end_set, self.slice_map, self.generate_path, self.env_solver, self.solver)
+        env6 = MAFPCGSimEnv(0, self.start_set, self.mid_set, self.end_set, self.slice_map, self.generate_path, self.env_solver, self.solver)
+        env7 = MAFPCGSimEnv(0, self.start_set, self.mid_set, self.end_set, self.slice_map, self.generate_path, self.env_solver, self.solver)
+        env8 = MAFPCGSimEnv(0, self.start_set, self.mid_set, self.end_set, self.slice_map, self.generate_path, self.env_solver, self.solver)
+        env9 = MAFPCGSimEnv(0, self.start_set, self.mid_set, self.end_set, self.slice_map, self.generate_path, self.env_solver, self.solver)
+        env10 = MAFPCGSimEnv(0, self.start_set, self.mid_set, self.end_set, self.slice_map, self.generate_path, self.env_solver, self.solver)
         env_1 = DummyVecEnv([lambda: env1,lambda: env2,lambda: env3,lambda: env4,lambda: env5,lambda: env6,lambda: env7,lambda: env8,lambda: env9,lambda: env10])
         return env_1
 

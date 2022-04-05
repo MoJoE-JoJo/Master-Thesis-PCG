@@ -14,6 +14,7 @@ from MAFGym.MAFEnv import MAFEnv
 class GeneratorRewardType(enum.Enum):
     NORMAL = 0
     BINARY = 1
+    WINRATE = 2
 
 class MAFPCGSimEnv(gym.Env):
     """OpenAI Gym Environment for generating levels for the Mario AI Framework"""
@@ -22,10 +23,10 @@ class MAFPCGSimEnv(gym.Env):
     num_of_slices = 0
     aux_input = 0
     farthest_slice_id = 0
-    reward_type = GeneratorRewardType.NORMAL
+    reward_type = GeneratorRewardType.WINRATE
 
     total_reward = 0
-    min = 4
+    min = 10
     max = 20
 
     start_constraint = True
@@ -98,6 +99,8 @@ class MAFPCGSimEnv(gym.Env):
             wins = 0
             if self.run_sim:
                 num_of_sim = 5
+                if self.reward_type == GeneratorRewardType.WINRATE:
+                    num_of_sim = 10
                 for i in range(num_of_sim):
                     obs = self.solver_env.reset()
                     solver_done = False
@@ -173,7 +176,7 @@ class MAFPCGSimEnv(gym.Env):
 
     def reward(self, action, avg_return, win_rate, done):
         if self.reward_type == GeneratorRewardType.BINARY:
-            return self.binary_rew(avg_return, win_rate, done)
+            return self.binary_rew(avg_return, done)
         elif self.reward_type == GeneratorRewardType.NORMAL:
             external_rew = self.external_factor * avg_return * self.aux_input
             dup_rew = self.dup_rew(action)
@@ -181,8 +184,80 @@ class MAFPCGSimEnv(gym.Env):
             end_rew = self.end_rew(action)
             internal_rew = self.internal_factor * (dup_rew + start_rew + end_rew)
             return external_rew + internal_rew
+        elif self.reward_type == GeneratorRewardType.WINRATE:
+            external_rew = self.winrate_rew(win_rate, done) * self.external_factor
+            dup_rew = self.dup_rew(action)
+            start_rew = self.start_rew(action)
+            end_rew = self.end_rew(action)
+            internal_rew = self.internal_factor * (dup_rew + start_rew + end_rew)
+            return external_rew + internal_rew
 
-    def binary_rew(self, avg_return, win_rate, done):
+    def winrate_rew(self, win_rate, done):
+        reward = 0
+        if done:
+            if self.aux_input == -1:
+                if  win_rate < 0.05:
+                    reward = 2000
+                elif win_rate >= 0.05 and win_rate <= 0.15:
+                    reward = 2500
+                elif win_rate >= 0.15 and win_rate <= 0.25:
+                    reward = 2000
+                elif win_rate >= 0.25 and win_rate <= 0.35:
+                    reward = 1500
+                elif win_rate >= 0.35 and win_rate <= 0.45:
+                    reward = 1000
+                elif win_rate >= 0.45 and win_rate <= 0.55:
+                    reward = 500
+            elif self.aux_input == -0.5:
+                if  win_rate < 0.05:
+                    reward = 1000
+                elif win_rate >= 0.05 and win_rate < 0.15:
+                    reward = 1500
+                elif win_rate >= 0.15 and win_rate < 0.25:
+                    reward = 2000
+                elif win_rate >= 0.25 and win_rate <= 0.35:
+                    reward = 2500
+                elif win_rate >= 0.35 and win_rate <= 0.45:
+                    reward = 2000
+                elif win_rate >= 0.45 and win_rate <= 0.55:
+                    reward = 1500
+                elif win_rate >= 0.55 and win_rate <= 0.65:
+                    reward = 1000
+                elif win_rate >= 0.65 and win_rate <= 0.75:
+                    reward = 500
+            elif self.aux_input == 0.5:
+                if win_rate >= 0.25 and win_rate < 0.35:
+                    reward = 500
+                elif win_rate >= 0.35 and win_rate < 0.45:
+                    reward = 1000
+                elif win_rate >= 0.45 and win_rate < 0.55:
+                    reward = 1500
+                elif win_rate >= 0.55 and win_rate < 0.65:
+                    reward = 2000
+                elif win_rate >= 0.65 and win_rate <= 0.75:
+                    reward = 2500
+                elif win_rate >= 0.75 and win_rate <= 0.85:
+                    reward = 2000
+                elif win_rate >= 0.85 and win_rate <= 0.95:
+                    reward = 1500
+                elif win_rate > 0.95:
+                    reward = 1000
+            elif self.aux_input == 1:
+                if win_rate >= 0.45 and win_rate < 0.55:
+                    reward = 500
+                elif win_rate >= 0.55 and win_rate < 0.65:
+                    reward = 1000
+                elif win_rate >= 0.65 and win_rate < 0.75:
+                    reward = 1500
+                elif win_rate >= 0.75 and win_rate < 0.85:
+                    reward = 2000
+                elif win_rate >= 0.85 and win_rate <= 0.95:
+                    reward = 2500
+                elif win_rate > 0.95:
+                    reward = 2000
+        return reward
+
+    def binary_rew(self, avg_return, done):
         reward = 0
         if done:
             current_slice = -1

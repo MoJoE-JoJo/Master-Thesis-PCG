@@ -27,6 +27,12 @@ Same as 10, vectorized with 10 pcg environments that use the same solver environ
 13_arl:
 same as 10, but min level length of 4
 
+14_arl:
+Using an external reward based on mapping the winrate and aux-inputs of the agent to rewards
+
+15_arl:
+Same as 14, but instead of mapping winrate and aux-input to rewards it maps solver-agent avg-rewards and aux-input to external reward
+
 
 More things to try:
 Smaller learning_rate (Done)

@@ -14,7 +14,9 @@ from MAFGym.MAFEnv import MAFEnv
 class GeneratorRewardType(enum.Enum):
     NORMAL = 0
     BINARY = 1
-    WINRATE = 2
+    WINRATE_MAP = 2
+    AVG_RETURN_MAP = 3
+
 
 class MAFPCGSimEnv(gym.Env):
     """OpenAI Gym Environment for generating levels for the Mario AI Framework"""
@@ -23,7 +25,7 @@ class MAFPCGSimEnv(gym.Env):
     num_of_slices = 0
     aux_input = 0
     farthest_slice_id = 0
-    reward_type = GeneratorRewardType.WINRATE
+    reward_type = GeneratorRewardType.AVG_RETURN_MAP
 
     total_reward = 0
     min = 10
@@ -184,8 +186,15 @@ class MAFPCGSimEnv(gym.Env):
             end_rew = self.end_rew(action)
             internal_rew = self.internal_factor * (dup_rew + start_rew + end_rew)
             return external_rew + internal_rew
-        elif self.reward_type == GeneratorRewardType.WINRATE:
+        elif self.reward_type == GeneratorRewardType.WINRATE_MAP:
             external_rew = self.winrate_rew(win_rate, done) * self.external_factor
+            dup_rew = self.dup_rew(action)
+            start_rew = self.start_rew(action)
+            end_rew = self.end_rew(action)
+            internal_rew = self.internal_factor * (dup_rew + start_rew + end_rew)
+            return external_rew + internal_rew
+        elif self.reward_type == GeneratorRewardType.AVG_RETURN_MAP:
+            external_rew = self.avg_return_rew(avg_return, done) * self.external_factor
             dup_rew = self.dup_rew(action)
             start_rew = self.start_rew(action)
             end_rew = self.end_rew(action)
@@ -197,7 +206,7 @@ class MAFPCGSimEnv(gym.Env):
         if done:
             if self.aux_input == -1:
                 if  win_rate < 0.05:
-                    reward = 2000
+                    reward = 0
                 elif win_rate >= 0.05 and win_rate <= 0.15:
                     reward = 2500
                 elif win_rate >= 0.15 and win_rate <= 0.25:
@@ -210,7 +219,7 @@ class MAFPCGSimEnv(gym.Env):
                     reward = 500
             elif self.aux_input == -0.5:
                 if  win_rate < 0.05:
-                    reward = 1000
+                    reward = 0
                 elif win_rate >= 0.05 and win_rate < 0.15:
                     reward = 1500
                 elif win_rate >= 0.15 and win_rate < 0.25:
@@ -254,6 +263,71 @@ class MAFPCGSimEnv(gym.Env):
                 elif win_rate >= 0.85 and win_rate <= 0.95:
                     reward = 2500
                 elif win_rate > 0.95:
+                    reward = 2000
+        return reward
+
+    def avg_return_rew(self, avg_return, done):
+        reward = 0
+        if done:
+            if self.aux_input == -1:
+                if  avg_return < 100:
+                    reward = 0
+                elif avg_return >= 100 and avg_return <= 320:
+                    reward = 2500
+                elif avg_return >= 321 and avg_return <= 519:
+                    reward = 2000
+                elif avg_return >= 520 and avg_return <= 740:
+                    reward = 1500
+                elif avg_return >= 741 and avg_return <= 939:
+                    reward = 1000
+                elif avg_return >= 940 and avg_return <= 1160:
+                    reward = 500
+            elif self.aux_input == -0.5:
+                if  avg_return < 100:
+                    reward = 0
+                elif avg_return >= 100 and avg_return <= 320:
+                    reward = 1500
+                elif avg_return >= 321 and avg_return <= 519:
+                    reward = 2000
+                elif avg_return >= 520 and avg_return <= 740:
+                    reward = 2500
+                elif avg_return >= 741 and avg_return <= 939:
+                    reward = 2000
+                elif avg_return >= 940 and avg_return <= 1160:
+                    reward = 1500
+                elif avg_return >= 1161 and avg_return <= 1359:
+                    reward = 1000
+                elif avg_return >= 1360 and avg_return <= 1580:
+                    reward = 500
+            elif self.aux_input == 0.5:
+                if avg_return >= 520 and avg_return <= 740:
+                    reward = 500
+                elif avg_return >= 741 and avg_return <= 939:
+                    reward = 1000
+                elif avg_return >= 940 and avg_return <= 1160:
+                    reward = 1500
+                elif avg_return >= 1161 and avg_return <= 1359:
+                    reward = 2000
+                elif avg_return >= 1360 and avg_return <= 1580:
+                    reward = 2500
+                elif avg_return >= 1581 and avg_return <= 1779:
+                    reward = 2000
+                elif avg_return >= 1780 and avg_return <= 2000:
+                    reward = 1500
+                elif avg_return > 2000:
+                    reward = 1000
+            elif self.aux_input == 1:
+                if avg_return >= 940 and avg_return <= 1160:
+                    reward = 500
+                elif avg_return >= 1161 and avg_return <= 1359:
+                    reward = 1000
+                elif avg_return >= 1360 and avg_return <= 1580:
+                    reward = 1500
+                elif avg_return >= 1581 and avg_return <= 1779:
+                    reward = 2000
+                elif avg_return >= 1780 and avg_return <= 2000:
+                    reward = 2500
+                elif avg_return > 2000:
                     reward = 2000
         return reward
 

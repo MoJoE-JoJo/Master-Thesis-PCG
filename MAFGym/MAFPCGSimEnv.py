@@ -101,7 +101,7 @@ class MAFPCGSimEnv(gym.Env):
             wins = 0
             if self.run_sim:
                 num_of_sim = 5
-                if self.reward_type == GeneratorRewardType.WINRATE:
+                if self.reward_type == GeneratorRewardType.WINRATE_MAP:
                     num_of_sim = 10
                 for i in range(num_of_sim):
                     obs = self.solver_env.reset()

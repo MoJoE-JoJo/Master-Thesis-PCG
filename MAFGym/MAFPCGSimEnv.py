@@ -25,7 +25,7 @@ class MAFPCGSimEnv(gym.Env):
     num_of_slices = 0
     aux_input = 0
     farthest_slice_id = 0
-    reward_type = GeneratorRewardType.AVG_RETURN_MAP
+    reward_type = GeneratorRewardType.WINRATE_MAP
 
     total_reward = 0
     min = 10

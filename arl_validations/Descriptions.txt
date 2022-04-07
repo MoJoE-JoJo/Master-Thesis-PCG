@@ -36,6 +36,9 @@ Also has min-length of 10
 Same as 14, but instead of mapping winrate and aux-input to rewards it maps solver-agent avg-rewards and aux-input to external reward
 
 
+16_arl:
+Same as 14_arl, but external reward scaled to 0.8 instead of 1, such it never can give a higher reward than getting a reward directly from the solver-agent
+
 More things to try:
 Smaller learning_rate (Done)
 Observations using the tile-grid instead of the slice id (Done)

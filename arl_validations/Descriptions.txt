@@ -39,6 +39,12 @@ Same as 14, but instead of mapping winrate and aux-input to rewards it maps solv
 16_arl:
 Same as 14_arl, but external reward scaled to 0.8 instead of 1, such it never can give a higher reward than getting a reward directly from the solver-agent
 
+0_arl:
+Generator with winrate-map reward, but not trained at all
+
+17_arl:
+Same as 14, winrate-reward map, but with only training with a single aux-input (aux=1)
+
 More things to try:
 Smaller learning_rate (Done)
 Observations using the tile-grid instead of the slice id (Done)

@@ -52,7 +52,8 @@ class ARLPCG():
     pcg_obs_type = PCGObservationType.ID
     pcg_env_type = PCGEnvType.ID
     auxiliary = 0
-    aux_values = [-1, -1, -0.5, 0.5, 1, 1]
+    #aux_values = [-1, -1, -0.5, 0.5, 1, 1]
+    aux_values = [1]
     generator_external_factor = 0
     generator_internal_factor = 0
 

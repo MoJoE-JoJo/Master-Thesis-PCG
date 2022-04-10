@@ -39,11 +39,20 @@ Same as 14, but instead of mapping winrate and aux-input to rewards it maps solv
 16_arl:
 Same as 14_arl, but external reward scaled to 0.8 instead of 1, such it never can give a higher reward than getting a reward directly from the solver-agent
 
+---------- Baseline experiments ----------
+Experiments meant to find the baseline parameters and the edges of what, or whether it, is possible 
 0_arl:
 Generator with winrate-map reward, but not trained at all
 
 17_arl:
 Same as 14, winrate-reward map, but with only training with a single aux-input (aux=1)
+
+18_arl:
+Same as 17, but with an internal reward of 0, to check whether it can learn based on the winrate with the current intervals between updates (winrate-map should correspond directly to the desired performance of ht solver at  specific aux-input values)
+
+19_arl:
+Same as 18, but with aux 0.5
+
 
 More things to try:
 Smaller learning_rate (Done)

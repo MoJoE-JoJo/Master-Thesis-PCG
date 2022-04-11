@@ -49,9 +49,10 @@ Same as 14, winrate-reward map, but with only training with a single aux-input (
 
 18_arl:
 Same as 17, but with an internal reward of 0, to check whether it can learn based on the winrate with the current intervals between updates (winrate-map should correspond directly to the desired performance of ht solver at  specific aux-input values)
+(There is no reason to run with aux=0.5 as still with aux 1 it does not reach the target and just reaches 0.5 winrate)
 
 19_arl:
-Same as 18, but with aux 0.5
+Same as 18, but with updating the generator network every 16 steps instead of 32 steps
 
 
 More things to try:

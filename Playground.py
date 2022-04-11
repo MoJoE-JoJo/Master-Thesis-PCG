@@ -13,8 +13,8 @@ from Validate_Agents import validate_arl
 #for val in all_validations:
 #    Validate_Agents.sort_csv_file(agent_val_path+val)
 
-def train(arl: ARLPCG):
-    total_runtime = 12*60*60
+def train(arl: ARLPCG, hours_run):
+    total_runtime = hours_run*60*60
     time_between_logs = 15*60
     start_time = time.time()
     logger_time = time.time()
@@ -36,12 +36,20 @@ def train(arl: ARLPCG):
 
 level_folder ="MAFGym/levels/original/subset/completable/"
 #--------------------------------------------------------------------------------------------
-arl_save_folder = "saved_arl/18/"
+arl_save_folder = "saved_arl/19/"
 generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MAFGym", "") + "\\generated_levels\\"
-arl = ARLPCG(load_path="saved_arl/18/arl-dev_63", levels_path=level_folder, generate_path=generated_level_path, save_name="arl-dev", internal=0, external=1, pcg_env_type=PCGEnvType.SIM)
+arl = ARLPCG(
+    load_path="", 
+    levels_path=level_folder, 
+    generate_path=generated_level_path, 
+    save_name="arl-dev", 
+    internal=0, 
+    external=1,
+    gen_steps=16, 
+    pcg_env_type=PCGEnvType.SIM)
 
-train(arl)
+train(arl, 6)
 
-validate_arl(arl, 100, 10, "18_arl_24")
+validate_arl(arl, 100, 10, "19_arl")
 
 

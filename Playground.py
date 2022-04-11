@@ -48,7 +48,7 @@ arl = ARLPCG(
     gen_steps=16, 
     pcg_env_type=PCGEnvType.SIM)
 
-train(arl, 6)
+train(arl, 8)
 
 validate_arl(arl, 100, 10, "19_arl")
 

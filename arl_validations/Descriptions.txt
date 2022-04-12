@@ -55,7 +55,13 @@ Same as 17, but with an internal reward of 0, to check whether it can learn base
 Same as 18, but with updating the generator network every 16 steps instead of 32 steps
 
 20_arl:
+Same as 18, but with updating the generator network every 64 steps instead of 32 steps
+
+21_arl:
 same as 17, but with updating the generator network every 16 steps instead of 32 steps
+
+22_arl:
+same as 17, but with updating the generator network every 64 steps instead of 32 steps
 
 More things to try:
 Smaller learning_rate (Done)

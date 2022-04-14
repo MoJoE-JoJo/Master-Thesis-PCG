@@ -152,7 +152,7 @@ class ARLPCG():
             for env in self.env_solver.envs:
                 env.perf_map = None
             #self.perf_map[7] = 1
-            self.generator = PPO2(MarioGeneratorPolicy, self.env_generator, verbose=1, n_steps=self.generator_steps, learning_rate=0.00005, gamma=0.99,tensorboard_log="logs/"+self.save_name+"-generator/")
+            self.generator = PPO2(MarioGeneratorPolicy, self.env_generator, verbose=1, n_steps=self.generator_steps, learning_rate=0.000005, gamma=0.99,tensorboard_log="logs/"+self.save_name+"-generator/")
         if(self.pcg_env_type == PCGEnvType.SIM_VEC):
             self.env_generator = self.util_make_dummyVecEnv_generator_sim()
             for env in self.env_solver.envs:

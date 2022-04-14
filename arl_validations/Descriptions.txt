@@ -48,7 +48,7 @@ Generator with winrate-map reward, but not trained at all
 Same as 14, winrate-reward map, but with only training with a single aux-input (aux=1)
 
 18_arl:
-Same as 17, but with an internal reward of 0, to check whether it can learn based on the winrate with the current intervals between updates (winrate-map should correspond directly to the desired performance of ht solver at  specific aux-input values)
+Same as 17, but with an internal reward of 0, to check whether it can learn based on the winrate with the current intervals between updates (winrate-map should correspond directly to the desired performance of the solver at specific aux-input values)
 (There is no reason to run with aux=0.5 as still with aux 1 it does not reach the target and just reaches 0.5 winrate)
 
 19_arl:
@@ -62,6 +62,17 @@ same as 17, but with updating the generator network every 16 steps instead of 32
 
 22_arl:
 same as 17, but with updating the generator network every 64 steps instead of 32 steps
+
+
+23_arl:
+same as 17, but with a learning-rate of 5e-6 instead of 5e-5
+
+24_arl:
+same as 14, but with a learning-rate of 5e-6 instead of 5e-5
+
+25_arl:
+same as 18, but with a learning-rate of 5e-6 instead of 5e-5
+
 
 More things to try:
 Smaller learning_rate (Done)

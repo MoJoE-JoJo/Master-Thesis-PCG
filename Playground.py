@@ -40,7 +40,7 @@ arl_save_folder = "saved_arl/25/"
 generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MAFGym", "") + "\\generated_levels\\"
 arl=None
 arl = ARLPCG(
-    load_path="", 
+    load_path="saved_arl/25/arl-dev_218.zip", 
     levels_path=level_folder, 
     generate_path=generated_level_path, 
     save_name="arl-dev", 
@@ -51,7 +51,7 @@ arl = ARLPCG(
 
 train(arl, 12)
 
-validate_arl(arl, 100, 10, "25_arl")
+validate_arl(arl, 100, 10, "25_arl_24")
 
 #train(arl, 12)
 

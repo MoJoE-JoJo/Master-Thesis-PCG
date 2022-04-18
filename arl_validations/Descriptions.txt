@@ -42,7 +42,7 @@ Same as 14_arl, but external reward scaled to 0.8 instead of 1, such it never ca
 ---------- Baseline experiments ----------
 Experiments meant to find the baseline parameters and the edges of what, or whether it, is possible 
 0_arl:
-Generator with winrate-map reward, but not trained at all
+Generator with winrate-map reward, but not trained at all (same as 14)
 
 17_arl:
 Same as 14, winrate-reward map, but with only training with a single aux-input (aux=1)
@@ -74,11 +74,12 @@ same as 14, but with a learning-rate of 5e-6 instead of 5e-5
 same as 18, but with a learning-rate of 5e-6 instead of 5e-5
 
 
-More things to try:
-Smaller learning_rate (Done)
-Observations using the tile-grid instead of the slice id (Done)
-New reward structure running simulation on the terminal action instead of using a performance map
-Different ratio between internal and external reward
-Using vectorized generator environment
-Using lower min-level-length
+26_arl:
+same as 14, but with aux_switch_ratio of 1
+
+27_arl:
+same as 14, but with aux_switch_ratio of 100
+
+
+
 

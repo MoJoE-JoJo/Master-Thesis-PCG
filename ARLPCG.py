@@ -52,12 +52,13 @@ class ARLPCG():
     pcg_obs_type = PCGObservationType.ID
     pcg_env_type = PCGEnvType.ID
     auxiliary = 0
-    #aux_values = [-1, -1, -0.5, 0.5, 1, 1]
-    aux_values = [1]
+    aux_values = [-1, -1, -0.5, 0.5, 1, 1]
+    #aux_values = [1]
     generator_external_factor = 0
     generator_internal_factor = 0
+    aux_switch_ratio = 10
 
-    def __init__(self, load_path="", levels_path="", generate_path="", save_name = "pcg", gen_steps = 32, sol_steps = 512, solver_type = SolverType.PRETRAINED, external = 1, internal = 1, pcg_env_type = PCGEnvType.ID):
+    def __init__(self, load_path="", levels_path="", generate_path="", save_name = "pcg", gen_steps = 32, sol_steps = 512, solver_type = SolverType.PRETRAINED, external = 1, internal = 1, aux_switch = 10, pcg_env_type = PCGEnvType.ID):
         self.dummyLevelString = os.path.dirname(os.path.realpath(__file__))+"\\ARLDummyLevel.txt"
         self.dummyLevelString = readLevelFile(self.dummyLevelString)
         self.solver_type = solver_type
@@ -65,6 +66,7 @@ class ARLPCG():
         self.solver_steps = sol_steps
         self.generator_internal_factor = internal
         self.generator_external_factor = external
+        self.aux_switch_ratio = aux_switch
         self.pcg_env_type = pcg_env_type
         if(pcg_env_type == PCGEnvType.GRID):
             self.pcg_obs_type = PCGObservationType.GRID
@@ -270,7 +272,7 @@ class ARLPCG():
             self.train_solver(solver_steps)
             self.increment_steps_trained(1)
         elif(self.pcg_env_type == PCGEnvType.SIM):
-            generator_steps = 32*10
+            generator_steps = 32*self.aux_switch_ratio
             self.train_generator(generator_steps, log_tensorboard)
             self.increment_steps_trained(1)
         elif(self.pcg_env_type == PCGEnvType.SIM_VEC):

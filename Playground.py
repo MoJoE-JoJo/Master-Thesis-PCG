@@ -69,7 +69,7 @@ arl = ARLPCG(
 
 train(arl, 12)
 
-validate_arl(arl, 100, 10, "27arl")
+validate_arl(arl, 100, 10, "27_arl")
 
 
 

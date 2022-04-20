@@ -95,30 +95,53 @@ class MAFPCGSimEnv(gym.Env):
                 self.end_constraint = False
             #Run simulation
             level_string = self.generate_level_string()
-            #TODO: Handle a vectorized solver environment, such that it only runs all the solver environments once, instead of using one that it runs 10 times, or just take env 0 and run 10 times
-            #Should be ahndled now
             self.solver_env.envs[0].setLevel(level_string)
             #self.solver_env.envs[0].setARLLevel(self.slice_ids)
             returns = []
             wins = 0
             if self.run_sim:
-                num_of_sim = 5
-                if self.reward_type == GeneratorRewardType.WINRATE_MAP:
-                    num_of_sim = 10
-                for i in range(num_of_sim):
+                if(len(self.solver_env.envs) == 1):
+                    num_of_sim = 5
+                    if self.reward_type == GeneratorRewardType.WINRATE_MAP:
+                        num_of_sim = 10
+                    for i in range(num_of_sim):
+                        solver_obs = self.solver_env.reset()
+                        solver_done = False
+                        while not solver_done:
+                            solver_action, _states = self.solver_agent.predict(solver_obs)
+                            solver_obs, solver_reward, solver_done, solver_info = self.solver_env.step(solver_action)
+                            solver_done = solver_done[0]
+                            if solver_done:
+                                #obs = self.solver_env.reset()
+                                return_score = float(solver_info[0]["ReturnScore"])
+                                if solver_info[0]["Result"] == "Win":
+                                    wins += 1
+                                returns.append(return_score)
+                    avg_return = sum(returns)/num_of_sim
+                    win_rate = wins/num_of_sim
+                elif(len(self.solver_env.envs) > 1):
+                    #TODO: Handle a vectorized solver environment, such that it only runs all the solver environments once, instead of using one that it runs 10 times, or just take env 0 and run 10 times
+                    #Iterative should now be handled
+                    solver_envs_done = [False, False, False, False, False, False, False, False, False, False]
+                    num_of_dones = 0
                     solver_obs = self.solver_env.reset()
                     solver_done = False
-                    while not solver_done:
+                    while num_of_dones < 10:
                         solver_action, _states = self.solver_agent.predict(solver_obs)
-                        solver_obs, solver_reward, solver_done, solver_info = self.solver_env.envs[0].step(solver_action)
-                        if solver_done:
-                            #obs = self.solver_env.reset()
-                            return_score = float(solver_info["ReturnScore"])
-                            if solver_info["Result"] == "Win":
-                                wins += 1
-                            returns.append(return_score)
-                avg_return = sum(returns)/num_of_sim
-                win_rate = wins/num_of_sim
+                        solver_obs, solver_reward, solver_dones, solver_info = self.solver_env.step(solver_action)
+                    
+                        for i in range(len(solver_dones)):
+                            if solver_dones[i]:
+                                if(solver_envs_done[i] == False):
+                                    num_of_dones += 1
+                                    return_score = float(solver_info[i]["ReturnScore"])
+                                    if solver_info[i]["Result"] == "Win":
+                                        wins += 1
+                                    returns.append(return_score)
+                                    solver_envs_done[i] = True
+                    
+                    avg_return = sum(returns)/10
+                    win_rate = wins/10
         
 
         reward = self.reward(action, avg_return, win_rate, done)

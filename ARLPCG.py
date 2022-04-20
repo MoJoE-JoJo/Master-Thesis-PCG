@@ -283,7 +283,7 @@ class ARLPCG():
             self.increment_steps_trained(1)
 #----------------------------------------------------------------------------------------------------
         elif(self.pcg_env_type == PCGEnvType.SIM):
-            generator_steps = 32*self.aux_switch_ratio
+            generator_steps = 32*2
             self.train_generator(generator_steps, log_tensorboard)
             self.increment_steps_trained(1)
         elif(self.pcg_env_type == PCGEnvType.SIM_VEC):
@@ -305,7 +305,7 @@ class ARLPCG():
 
 
     def train_solver(self, num_of_steps, log_tensorboard):
-        self.level = self.generate_level()
+        self.level = self.generate_level(True)
         levelString = self.util_convert_level_to_string()
         for env in self.env_solver.envs:
             env.setLevel(levelString)

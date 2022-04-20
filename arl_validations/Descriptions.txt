@@ -116,7 +116,12 @@ a thing that is clear, is that using a too small internal reward is clearly what
 rerun of 14, but with the last_action = solver_action fixed
 
 30_arl:
-iterative training
+Using pretrained on simplified levels
+generator has internal reward scaled by 5
+solver plays on one level for 512 steps before switching back to generator which traines for 32*10 steps
+
+31_arl:
+Iterative training
 generator has internal reward scaled by 5
 solver plays on one level for 512 steps before switching back to generator which traines for 32*10 steps
 

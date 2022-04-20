@@ -4,7 +4,7 @@ import os
 import time
 from os import listdir
 from os.path import isfile, join
-from ARLPCG import ARLPCG, PCGEnvType
+from ARLPCG import ARLPCG, PCGEnvType, SolverType
 from Validate_Agents import validate_arl
 
 #agent_val_path = os.path.dirname(os.path.realpath(__file__)) +"\\agent_validations\\"
@@ -49,7 +49,8 @@ arl = ARLPCG(
     external=1,
     gen_steps=32, 
     aux_switch=100,
-    pcg_env_type=PCGEnvType.SIM)
+    pcg_env_type=PCGEnvType.SIM,
+    solver_type=SolverType.LEARNING)
 
 train(arl, 12)
 

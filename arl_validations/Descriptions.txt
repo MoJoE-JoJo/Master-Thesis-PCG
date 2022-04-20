@@ -90,5 +90,12 @@ same as 14, but with aux_switch_ratio of 100
 same as 14, but with internal scaling of 1 (used to see to try and compare differences between the ones that had the internal reward set by mistake)
 a thing that is clear, is that using a too small internal reward is clearly what makes them collapse into making exceedingly small levels
 
+29_arl:
+iterative training
+generator has internal reward scaled by 5
+solver plays on one level for 512 steps before switching back to generator which traines for 32*10 steps
 
-
+Things to test:
+Iterative training from scratch
+Tweaking number of levels that the solver is trained on between generator training
+Iterative training from the pretrained model

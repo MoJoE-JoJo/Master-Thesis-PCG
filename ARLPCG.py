@@ -283,7 +283,7 @@ class ARLPCG():
             self.increment_steps_trained(1)
 #----------------------------------------------------------------------------------------------------
         elif(self.pcg_env_type == PCGEnvType.SIM):
-            generator_steps = 32*2
+            generator_steps = 32*self.aux_switch_ratio
             self.train_generator(generator_steps, log_tensorboard)
             self.increment_steps_trained(1)
         elif(self.pcg_env_type == PCGEnvType.SIM_VEC):

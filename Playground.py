@@ -48,7 +48,7 @@ arl = ARLPCG(
     internal=10, 
     external=1,
     gen_steps=32, 
-    aux_switch=100,
+    aux_switch=10,
     pcg_env_type=PCGEnvType.SIM)
     #solver_type=SolverType.LEARNING)
 

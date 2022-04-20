@@ -95,6 +95,8 @@ class MAFPCGSimEnv(gym.Env):
                 self.end_constraint = False
             #Run simulation
             level_string = self.generate_level_string()
+            #TODO: Handle a vectorized solver environment, such that it only runs all the solver environments once, instead of using one that it runs 10 times, or just take env 0 and run 10 times
+            #Should be ahndled now
             self.solver_env.envs[0].setLevel(level_string)
             #self.solver_env.envs[0].setARLLevel(self.slice_ids)
             returns = []
@@ -104,16 +106,15 @@ class MAFPCGSimEnv(gym.Env):
                 if self.reward_type == GeneratorRewardType.WINRATE_MAP:
                     num_of_sim = 10
                 for i in range(num_of_sim):
-                    obs = self.solver_env.reset()
+                    solver_obs = self.solver_env.reset()
                     solver_done = False
                     while not solver_done:
-                        action, _states = self.solver_agent.predict(obs)
-                        obs, reward, solver_done, info = self.solver_env.step(action)
-                        solver_done = solver_done[0]
+                        solver_action, _states = self.solver_agent.predict(solver_obs)
+                        solver_obs, solver_reward, solver_done, solver_info = self.solver_env.envs[0].step(solver_action)
                         if solver_done:
                             #obs = self.solver_env.reset()
-                            return_score = float(info[0]["ReturnScore"])
-                            if info[0]["Result"] == "Win":
+                            return_score = float(solver_info["ReturnScore"])
+                            if solver_info["Result"] == "Win":
                                 wins += 1
                             returns.append(return_score)
                 avg_return = sum(returns)/num_of_sim

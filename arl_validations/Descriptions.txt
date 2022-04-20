@@ -8,89 +8,114 @@ learning rate 1e-5
 Observation with int grid instead of single id
 
 8_arl:
+(bad, used solver action for last action)
 New reward structure using only simulation when done with generating level
 
 9_arl:
+(bad, used solver action for last action)
 Rerun of 5_arl, where loading is fixed to work with the new version
 
 10_arl:
+(bad, used solver action for last action)
 same as 8 but with internal = 10 and external = 1
 
 11_arl:
+(bad, used solver action for last action)
 Binary reward structure. If all constraints met, is equal to solver return times aux, else it gets -2500 for each of the 4 unmet constraints
 Min length has also been set to 4
 It also switches between aux_inputs 10 times more often
 
 12_arl:
+(bad, used solver action for last action)
 Same as 10, vectorized with 10 pcg environments that use the same solver environment (should be properly reset), and a min level length of 4
 
 13_arl:
+(bad, used solver action for last action)
 same as 10, but min level length of 4
 
 14_arl:
+(bad, used solver action for last action)
 Same as 10, but using an external reward based on mapping the winrate and aux-inputs of the agent to rewards
 (So internal reward scaled by 10)
 Also is unvectorized
 Also has min-length of 10
 
 15_arl:
+(bad, used solver action for last action)
 Same as 14, but instead of mapping winrate and aux-input to rewards it maps solver-agent avg-rewards and aux-input to external reward
 
 
 16_arl:
+(bad, used solver action for last action)
 Same as 14_arl, but external reward scaled to 0.8 instead of 1, such it never can give a higher reward than getting a reward directly from the solver-agent
 
 ---------- Baseline experiments ----------
 Experiments meant to find the baseline parameters and the edges of what, or whether it, is possible 
 0_arl:
+(bad, used solver action for last action, should not be a problem here)
 Generator with winrate-map reward, but not trained at all (same as 14)
 
 17_arl:
+(bad, used solver action for last action)
 Same as 14, winrate-reward map, but with only training with a single aux-input (aux=1)
 
 18_arl:
+(bad, used solver action for last action)
 Same as 17, but with an internal reward of 0, to check whether it can learn based on the winrate with the current intervals between updates (winrate-map should correspond directly to the desired performance of the solver at specific aux-input values)
 (There is no reason to run with aux=0.5 as still with aux 1 it does not reach the target and just reaches 0.5 winrate)
 
 19_arl:
+(bad, used solver action for last action)
 Same as 18, but with updating the generator network every 16 steps instead of 32 steps
 
 20_arl:
+(bad, used solver action for last action)
 Same as 18, but with updating the generator network every 64 steps instead of 32 steps
 
 21_arl:
 (internal reward scaled by 1, by mistake)
+(bad, used solver action for last action)
 same as 17, but with updating the generator network every 16 steps instead of 32 steps
 
 22_arl:
 (internal reward scaled by 1, by mistake)
+(bad, used solver action for last action)
 same as 17, but with updating the generator network every 64 steps instead of 32 steps
 
 
 23_arl:
 (internal reward scaled by 1, by mistake)
+(bad, used solver action for last action)
 same as 17, but with a learning-rate of 5e-6 instead of 5e-5
 
 24_arl:
 (internal reward scaled by 1, by mistake)
+(bad, used solver action for last action)
 same as 14, but with a learning-rate of 5e-6 instead of 5e-5
 
 25_arl:
 (internal reward scaled by 1, by mistake)
+(bad, used solver action for last action)
 same as 18, but with a learning-rate of 5e-6 instead of 5e-5
 
 
 26_arl:
+(bad, used solver action for last action)
 same as 14, but with aux_switch_ratio of 1
 
 27_arl:
+(bad, used solver action for last action)
 same as 14, but with aux_switch_ratio of 100
 
 28_arl:
+(bad, used solver action for last action)
 same as 14, but with internal scaling of 1 (used to see to try and compare differences between the ones that had the internal reward set by mistake)
 a thing that is clear, is that using a too small internal reward is clearly what makes them collapse into making exceedingly small levels
 
 29_arl:
+rerun of 14, but with the last_action = solver_action fixed
+
+30_arl:
 iterative training
 generator has internal reward scaled by 5
 solver plays on one level for 512 steps before switching back to generator which traines for 32*10 steps

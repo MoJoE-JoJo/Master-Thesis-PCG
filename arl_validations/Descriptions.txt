@@ -28,7 +28,8 @@ Same as 10, vectorized with 10 pcg environments that use the same solver environ
 same as 10, but min level length of 4
 
 14_arl:
-Using an external reward based on mapping the winrate and aux-inputs of the agent to rewards
+Same as 10, but using an external reward based on mapping the winrate and aux-inputs of the agent to rewards
+(So internal reward scaled by 10)
 Also is unvectorized
 Also has min-length of 10
 
@@ -42,7 +43,7 @@ Same as 14_arl, but external reward scaled to 0.8 instead of 1, such it never ca
 ---------- Baseline experiments ----------
 Experiments meant to find the baseline parameters and the edges of what, or whether it, is possible 
 0_arl:
-Generator with winrate-map reward, but not trained at all
+Generator with winrate-map reward, but not trained at all (same as 14)
 
 17_arl:
 Same as 14, winrate-reward map, but with only training with a single aux-input (aux=1)
@@ -58,27 +59,36 @@ Same as 18, but with updating the generator network every 16 steps instead of 32
 Same as 18, but with updating the generator network every 64 steps instead of 32 steps
 
 21_arl:
+(internal reward scaled by 1, by mistake)
 same as 17, but with updating the generator network every 16 steps instead of 32 steps
 
 22_arl:
+(internal reward scaled by 1, by mistake)
 same as 17, but with updating the generator network every 64 steps instead of 32 steps
 
 
 23_arl:
+(internal reward scaled by 1, by mistake)
 same as 17, but with a learning-rate of 5e-6 instead of 5e-5
 
 24_arl:
+(internal reward scaled by 1, by mistake)
 same as 14, but with a learning-rate of 5e-6 instead of 5e-5
 
 25_arl:
+(internal reward scaled by 1, by mistake)
 same as 18, but with a learning-rate of 5e-6 instead of 5e-5
 
 
-More things to try:
-Smaller learning_rate (Done)
-Observations using the tile-grid instead of the slice id (Done)
-New reward structure running simulation on the terminal action instead of using a performance map
-Different ratio between internal and external reward
-Using vectorized generator environment
-Using lower min-level-length
+26_arl:
+same as 14, but with aux_switch_ratio of 1
+
+27_arl:
+same as 14, but with aux_switch_ratio of 100
+
+28_arl:
+same as 14, but with internal scaling of 1 (used to see to try and compare differences between the ones that had the internal reward set by mistake)
+a thing that is clear, is that using a too small internal reward is clearly what makes them collapse into making exceedingly small levels
+
+
 

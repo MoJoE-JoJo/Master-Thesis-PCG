@@ -113,7 +113,7 @@ same as 14, but with internal scaling of 1 (used to see to try and compare diffe
 a thing that is clear, is that using a too small internal reward is clearly what makes them collapse into making exceedingly small levels
 
 29_arl:
-rerun of 14, but with the last_action = solver_action fixed
+rerun of 14, but with the last_action = solver_action bug fixed
 
 30_arl:
 Using pretrained on simplified levels

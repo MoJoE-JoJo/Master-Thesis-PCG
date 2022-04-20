@@ -107,11 +107,11 @@ env__8_10 = MAFEnv([levelString8], 60, False, 10)
 env_mul_10 = make_dummyVecEnv([levelString1,levelString2,levelString7,levelString8], 10)
 
 
-train(512,"simplified/saved/solver/", env_mul_10 , 0.00005, 0, 20, 5000000, 0.99)
-validate_agent(env__1_10, "saved_agents/rew_shap/mult/10/", 100, "rew_shap_10_2;mul;5e-5;lvl-1")
-validate_agent(env__2_10, "saved_agents/rew_shap/mult/10/", 100, "rew_shap_10_2;mul;5e-5;lvl-2")
-validate_agent(env__7_10, "saved_agents/rew_shap/mult/10/", 100, "rew_shap_10_2;mul;5e-5;lvl-2")
-validate_agent(env__8_10, "saved_agents/rew_shap/mult/10/", 100, "rew_shap_10_2;mul;5e-5;lvl-8")
+train(512,"simplified_solver/saved/", env_mul_10 , 0.00005, 0, 20, 5000000, 0.99)
+validate_agent(env__1_10, "simplified_solver/saved/", 100, "simplified_solver;lvl-1")
+validate_agent(env__2_10, "simplified_solver/saved/", 100, "simplified_solver;lvl-2")
+validate_agent(env__7_10, "simplified_solver/saved/", 100, "simplified_solver;lvl-7")
+validate_agent(env__8_10, "simplified_solver/saved/", 100, "simplified_solver;lvl-8")
 
 
 

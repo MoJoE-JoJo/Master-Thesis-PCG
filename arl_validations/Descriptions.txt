@@ -117,10 +117,17 @@ rerun of 14, but with the last_action = solver_action bug fixed
 
 30_arl:
 Using pretrained on simplified levels
-generator has internal reward scaled by 5
-solver plays on one level for 512 steps before switching back to generator which traines for 32*10 steps
+generator has internal reward scaled by 10
+(simplified pretrained is ..., full pretrained is 70.000.000, the first time it had significantly good winrate, but not later to try and avoid overfitting. This is at least roughly, it is actually chosen a little after it has "plateaued")
 
-31_arl:
+31_arl (maybe):
+same as 30, but internal reward scaled by 5
+
+32_arl:
+same as 30, but using new version of the generator environment that fails the generator and gives negative reward if start and end constraints are not met (instead of repairing)
+(reason: repairing level can have the same effect as the bug of the last action, essentially getting an external reward for an action that the generator did take, and thus not supply proper rewards for some actions)
+
+33_arl:
 Iterative training
 generator has internal reward scaled by 5
 solver plays on one level for 512 steps before switching back to generator which traines for 32*10 steps

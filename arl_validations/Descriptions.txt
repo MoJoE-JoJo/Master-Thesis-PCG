@@ -117,6 +117,7 @@ rerun of 14, but with the last_action = solver_action bug fixed
 
 30_arl:
 Using pretrained on simplified levels
+same as 29, except using simplified levels
 generator has internal reward scaled by 10
 (simplified pretrained is ..., full pretrained is 70.000.000, the first time it had significantly good winrate, but not later to try and avoid overfitting. This is at least roughly, it is actually chosen a little after it has "plateaued")
 

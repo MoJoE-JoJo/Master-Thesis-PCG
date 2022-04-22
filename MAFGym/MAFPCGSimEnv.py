@@ -16,6 +16,7 @@ class GeneratorRewardType(enum.Enum):
     BINARY = 1
     WINRATE_MAP = 2
     AVG_RETURN_MAP = 3
+    WINRATE_MAP_FAIL = 4
 
 
 class MAFPCGSimEnv(gym.Env):
@@ -25,7 +26,7 @@ class MAFPCGSimEnv(gym.Env):
     num_of_slices = 0
     aux_input = 0
     farthest_slice_id = 0
-    reward_type = GeneratorRewardType.WINRATE_MAP
+    reward_type = GeneratorRewardType.WINRATE_MAP_FAIL
 
     total_reward = 0
     min = 10
@@ -85,62 +86,32 @@ class MAFPCGSimEnv(gym.Env):
         win_rate = 0
 
         if(done):
-            if(self.slice_ids[0] not in self.start_set):
-                print("Repaired start")
-                self.slice_ids[0] = random.choice(self.start_set)
-                self.start_constraint = False
-            if(self.slice_ids[-1] not in self.end_set):
-                print("Repaired end")
-                self.slice_ids[-1] = random.choice(self.end_set)
-                self.end_constraint = False
+            if self.reward_type != GeneratorRewardType.WINRATE_MAP_FAIL:
+                if(self.slice_ids[0] not in self.start_set):
+                    print("Repaired start")
+                    self.slice_ids[0] = random.choice(self.start_set)
+                    self.start_constraint = False
+                if(self.slice_ids[-1] not in self.end_set):
+                    print("Repaired end")
+                    self.slice_ids[-1] = random.choice(self.end_set)
+                    self.end_constraint = False
             #Run simulation
             level_string = self.generate_level_string()
-            self.solver_env.envs[0].setLevel(level_string)
+            valid_level = False
+            for env in self.solver_env.envs:
+                valid_level = env.setLevel(level_string)
             #self.solver_env.envs[0].setARLLevel(self.slice_ids)
             returns = []
             wins = 0
             if self.run_sim:
-                if(len(self.solver_env.envs) == 1):
-                    num_of_sim = 5
-                    if self.reward_type == GeneratorRewardType.WINRATE_MAP:
-                        num_of_sim = 10
-                    for i in range(num_of_sim):
-                        solver_obs = self.solver_env.reset()
-                        solver_done = False
-                        while not solver_done:
-                            solver_action, _states = self.solver_agent.predict(solver_obs)
-                            solver_obs, solver_reward, solver_done, solver_info = self.solver_env.step(solver_action)
-                            solver_done = solver_done[0]
-                            if solver_done:
-                                #obs = self.solver_env.reset()
-                                return_score = float(solver_info[0]["ReturnScore"])
-                                if solver_info[0]["Result"] == "Win":
-                                    wins += 1
-                                returns.append(return_score)
-                    avg_return = sum(returns)/num_of_sim
-                    win_rate = wins/num_of_sim
-                elif(len(self.solver_env.envs) > 1):
-                    #Iterative should now be handled
-                    solver_envs_done = [False, False, False, False, False, False, False, False, False, False]
-                    num_of_dones = 0
-                    solver_obs = self.solver_env.reset()
-                    solver_done = False
-                    while num_of_dones < 10:
-                        solver_action, _states = self.solver_agent.predict(solver_obs)
-                        solver_obs, solver_reward, solver_dones, solver_info = self.solver_env.step(solver_action)
-                    
-                        for i in range(len(solver_dones)):
-                            if solver_dones[i]:
-                                if(solver_envs_done[i] == False):
-                                    num_of_dones += 1
-                                    return_score = float(solver_info[i]["ReturnScore"])
-                                    if solver_info[i]["Result"] == "Win":
-                                        wins += 1
-                                    returns.append(return_score)
-                                    solver_envs_done[i] = True
-                    
-                    avg_return = sum(returns)/10
-                    win_rate = wins/10
+                if self.reward_type == GeneratorRewardType.WINRATE_MAP_FAIL:
+                    if valid_level == False:
+                        win_rate = -1
+                        print("Invalid level generated")
+                    if valid_level == True:
+                        avg_return, win_rate = self.run_simulation()    
+                else:
+                    avg_return, win_rate = self.run_simulation()
         
 
         reward = self.reward(action, avg_return, win_rate, done)
@@ -153,6 +124,54 @@ class MAFPCGSimEnv(gym.Env):
         dict = {"Yolo": "Yolo", "Result" : "Result", "ReturnScore": "ReturnScore"}
         
         return self.state, reward, done, dict
+
+    def run_simulation(self):
+        avg_return = 0
+        win_rate = 0
+        returns = []
+        wins = 0
+        if(len(self.solver_env.envs) == 1):
+            num_of_sim = 5
+            if self.reward_type == GeneratorRewardType.WINRATE_MAP or self.reward_type == GeneratorRewardType.WINRATE_MAP_FAIL:
+                num_of_sim = 10
+            for i in range(num_of_sim):
+                solver_obs = self.solver_env.reset()
+                solver_done = False
+                while not solver_done:
+                    solver_action, _states = self.solver_agent.predict(solver_obs)
+                    solver_obs, solver_reward, solver_done, solver_info = self.solver_env.step(solver_action)
+                    solver_done = solver_done[0]
+                    if solver_done:
+                        #obs = self.solver_env.reset()
+                        return_score = float(solver_info[0]["ReturnScore"])
+                        if solver_info[0]["Result"] == "Win":
+                            wins += 1
+                        returns.append(return_score)
+            avg_return = sum(returns)/num_of_sim
+            win_rate = wins/num_of_sim
+        elif(len(self.solver_env.envs) > 1):
+            #Iterative should now be handled
+            solver_envs_done = [False, False, False, False, False, False, False, False, False, False]
+            num_of_dones = 0
+            solver_obs = self.solver_env.reset()
+            solver_done = False
+            while num_of_dones < 10:
+                solver_action, _states = self.solver_agent.predict(solver_obs)
+                solver_obs, solver_reward, solver_dones, solver_info = self.solver_env.step(solver_action)
+            
+                for i in range(len(solver_dones)):
+                    if solver_dones[i]:
+                        if(solver_envs_done[i] == False):
+                            num_of_dones += 1
+                            return_score = float(solver_info[i]["ReturnScore"])
+                            if solver_info[i]["Result"] == "Win":
+                                wins += 1
+                            returns.append(return_score)
+                            solver_envs_done[i] = True
+            
+            avg_return = sum(returns)/10
+            win_rate = wins/10
+        return avg_return, win_rate
 
     def reset(self):
         # Reset the state of the environment to an initial state
@@ -211,6 +230,17 @@ class MAFPCGSimEnv(gym.Env):
             return external_rew + internal_rew
         elif self.reward_type == GeneratorRewardType.WINRATE_MAP:
             external_rew = self.winrate_rew(win_rate, done) * self.external_factor
+            dup_rew = self.dup_rew(action)
+            start_rew = self.start_rew(action)
+            end_rew = self.end_rew(action)
+            internal_rew = self.internal_factor * (dup_rew + start_rew + end_rew)
+            return external_rew + internal_rew
+        elif self.reward_type == GeneratorRewardType.WINRATE_MAP_FAIL:
+            external_rew = 0
+            if win_rate == -1:
+                external_rew = -1000 * self.external_factor
+            else:
+                external_rew = self.winrate_rew(win_rate, done) * self.external_factor
             dup_rew = self.dup_rew(action)
             start_rew = self.start_rew(action)
             end_rew = self.end_rew(action)

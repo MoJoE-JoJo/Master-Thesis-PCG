@@ -45,8 +45,22 @@ public class MarioGymManager {
         gyms.get(gymID).render();
     }
 
-    public static void setLevel(int gymID, String levelParam){
-        gyms.get(gymID).setLevel(levelParam);
+    public static boolean setLevel(int gymID, String levelParam){
+        boolean spawn = false;
+        boolean end = false;
+        if (levelParam.contains("M")){
+            spawn = true;
+        }
+        if (levelParam.contains("F")){
+            end = true;
+        }
+        if (spawn && end){
+            gyms.get(gymID).setLevel(levelParam);
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 /*
     public static void playGame(int gymID, String level, int time, int marioState, boolean visuals){

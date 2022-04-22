@@ -53,9 +53,13 @@ arl = ARLPCG(
     simple_solver=True)
     #solver_type=SolverType.LEARNING)
 
-train(arl, 12)
-
-validate_arl(arl, 100, 10, "30_arl")
-
+train(arl, 3)
+validate_arl(arl, 100, 10, "30_arl_3")
+train(arl, 3)
+validate_arl(arl, 100, 10, "30_arl_6")
+train(arl, 3)
+validate_arl(arl, 100, 10, "30_arl_9")
+train(arl, 3)
+validate_arl(arl, 100, 10, "30_arl_12")
 
 

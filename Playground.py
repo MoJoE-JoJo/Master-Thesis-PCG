@@ -34,11 +34,11 @@ def train(arl: ARLPCG, hours_run):
         else:
             arl.train(False)
 
-level_folder ="MAFGym/levels/original/subset/completable/"
+level_folder ="MAFGym/levels/original/subset/simplified/completable/"
 #--------------------------------------------------------------------------------------------
 generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MAFGym", "") + "\\generated_levels\\"
 
-arl_save_folder = "saved_arl/29/"
+arl_save_folder = "saved_arl/30/"
 arl= None
 arl = ARLPCG(
     load_path="", 
@@ -48,13 +48,14 @@ arl = ARLPCG(
     internal=10, 
     external=1,
     gen_steps=32, 
-    aux_switch=100,
-    pcg_env_type=PCGEnvType.SIM)
+    aux_switch=10,
+    pcg_env_type=PCGEnvType.SIM,
+    simple_solver=True)
     #solver_type=SolverType.LEARNING)
 
 train(arl, 12)
 
-validate_arl(arl, 100, 10, "29_arl")
+validate_arl(arl, 100, 10, "30_arl")
 
 
 

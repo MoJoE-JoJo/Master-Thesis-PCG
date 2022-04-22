@@ -53,15 +53,17 @@ class ARLPCG():
     pcg_env_type = PCGEnvType.ID
     auxiliary = 0
     aux_values = [-1, -1, -0.5, 0.5, 1, 1]
+    simple_solver = True
     #aux_values = [1]
     generator_external_factor = 0
     generator_internal_factor = 0
     aux_switch_ratio = 10
     number_of_solver_train_levels = 1
 
-    def __init__(self, load_path="", levels_path="", generate_path="", save_name = "pcg", gen_steps = 32, sol_steps = 512, solver_type = SolverType.PRETRAINED, external = 1, internal = 1, aux_switch = 10, solver_train_levels = 1, pcg_env_type = PCGEnvType.ID):
+    def __init__(self, load_path="", levels_path="", generate_path="", save_name = "pcg", gen_steps = 32, sol_steps = 512, solver_type = SolverType.PRETRAINED, external = 1, internal = 1, aux_switch = 10, solver_train_levels = 1, pcg_env_type = PCGEnvType.ID, simple_solver=True):
         self.dummyLevelString = os.path.dirname(os.path.realpath(__file__))+"\\ARLDummyLevel.txt"
         self.dummyLevelString = readLevelFile(self.dummyLevelString)
+        self.simple_solver = simple_solver
         self.solver_type = solver_type
         self.generator_steps = gen_steps
         self.solver_steps = sol_steps
@@ -121,8 +123,10 @@ class ARLPCG():
             env.set_perf_map(self.perf_map)
             env.setARLLevel(self.level)
         
-        if self.solver_type == SolverType.PRETRAINED:
-            self.solver = PPO2.load(os.path.dirname(os.path.realpath(__file__))+"\\ARLStaticSolver", self.env_solver,tensorboard_log="logs/"+self.save_name+"-solver/")
+        if self.solver_type == SolverType.PRETRAINED and self.simple_solver:
+            self.solver = PPO2.load(os.path.dirname(os.path.realpath(__file__))+"\\SIMPLE_ARLStaticSolver", self.env_solver,tensorboard_log="logs/"+self.save_name+"-solver/")
+        elif self.solver_type == SolverType.PRETRAINED and not self.simple_solver:
+            self.solver = PPO2.load(os.path.dirname(os.path.realpath(__file__))+"\\FULL_ARLStaticSolver", self.env_solver,tensorboard_log="logs/"+self.save_name+"-solver/")
         elif self.solver_type == SolverType.LEARNING:
             self.solver = PPO2(MarioSolverPolicy, self.env_solver, verbose=1, n_steps=self.solver_steps, learning_rate=0.00005, gamma=0.99,tensorboard_log="logs/"+self.save_name+"-solver/")  
         elif self.solver_type == SolverType.GAIL:

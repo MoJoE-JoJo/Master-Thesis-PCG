@@ -120,7 +120,6 @@ class MAFPCGSimEnv(gym.Env):
                     avg_return = sum(returns)/num_of_sim
                     win_rate = wins/num_of_sim
                 elif(len(self.solver_env.envs) > 1):
-                    #TODO: Handle a vectorized solver environment, such that it only runs all the solver environments once, instead of using one that it runs 10 times, or just take env 0 and run 10 times
                     #Iterative should now be handled
                     solver_envs_done = [False, False, False, False, False, False, False, False, False, False]
                     num_of_dones = 0

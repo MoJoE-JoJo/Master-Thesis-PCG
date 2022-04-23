@@ -130,7 +130,8 @@ class MAFEnv(gym.Env):
   def setLevel(self, level):
     self.levelStrings = []
     self.levelStrings.append(level)
-    self.marioGym.setLevel(self.gymID, level)
+    sucess = self.marioGym.setLevel(self.gymID, level)
+    return sucess
   
   def setARLLevel(self, level):
     self.arl_level = level

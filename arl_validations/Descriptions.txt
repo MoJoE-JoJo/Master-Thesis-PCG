@@ -114,6 +114,7 @@ a thing that is clear, is that using a too small internal reward is clearly what
 
 29_arl:
 rerun of 14, but with the last_action = solver_action bug fixed
+(Poor results show that it might just be lerning faster now, since it seems like it has achieved similar results in 12 hours to 14_2 in 24 hours)
 
 30_arl:
 Using pretrained on simplified levels
@@ -125,11 +126,17 @@ generator has internal reward scaled by 10
 same as 30, but internal reward scaled by 5
 
 32_arl:
-same as 30, but using new version of the generator environment that fails the generator and gives negative reward if start and end constraints are not met (instead of repairing)
+same as 31, but using new version of the generator environment that fails the generator and gives negative reward if start and end constraints are not met (instead of repairing)
 (reason: repairing level can have the same effect as the bug of the last action, essentially getting an external reward for an action that the generator did take, and thus not supply proper rewards for some actions)
 
 33_arl:
-Iterative training
+same as 32, but with only external reward (internal reward = 0)
+
+34_arl:
+same as 30, but with internal reward set to 0
+
+35_arl:
+Iterative training (uses same repairing environment reward as 30)
 generator has internal reward scaled by 5
 solver plays on one level for 512 steps before switching back to generator which traines for 32*10 steps
 

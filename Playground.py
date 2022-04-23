@@ -38,14 +38,14 @@ level_folder ="MAFGym/levels/original/subset/simplified/completable/"
 #--------------------------------------------------------------------------------------------
 generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MAFGym", "") + "\\generated_levels\\"
 
-arl_save_folder = "saved_arl/30/"
+arl_save_folder = "saved_arl/31/"
 arl= None
 arl = ARLPCG(
-    load_path="", 
+    load_path="saved_arl/31/arl-dev_105.zip", 
     levels_path=level_folder, 
     generate_path=generated_level_path, 
     save_name="arl-dev", 
-    internal=10, 
+    internal=5, 
     external=1,
     gen_steps=32, 
     aux_switch=10,
@@ -53,9 +53,9 @@ arl = ARLPCG(
     simple_solver=True)
     #solver_type=SolverType.LEARNING)
 
-train(arl, 12)
-
-validate_arl(arl, 100, 10, "30_arl")
-
+train(arl, 3)
+validate_arl(arl, 100, 10, "31_arl_9")
+train(arl, 3)
+validate_arl(arl, 100, 10, "31_arl_12")
 
 

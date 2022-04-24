@@ -41,7 +41,7 @@ generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MA
 arl_save_folder = "saved_arl/34/"
 arl= None
 arl_32_6 = ARLPCG(
-    load_path="", 
+    load_path="saved_arl/32/arl-dev_388.zip", 
     levels_path=level_folder, 
     generate_path=generated_level_path, 
     save_name="arl-dev", 
@@ -54,7 +54,7 @@ arl_32_6 = ARLPCG(
     #solver_type=SolverType.LEARNING)
 
 arl_32_12 = ARLPCG(
-    load_path="", 
+    load_path="saved_arl/32/arl-dev_497.zip", 
     levels_path=level_folder, 
     generate_path=generated_level_path, 
     save_name="arl-dev", 
@@ -67,7 +67,7 @@ arl_32_12 = ARLPCG(
     #solver_type=SolverType.LEARNING)
 
 arl_33_6 = ARLPCG(
-    load_path="", 
+    load_path="saved_arl/33/arl-dev_17512.zip", 
     levels_path=level_folder, 
     generate_path=generated_level_path, 
     save_name="arl-dev", 
@@ -80,7 +80,7 @@ arl_33_6 = ARLPCG(
     #solver_type=SolverType.LEARNING)
 
 arl_33_12 = ARLPCG(
-    load_path="", 
+    load_path="saved_arl/33/arl-dev_35010.zip", 
     levels_path=level_folder, 
     generate_path=generated_level_path, 
     save_name="arl-dev", 

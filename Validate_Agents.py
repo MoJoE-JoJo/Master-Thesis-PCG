@@ -84,28 +84,33 @@ def run_arl(arl: ARLPCG, generate_num, try_num, aux):
     wins = 0
     return_score = 0
     avg_length = 0
+    num_of_fails = 0
+    success = False
     for i in range(generate_num):
         arl.level = arl.generate_level(True)
         avg_length += len(arl.level)
         levelString = arl.util_convert_level_to_string()
         for env in arl.env_solver.envs:
-            env.setLevel(levelString)
+            success = env.setLevel(levelString)
             env.setARLLevel(arl.level)
-        for j in range(try_num):
-            done = [False]
-            obs = arl.env_solver.reset()
-            while not done[0]:
-                action, _states = arl.solver.predict(obs)
-                obs, rewards, done, info = arl.env_solver.step(action)
-                #arl.env_solver.render()
-                if done[0]:
-                    return_score += float(info[0]["ReturnScore"])
-                    if info[0]["Result"] == "Win":
-                        wins += 1
+        if not success:
+            num_of_fails += 1
+        if success:
+            for j in range(try_num):
+                done = [False]
+                obs = arl.env_solver.reset()
+                while not done[0]:
+                    action, _states = arl.solver.predict(obs)
+                    obs, rewards, done, info = arl.env_solver.step(action)
+                    #arl.env_solver.render()
+                    if done[0]:
+                        return_score += float(info[0]["ReturnScore"])
+                        if info[0]["Result"] == "Win":
+                            wins += 1
     avg_length = avg_length/generate_num
     wins = wins/(generate_num*try_num)
     return_score = return_score/(generate_num*try_num)
-    return [aux, wins, return_score, avg_length]
+    return [aux, wins, return_score, avg_length, num_of_fails]
 
 
 
@@ -119,7 +124,7 @@ def validate_arl(arl: ARLPCG, generate_num, try_num, saveName):
 
     filename = "arl_validations/" + saveName + ".csv"
     data = []
-    header = ['Aux-input', 'WinRate', 'Avg. Return', "Avg. Length"]
+    header = ['Aux-input', 'WinRate', 'Avg. Return', "Avg. Length", "Num. of Invalid Levels"]
     with open(filename, 'w', newline="") as file:
         csvwriter = csv.writer(file) # 2. create a csvwriter object
         csvwriter.writerow(header) # 4. write the header

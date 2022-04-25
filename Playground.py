@@ -38,14 +38,14 @@ level_folder ="MAFGym/levels/original/subset/simplified/completable/"
 #--------------------------------------------------------------------------------------------
 generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MAFGym", "") + "\\generated_levels\\"
 
-arl_save_folder = "saved_arl/33/"
+arl_save_folder = "saved_arl/35/"
 arl= None
-arl_32_6 = ARLPCG(
-    load_path="saved_arl/32/arl-dev_388.zip", 
+arl = ARLPCG(
+    load_path="", 
     levels_path=level_folder, 
     generate_path=generated_level_path, 
     save_name="arl-dev", 
-    internal=5, 
+    internal=1, 
     external=1,
     gen_steps=32, 
     aux_switch=10,
@@ -53,48 +53,8 @@ arl_32_6 = ARLPCG(
     simple_solver=True)
     #solver_type=SolverType.LEARNING)
 
-arl_32_12 = ARLPCG(
-    load_path="saved_arl/32/arl-dev_497.zip", 
-    levels_path=level_folder, 
-    generate_path=generated_level_path, 
-    save_name="arl-dev", 
-    internal=5, 
-    external=1,
-    gen_steps=32, 
-    aux_switch=10,
-    pcg_env_type=PCGEnvType.SIM,
-    simple_solver=True)
-    #solver_type=SolverType.LEARNING)
-
-arl_33_6 = ARLPCG(
-    load_path="saved_arl/33/arl-dev_17512.zip", 
-    levels_path=level_folder, 
-    generate_path=generated_level_path, 
-    save_name="arl-dev", 
-    internal=0, 
-    external=1,
-    gen_steps=32, 
-    aux_switch=10,
-    pcg_env_type=PCGEnvType.SIM,
-    simple_solver=True)
-    #solver_type=SolverType.LEARNING)
-
-arl_33_12 = ARLPCG(
-    load_path="saved_arl/33/arl-dev_35010.zip", 
-    levels_path=level_folder, 
-    generate_path=generated_level_path, 
-    save_name="arl-dev", 
-    internal=0, 
-    external=1,
-    gen_steps=32, 
-    aux_switch=10,
-    pcg_env_type=PCGEnvType.SIM,
-    simple_solver=True)
-    #solver_type=SolverType.LEARNING)
-
-validate_arl(arl_32_6, 100, 10, "32_2_arl_6")
-validate_arl(arl_32_12, 100, 10, "32_2_arl_12")
-validate_arl(arl_33_6, 100, 10, "33_2_arl_6")
-validate_arl(arl_33_12, 100, 10, "33_2_arl_12")
-
+train(arl, 6)
+validate_arl(arl, 100, 10, "35_arl_6")
+train(arl, 6)
+validate_arl(arl, 100, 10, "35_arl_12")
 

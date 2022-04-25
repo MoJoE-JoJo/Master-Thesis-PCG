@@ -110,7 +110,7 @@ def run_arl(arl: ARLPCG, generate_num, try_num, aux):
     avg_length = avg_length/(generate_num-num_of_fails)
     wins = wins/((generate_num-num_of_fails)*try_num)
     return_score = return_score/((generate_num-num_of_fails)*try_num)
-    return [aux, wins, return_score, avg_length, num_of_fails]
+    return [aux, wins, return_score, avg_length, num_of_fails/generate_num]
 
 
 
@@ -124,7 +124,7 @@ def validate_arl(arl: ARLPCG, generate_num, try_num, saveName):
 
     filename = "arl_validations/" + saveName + ".csv"
     data = []
-    header = ['Aux-input', 'WinRate', 'Avg. Return', "Avg. Length", "Num. of Invalid Levels"]
+    header = ['Aux-input', 'WinRate', 'Avg. Return', "Avg. Length", "Per. Invalid Levels"]
     with open(filename, 'w', newline="") as file:
         csvwriter = csv.writer(file) # 2. create a csvwriter object
         csvwriter.writerow(header) # 4. write the header

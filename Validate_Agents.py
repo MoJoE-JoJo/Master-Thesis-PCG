@@ -107,9 +107,9 @@ def run_arl(arl: ARLPCG, generate_num, try_num, aux):
                         return_score += float(info[0]["ReturnScore"])
                         if info[0]["Result"] == "Win":
                             wins += 1
-    avg_length = avg_length/generate_num
-    wins = wins/(generate_num*try_num)
-    return_score = return_score/(generate_num*try_num)
+    avg_length = avg_length/(generate_num-num_of_fails)
+    wins = wins/((generate_num-num_of_fails)*try_num)
+    return_score = return_score/((generate_num-num_of_fails)*try_num)
     return [aux, wins, return_score, avg_length, num_of_fails]
 
 

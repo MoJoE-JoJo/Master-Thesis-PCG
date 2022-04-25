@@ -6,6 +6,7 @@ from os import listdir
 from os.path import isfile, join
 from ARLPCG import ARLPCG, PCGEnvType, SolverType
 from Validate_Agents import validate_arl
+from MAFGym.util import readLevelFile
 
 #agent_val_path = os.path.dirname(os.path.realpath(__file__)) +"\\agent_validations\\"
 #all_validations = [f for f in listdir(agent_val_path) if isfile(join(agent_val_path, f))]
@@ -37,24 +38,38 @@ def train(arl: ARLPCG, hours_run):
 level_folder ="MAFGym/levels/original/subset/simplified/completable/"
 #--------------------------------------------------------------------------------------------
 generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MAFGym", "") + "\\generated_levels\\"
+ensemble = []
+levelFilePath1 = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\subset\\simplified\\lvl-1.txt"
+levelFilePath2 = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\subset\\simplified\\lvl-2.txt"
+levelFilePath7 = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\subset\\simplified\\lvl-7.txt"
+levelFilePath8 = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\subset\\simplified\\lvl-8.txt"
+ensemble.append(readLevelFile(levelFilePath1))
+ensemble.append(readLevelFile(levelFilePath2))
+ensemble.append(readLevelFile(levelFilePath7))
+ensemble.append(readLevelFile(levelFilePath8))
 
-arl_save_folder = "saved_arl/35/"
+
+arl_save_folder = "saved_arl/36/"
 arl= None
 arl = ARLPCG(
     load_path="", 
     levels_path=level_folder, 
     generate_path=generated_level_path, 
     save_name="arl-dev", 
-    internal=1, 
+    internal=5, 
     external=1,
     gen_steps=32, 
-    aux_switch=10,
+    aux_switch=20,
     pcg_env_type=PCGEnvType.SIM,
-    simple_solver=True)
-    #solver_type=SolverType.LEARNING)
+    solver_type=SolverType.LEARNING,
+    simple_solver=True,
+    ensemble=ensemble)
 
-train(arl, 6)
-validate_arl(arl, 100, 10, "35_arl_6")
-train(arl, 6)
-validate_arl(arl, 100, 10, "35_arl_12")
-
+train(arl, 12)
+validate_arl(arl, 100, 10, "36_arl_12")
+train(arl, 12)
+validate_arl(arl, 100, 10, "36_arl_24")
+train(arl, 12)
+validate_arl(arl, 100, 10, "36_arl_36")
+train(arl, 12)
+validate_arl(arl, 100, 10, "36_arl_48")

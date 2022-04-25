@@ -95,20 +95,24 @@ class MAFPCGSimEnv(gym.Env):
                     print("Repaired end")
                     self.slice_ids[-1] = random.choice(self.end_set)
                     self.end_constraint = False
-            #Run simulation
-            level_string = self.generate_level_string()
-            valid_level = False
-            for env in self.solver_env.envs:
-                valid_level = env.setLevel(level_string)
+
             #self.solver_env.envs[0].setARLLevel(self.slice_ids)
             returns = []
             wins = 0
             if self.run_sim:
+                #Run simulation
+                level_string = self.generate_level_string()
+                valid_level = False
+                for env in self.solver_env.envs:
+                    valid_level = env.setLevel(level_string)
+                
                 if self.reward_type == GeneratorRewardType.WINRATE_MAP_FAIL:
                     if valid_level == False:
                         win_rate = -1
                         print("Invalid level generated")
                     if valid_level == True:
+                        print("VALID LEVEL")
+                        time.sleep(2)
                         avg_return, win_rate = self.run_simulation()    
                 else:
                     avg_return, win_rate = self.run_simulation()

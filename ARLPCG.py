@@ -47,6 +47,7 @@ class ARLPCG():
     save_name = ""
 
     level = [3, 7, 174]
+    ensemble_levels = []
     dummyLevelString = ""
     solver_type = SolverType.PRETRAINED
     pcg_obs_type = PCGObservationType.ID
@@ -60,9 +61,10 @@ class ARLPCG():
     aux_switch_ratio = 10
     number_of_solver_train_levels = 1
 
-    def __init__(self, load_path="", levels_path="", generate_path="", save_name = "pcg", gen_steps = 32, sol_steps = 512, solver_type = SolverType.PRETRAINED, external = 1, internal = 1, aux_switch = 10, solver_train_levels = 1, pcg_env_type = PCGEnvType.ID, simple_solver=True):
+    def __init__(self, load_path="", levels_path="", generate_path="", save_name = "pcg", gen_steps = 32, sol_steps = 512, solver_type = SolverType.PRETRAINED, external = 1, internal = 1, aux_switch = 10, solver_train_levels = 1, pcg_env_type = PCGEnvType.ID, simple_solver=True, ensemble = []):
         self.dummyLevelString = os.path.dirname(os.path.realpath(__file__))+"\\ARLDummyLevel.txt"
         self.dummyLevelString = readLevelFile(self.dummyLevelString)
+        self.ensemble_levels = ensemble
         self.simple_solver = simple_solver
         self.solver_type = solver_type
         self.generator_steps = gen_steps
@@ -280,7 +282,7 @@ class ARLPCG():
 #----------------------------------------------------------------------------------------------------
         elif(self.pcg_env_type == PCGEnvType.SIM and self.solver_type == SolverType.LEARNING):
             generator_steps = 32 * self.aux_switch_ratio
-            solver_steps = 512
+            solver_steps = 512 * 10
             self.train_generator(generator_steps, log_tensorboard)
             for i in range(self.number_of_solver_train_levels):
                 self.train_solver(solver_steps, log_tensorboard)
@@ -289,6 +291,8 @@ class ARLPCG():
         elif(self.pcg_env_type == PCGEnvType.SIM):
             generator_steps = 32*self.aux_switch_ratio
             self.train_generator(generator_steps, log_tensorboard)
+            if(self.solver_type == SolverType.LEARNING):
+                self.train_generator(generator_steps, False)
             self.increment_steps_trained(1)
         elif(self.pcg_env_type == PCGEnvType.SIM_VEC):
             generator_steps = 32*50
@@ -299,7 +303,8 @@ class ARLPCG():
         self.auxiliary = random.choice(self.aux_values)
         for env in self.env_generator.envs:
             env.aux_input = self.auxiliary
-        obs = self.env_generator.reset()
+        self.env_generator.reset()
+        self.env_solver.reset()
         if (log_tensorboard):
             self.generator.tensorboard_log = "logs/"+self.save_name+"-generator/"
             self.generator.learn(num_of_steps, log_interval=100, tb_log_name="PPO-Generator", reset_num_timesteps=False)
@@ -309,13 +314,31 @@ class ARLPCG():
 
 
     def train_solver(self, num_of_steps, log_tensorboard):
+        self.env_solver.reset()
         self.level = self.generate_level(True)
         levelString = self.util_convert_level_to_string()
+        succes = False
         for env in self.env_solver.envs:
-            env.setLevel(levelString)
+            succes = env.setLevel(levelString)
             env.setARLLevel(self.level)
 #---------------------------------------------------------------------------------------------------- 
         if self.solver_type is SolverType.LEARNING:
+            if not succes:
+                for i in range(19):
+                    self.level = self.generate_level(True)
+                    levelString = self.util_convert_level_to_string()
+                    succes = self.env_solver.envs[0].setLevel(levelString)
+                    if succes:
+                        for env in self.env_solver.envs:
+                            env.setLevel(levelString)
+                            env.setARLLevel(self.level)
+                        break
+            if not succes:
+                rand_level = random.choice(self.ensemble_levels)
+                for env in self.env_solver.envs:
+                    env.setLevel(rand_level)
+                    env.setARLLevel(self.level)
+            
             if (log_tensorboard):
                 self.generator.tensorboard_log = "logs/"+self.save_name+"-solver/"
                 self.solver.learn(num_of_steps, log_interval=100, tb_log_name="PPO-Solver", reset_num_timesteps=False)
@@ -323,6 +346,7 @@ class ARLPCG():
                 self.solver.tensorboard_log = None
                 self.solver.learn(num_of_steps, reset_num_timesteps=False)
 #----------------------------------------------------------------------------------------------------
+        #Old stuff from the perf_map days
         elif self.solver_type is SolverType.PRETRAINED:
             obs = self.env_solver.reset()
             for i in range(num_of_steps):

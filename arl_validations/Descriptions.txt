@@ -127,11 +127,13 @@ same as 30, but internal reward scaled by 5
 
 
 32_arl:
+(produced many valid levels)
 (validation bug, revalidate, on desktop, sunday evening, 32_2 has no validation bug)
 same as 31, but using new version of the generator environment that fails the generator and gives negative reward if start and end constraints are not met (instead of repairing)
 (reason: repairing level can have the same effect as the bug of the last action, essentially getting an external reward for an action that the generator did take, and thus not supply proper rewards for some actions)
 
 33_arl:
+(produced few valid levels)
 (validation bug, revalidate, on desktop, sunday evening, 33_2 has no validation bug)
 (weird outlier with high winrate, could be that it is just using the dummy level that is assigned in the beginning, if it never generates anything that works)
 same as 32, but with only external reward (internal reward = 0)
@@ -140,18 +142,28 @@ same as 32, but with only external reward (internal reward = 0)
 same as 30, but with internal reward set to 0
 
 35_arl:
+(produced few valid levels)
 same as 32, but with internal reward set to 1
 
 
-36_arl (monday):
+36_arl (deprecated):
+(are worse results of even being able to construct valid levels, a symptom of a moving target?)
 Iterative training (uses same fail-based environment reward as 32, but if when training solver if not generating a proper level in 20 tries, it will use one of the ensemble levels)
 generator has internal reward scaled by 5
 solver plays on one level for 512 steps (but 512*10 since solver uses a vectorized environment with 10 envs) before switching back to generator which traines for 32*10 steps
+Aux_switch set to 20, to makes it more in line with the ~1:10 ratio of the ARL-paper
+
+
+37_arl (started late):
+same as 36, but running generator training twice per solver training
 Trains generator twice per time it trains solver (so 640 before switch, but resets aux every 320 still), as the solver trains 5120, and that makes it more in line with the ~1:10 ratio of the ARL-paper
 (When the generator has not learned to generate valid levels, it will not impact the training of the solver much, and later on when it has learned it should increase generalizing in the solver, as it would earlier see more procedurally generated levels)
 (So in all, it should not hurt the solver too much, while it could have big upsides for the generator)
 (This is needed, as running the simulation is the thing taking the most time, and thus if not equalizing like this, I fear the solver would get much more time to train than the generator would, so it is in an attempt to make it more balanced, while still being able to compare it to 32)
 
+
+38_arl (maybe):
+same as 36, but with repairing if the level is invalid instead of using ensemble
 
 Things to test:
 Iterative training from scratch

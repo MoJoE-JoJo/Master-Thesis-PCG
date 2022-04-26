@@ -284,6 +284,8 @@ class ARLPCG():
             generator_steps = 32 * self.aux_switch_ratio
             solver_steps = 512 * 10
             self.train_generator(generator_steps, log_tensorboard)
+            self.train_generator(generator_steps, False)
+            #self.train_generator(generator_steps, False)
             for i in range(self.number_of_solver_train_levels):
                 self.train_solver(solver_steps, log_tensorboard)
             self.increment_steps_trained(1)

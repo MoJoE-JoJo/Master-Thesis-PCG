@@ -49,7 +49,7 @@ ensemble.append(readLevelFile(levelFilePath7))
 ensemble.append(readLevelFile(levelFilePath8))
 
 
-arl_save_folder = "saved_arl/36/"
+arl_save_folder = "saved_arl/37/"
 arl= None
 arl = ARLPCG(
     load_path="", 
@@ -59,7 +59,7 @@ arl = ARLPCG(
     internal=5, 
     external=1,
     gen_steps=32, 
-    aux_switch=20,
+    aux_switch=10,
     pcg_env_type=PCGEnvType.SIM,
     solver_type=SolverType.LEARNING,
     simple_solver=True,
@@ -73,3 +73,5 @@ train(arl, 12)
 validate_arl(arl, 100, 10, "36_arl_36")
 train(arl, 12)
 validate_arl(arl, 100, 10, "36_arl_48")
+train(arl, 12)
+validate_arl(arl, 100, 10, "36_arl_60")

@@ -112,7 +112,7 @@ class MAFPCGSimEnv(gym.Env):
                         print("Invalid level generated")
                     if valid_level == True:
                         print("VALID LEVEL")
-                        time.sleep(2)
+                        #time.sleep(2)
                         avg_return, win_rate = self.run_simulation()    
                 else:
                     avg_return, win_rate = self.run_simulation()

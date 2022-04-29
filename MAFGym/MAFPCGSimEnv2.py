@@ -281,14 +281,12 @@ class MAFPCGSimEnv2(gym.Env):
         print("Tried to render")
         
 
-
-
     def reward(self, action, avg_return, win_rate, done):
         external_rew = self.winrate_rew(win_rate, done) * self.external_factor
         external_rew += self.avg_return_rew(avg_return, done) * self.external_factor
         internal_rew = 0
         if action > self.actions[-2] + 4 and action != 16:
-            internal_rew = -10 * self.internal_factor
+            internal_rew = -100 * self.internal_factor
         else:
             internal_rew = 5 * self.internal_factor
         return external_rew + internal_rew

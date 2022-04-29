@@ -147,23 +147,60 @@ same as 32, but with internal reward set to 1
 
 
 36_arl (deprecated):
-(are worse results of even being able to construct valid levels, a symptom of a moving target?)
+(are worse results of even being able to construct valid levels, a symptom of a moving target?, makes little sense, as invalid levels are not run with the solver. or could it be that it used aux=20? 
+Could it be switching back and forth between training the generator and solver in some way? It would be expected that the generator would at least learn to generate valid levels in the same timeframe
+It seems like for 37, it is better at learning to generate valid levels now. Maybe it was the aux-switching. I primarily think that it is the lesser amount of training that is probably working against it. But it seems like tensorboard is counting the number of steps in a weird way, so that 36 and 37 looks like they have trained for more steps in shorter time than 32 did, 
+so I suspect that has something to do with training both the solver and the generator, and tensorboard might not be properly handling that, as tensorboard was not really meant for things to train the way it is here.)
 Iterative training (uses same fail-based environment reward as 32, but if when training solver if not generating a proper level in 20 tries, it will use one of the ensemble levels)
 generator has internal reward scaled by 5
 solver plays on one level for 512 steps (but 512*10 since solver uses a vectorized environment with 10 envs) before switching back to generator which traines for 32*10 steps
 Aux_switch set to 20, to makes it more in line with the ~1:10 ratio of the ARL-paper
 
 
-37_arl (started late):
+37_arl (started late tuesday morning):
 same as 36, but running generator training twice per solver training
 Trains generator twice per time it trains solver (so 640 before switch, but resets aux every 320 still), as the solver trains 5120, and that makes it more in line with the ~1:10 ratio of the ARL-paper
 (When the generator has not learned to generate valid levels, it will not impact the training of the solver much, and later on when it has learned it should increase generalizing in the solver, as it would earlier see more procedurally generated levels)
 (So in all, it should not hurt the solver too much, while it could have big upsides for the generator)
 (This is needed, as running the simulation is the thing taking the most time, and thus if not equalizing like this, I fear the solver would get much more time to train than the generator would, so it is in an attempt to make it more balanced, while still being able to compare it to 32)
 
+(The extra generator steps seen in the iterative learning could maybe be due to running inference on the model for the solver and that increasing the number of steps executed, maybe only when tensorboard is set to logging, maybe for each time predict is called)
 
-38_arl (maybe):
+
+38_arl:
+Change the observation-space, action-space, and internal reward fomulation. 
+Observation will consist of length of level, aux-input, and 16x16 tile-grid. 
+Action-space will be one of 17 (essentially height of ground, 0-15, and a flag 1x16 slice).
+It will always start with the same 16x16 grid, and it will always end with the same 1x16 end slice.
+Internal reward will just promote placing more tiles, to try and incentivise longer levels, while external reward will still be based on the solver.
+Max length of level will be 19*16, after which it will place an end-slice.
+Number of steps before update will be 750 (a little more than 2 levels if making them max level length, to have large trajectories to learn over, hoepefully decreasing instability. While I feel like 1000, and thus over 3 runs, might be a little too much, as it can also generate shorter levels than the max length).
+It will not be iterative, but jsut use the pretrained for the solver.
+Make new script for environment and the ARLPCG.
+
+39_arl:
+Same as 38, but will do iterative learning instead of using pretrained.
+The solver will train in the same way it has done up until now, no need to change that, as it has been proven to work.
+(Using the method of 38, it would also never have to specifically handle the level generation, as it will always only be able to generate levels that are syntactically valid)
+
+40_arl(maybe):
+Same as 38, but using the pretrained solver trained on random stuff, to have a more generalized solver, and try to explore the role of the generalizability of the solver in the performance of the generator (though it should just change the form of the space it is searching through)
+
+
+38_arl(maybe)(NOT DOING):
+same as 37, but penalty for non-functioning of 1000 for missing start and another 1000 for missing end, making it more granular
+
+39_arl (maybe)(NOT DOING):
 same as 36, but with repairing if the level is invalid instead of using ensemble
+
+
+----------
+simplified solver baseline (definitely):
+train solver with random levels between length 10 and 20 (1000 randomly generated levels)
+
+ss trained with ensemble (baseline)
+ss trained with generator (32_arl) (can a generator that works somewhat improve generalizability)
+ss from 37/38/39 (is a solver that is trained iteratively even better at generalizing, even if the iterative-generator doesn't really work)
 
 Things to test:
 Iterative training from scratch
@@ -172,3 +209,7 @@ Iterative training from the pretrained model
 Different observation (and maybe accompanying reward) for the generator where it has an array representing the whole level instead of just the most recent slice
 
 Test generalizability of the trained agent in the pretrained vs the ARL-trained one
+
+Maybe the RL has not have had long enough to converge, even though the graphs shows it, it is based on highly erratic data, and very unstable training, so it could be that maybe it would stabilize more later, or that it needs to be trained with lower learning-rate, but for much longer (there was not time to train with lower learning-rate for much longer)
+
+Tensorboard logs are only to give an indication of how well something performs, but there has been some issues with how it works for this specific usecase, that has reduced their reliatbility and precision, as the actual final measure of how well it works, is to check how well it maps the range of aux-input to winrate.

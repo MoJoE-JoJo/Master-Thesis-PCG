@@ -52,7 +52,7 @@ ensemble.append(readLevelFile(levelFilePath8))
 arl_save_folder = "saved_arl/37/"
 arl= None
 arl = ARLPCG(
-    load_path="", 
+    load_path="saved_arl/37/arl-dev_13393.zip", 
     levels_path=level_folder, 
     generate_path=generated_level_path, 
     save_name="arl-dev", 
@@ -65,13 +65,9 @@ arl = ARLPCG(
     simple_solver=True,
     ensemble=ensemble)
 
+train(arl, 5)
+validate_arl(arl, 100, 10, "37_arl_36")
 train(arl, 12)
-validate_arl(arl, 100, 10, "36_arl_12")
+validate_arl(arl, 100, 10, "37_arl_48")
 train(arl, 12)
-validate_arl(arl, 100, 10, "36_arl_24")
-train(arl, 12)
-validate_arl(arl, 100, 10, "36_arl_36")
-train(arl, 12)
-validate_arl(arl, 100, 10, "36_arl_48")
-train(arl, 12)
-validate_arl(arl, 100, 10, "36_arl_60")
+validate_arl(arl, 100, 10, "37_arl_60")

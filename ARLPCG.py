@@ -293,8 +293,6 @@ class ARLPCG():
         elif(self.pcg_env_type == PCGEnvType.SIM):
             generator_steps = 32*self.aux_switch_ratio
             self.train_generator(generator_steps, log_tensorboard)
-            if(self.solver_type == SolverType.LEARNING):
-                self.train_generator(generator_steps, False)
             self.increment_steps_trained(1)
         elif(self.pcg_env_type == PCGEnvType.SIM_VEC):
             generator_steps = 32*50
@@ -342,7 +340,7 @@ class ARLPCG():
                     env.setARLLevel(self.level)
             
             if (log_tensorboard):
-                self.generator.tensorboard_log = "logs/"+self.save_name+"-solver/"
+                self.solver.tensorboard_log = "logs/"+self.save_name+"-solver/" #Had an error here, might be why there are some funky things going on with tensorboard, or maybe not, because it should only influence that the solvers tensorboard log was not written
                 self.solver.learn(num_of_steps, log_interval=100, tb_log_name="PPO-Solver", reset_num_timesteps=False)
             else:
                 self.solver.tensorboard_log = None

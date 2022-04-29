@@ -178,7 +178,8 @@ Number of steps before update will be 800 (a little more than 2 levels if making
 It will not be iterative, but jsut use the pretrained for the solver.
 Make new script for environment and the ARLPCG.
 Internal reward will give 5 points per extra slice, but will give -10 if it is more than 4 higher than the most current slice
-Using avg_return reward + winrate, as avg_return should be better at indicating to the generator how far the solver got, and thus give more nuanced image of hwo good the level is, and the winrate will give concrete of how well the solver performs
+#Using avg_return reward + winrate, as avg_return should be better at indicating to the generator how far the solver got, and thus give more nuanced image of hwo good the level is, and the winrate will give concrete of how well the solver performs
+Using only winrate reward, as that gives the most precise indicator of whether or not the level can be completed and how hard it is, though it also gives less frequent rewards, so it might take longer and be a bit harder to learn from it
 
 
 39_arl:

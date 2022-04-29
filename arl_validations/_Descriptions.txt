@@ -183,6 +183,9 @@ Same as 38, but will do iterative learning instead of using pretrained.
 The solver will train in the same way it has done up until now, no need to change that, as it has been proven to work.
 (Using the method of 38, it would also never have to specifically handle the level generation, as it will always only be able to generate levels that are syntactically valid)
 
+40_arl(maybe):
+Same as 38, but using the pretrained solver trained on random stuff, to have a more generalized solver, and try to explore the role of the generalizability of the solver in the performance of the generator (though it should just change the form of the space it is searching through)
+
 
 38_arl(maybe)(NOT DOING):
 same as 37, but penalty for non-functioning of 1000 for missing start and another 1000 for missing end, making it more granular
@@ -208,3 +211,5 @@ Different observation (and maybe accompanying reward) for the generator where it
 Test generalizability of the trained agent in the pretrained vs the ARL-trained one
 
 Maybe the RL has not have had long enough to converge, even though the graphs shows it, it is based on highly erratic data, and very unstable training, so it could be that maybe it would stabilize more later, or that it needs to be trained with lower learning-rate, but for much longer (there was not time to train with lower learning-rate for much longer)
+
+Tensorboard logs are only to give an indication of how well something performs, but there has been some issues with how it works for this specific usecase, that has reduced their reliatbility and precision, as the actual final measure of how well it works, is to check how well it maps the range of aux-input to winrate.

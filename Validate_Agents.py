@@ -18,7 +18,7 @@ from stable_baselines.common.policies import CnnPolicy, FeedForwardPolicy
 from stable_baselines.common import make_vec_env
 from stable_baselines.common.vec_env import DummyVecEnv
 from stable_baselines import PPO2, PPO1
-from ARLPCG import ARLPCG
+from ARLPCG2 import ARLPCG2
 
 
 def play(num_of_val_plays, env, model):
@@ -133,3 +133,50 @@ def validate_arl(arl: ARLPCG, generate_num, try_num, saveName):
 
     
 
+def run_arl2(arl: ARLPCG2, generate_num, try_num, aux):
+    arl.set_aux(aux)
+    wins = 0
+    return_score = 0
+    avg_length = 0
+    success = False
+    for i in range(generate_num):
+        level = arl.generate_level(True)
+        split_levels = level.split("\n")
+        avg_length += len(split_levels[0])
+        for env in arl.env_solver.envs:
+            success = env.setLevel(level)
+        if success:
+            for j in range(try_num):
+                done = [False]
+                obs = arl.env_solver.reset()
+                while not done[0]:
+                    action, _states = arl.solver.predict(obs)
+                    obs, rewards, done, info = arl.env_solver.step(action)
+                    #arl.env_solver.render()
+                    if done[0]:
+                        return_score += float(info[0]["ReturnScore"])
+                        if info[0]["Result"] == "Win":
+                            wins += 1
+    avg_length = avg_length/generate_num
+    wins = wins/(generate_num*try_num)
+    return_score = return_score/(generate_num*try_num)
+    return [aux, wins, return_score, avg_length]
+
+
+
+def validate_arl2(arl: ARLPCG2, generate_num, try_num, saveName):
+    results = []
+    results.append(run_arl2(arl, generate_num, try_num, -1))
+    results.append(run_arl2(arl, generate_num, try_num, -0.5))
+    results.append(run_arl2(arl, generate_num, try_num, 0))
+    results.append(run_arl2(arl, generate_num, try_num, 0.5))
+    results.append(run_arl2(arl, generate_num, try_num, 1))
+
+    filename = "arl_validations/" + saveName + ".csv"
+    data = []
+    header = ['Aux-input', 'WinRate', 'Avg. Return', "Avg. Length"]
+    with open(filename, 'w', newline="") as file:
+        csvwriter = csv.writer(file) # 2. create a csvwriter object
+        csvwriter.writerow(header) # 4. write the header
+        csvwriter.writerows(results) # 5. write the rest of the data
+    #sort_csv_file(filename)

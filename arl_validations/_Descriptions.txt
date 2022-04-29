@@ -173,10 +173,13 @@ Observation will consist of length of level, aux-input, and 16x16 tile-grid.
 Action-space will be one of 17 (essentially height of ground, 0-15, and a flag 1x16 slice).
 It will always start with the same 16x16 grid, and it will always end with the same 1x16 end slice.
 Internal reward will just promote placing more tiles, to try and incentivise longer levels, while external reward will still be based on the solver.
-Max length of level will be 19*16, after which it will place an end-slice.
-Number of steps before update will be 750 (a little more than 2 levels if making them max level length, to have large trajectories to learn over, hoepefully decreasing instability. While I feel like 1000, and thus over 3 runs, might be a little too much, as it can also generate shorter levels than the max length).
+Max length of level will be 19*16, after which it will place an end-slice (always placing end slice at the end, but level cannot be longer than 20*16, so it will overwrite final action if it is not the action for end slice).
+Number of steps before update will be 800 (a little more than 2 levels if making them max level length, to have large trajectories to learn over, hoepefully decreasing instability. While I feel like 1000, and thus over 3 runs, might be a little too much, as it can also generate shorter levels than the max length).
 It will not be iterative, but jsut use the pretrained for the solver.
 Make new script for environment and the ARLPCG.
+Internal reward will give 5 points per extra slice, but will give -10 if it is more than 4 higher than the most current slice
+Using avg_return reward + winrate, as avg_return should be better at indicating to the generator how far the solver got, and thus give more nuanced image of hwo good the level is, and the winrate will give concrete of how well the solver performs
+
 
 39_arl:
 Same as 38, but will do iterative learning instead of using pretrained.

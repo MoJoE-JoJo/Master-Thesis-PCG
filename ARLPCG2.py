@@ -83,11 +83,13 @@ class ARLPCG2():
             self.solver = PPO2.load(os.path.dirname(os.path.realpath(__file__))+"\\SIMPLE_ARLStaticSolver", self.env_solver,tensorboard_log="logs/"+self.save_name+"-solver/")
 
     def empty_init_generator(self):
-        env1 = MAFPCGSimEnv2(0,
-            self.generate_path,
-            self.env_solver,
-            self.solver)
-        self.env_generator = DummyVecEnv([lambda: env1])
+        self.env_generator = self.util_make_dummyVecEnv_generator_sim()
+        # Non-vectorized
+        # env1 = MAFPCGSimEnv2(0,
+        #     self.generate_path,
+        #     self.env_solver,
+        #     self.solver)
+        # self.env_generator = DummyVecEnv([lambda: env1])
         for env in self.env_solver.envs:
             env.perf_map = None
         #self.perf_map[7] = 1
@@ -136,10 +138,9 @@ class ARLPCG2():
         if validate:
             for env in self.env_generator.envs:
                 env.run_sim = False
-        while not done[0]: #I think that the array shenanigans here have made perf_map better, as when generating the levels now, it can actually see when the level is properly done generating, and thus that would enable actually learning things 
+        while not done[0]: 
             action, _states = self.generator.predict(obs)
             obs, rewards, done, info = self.env_generator.step(action)
-        #level = [1, 73, 98, 102, 39, 54, 12, 90, 122, 174] #debugging magic
         if validate:
             for env in self.env_generator.envs:
                 env.run_sim = True
@@ -218,4 +219,18 @@ class ARLPCG2():
         env10 = MAFEnv(levelStrings, 15, False)
 
         env_1 = DummyVecEnv([lambda: env1,lambda: env2,lambda: env3,lambda: env4,lambda: env5,lambda: env6,lambda: env7,lambda: env8,lambda: env9,lambda: env10,])
+        return env_1
+
+    def util_make_dummyVecEnv_generator_sim(self):
+        env1 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)
+        env2 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)
+        env3 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)
+        env4 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)
+        env5 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)
+        env6 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)
+        env7 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)
+        env8 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)
+        env9 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)
+        env10 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)        
+        env_1 = DummyVecEnv([lambda: env1,lambda: env2,lambda: env3,lambda: env4,lambda: env5,lambda: env6,lambda: env7,lambda: env8,lambda: env9,lambda: env10])
         return env_1

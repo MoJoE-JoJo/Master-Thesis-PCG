@@ -190,7 +190,7 @@ With levels of this length, I can also reduce the amount of time that the agents
 Also set aux-switch back to 10, as it does not spend as much time on simulations now compared to actions of the policy
 
 40_arl:
-same as 39, but with a vectorized generator environment, with 5 generators (not 10, beacause of like computation time limitations with how the tensorboard logging is set up)
+same as 39, but with a vectorized generator environment, with 5 generators (not 10, beacause of like computation time limitations with how the tensorboard logging is set up) (also trains for 5 times as long before switching aux-input, but that is beacause there are also 5 times the number of environments)
 
 41_arl:
 Same as 39, but will do iterative learning instead of using pretrained.

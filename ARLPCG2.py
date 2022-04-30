@@ -78,7 +78,7 @@ class ARLPCG2():
             self.solver = PPO2(MarioSolverPolicy, self.env_solver, verbose=1, n_steps=self.solver_steps, learning_rate=0.00005, gamma=0.99,tensorboard_log="logs/"+self.save_name+"-solver/")  
         
         elif(self.solver_type == SolverType.PRETRAINED):
-            env1 = MAFEnv([self.dummyLevelString], 30, False)
+            env1 = MAFEnv([self.dummyLevelString], 15, False)
             self.env_solver = DummyVecEnv([lambda: env1])
             self.solver = PPO2.load(os.path.dirname(os.path.realpath(__file__))+"\\SIMPLE_ARLStaticSolver", self.env_solver,tensorboard_log="logs/"+self.save_name+"-solver/")
 
@@ -206,16 +206,16 @@ class ARLPCG2():
                 self.solver.learn(num_of_steps, reset_num_timesteps=False)
 
     def util_make_dummyVecEnv_solver(self, levelStrings):
-        env1 = MAFEnv(levelStrings, 30, False)
-        env2 = MAFEnv(levelStrings, 30, False)  
-        env3 = MAFEnv(levelStrings, 30, False)
-        env4 = MAFEnv(levelStrings, 30, False)
-        env5 = MAFEnv(levelStrings, 30, False)
-        env6 = MAFEnv(levelStrings, 30, False)
-        env7 = MAFEnv(levelStrings, 30, False)
-        env8 = MAFEnv(levelStrings, 30, False)
-        env9 = MAFEnv(levelStrings, 30, False)
-        env10 = MAFEnv(levelStrings, 30, False)
+        env1 = MAFEnv(levelStrings, 15, False)
+        env2 = MAFEnv(levelStrings, 15, False)  
+        env3 = MAFEnv(levelStrings, 15, False)
+        env4 = MAFEnv(levelStrings, 15, False)
+        env5 = MAFEnv(levelStrings, 15, False)
+        env6 = MAFEnv(levelStrings, 15, False)
+        env7 = MAFEnv(levelStrings, 15, False)
+        env8 = MAFEnv(levelStrings, 15, False)
+        env9 = MAFEnv(levelStrings, 15, False)
+        env10 = MAFEnv(levelStrings, 15, False)
 
         env_1 = DummyVecEnv([lambda: env1,lambda: env2,lambda: env3,lambda: env4,lambda: env5,lambda: env6,lambda: env7,lambda: env8,lambda: env9,lambda: env10,])
         return env_1

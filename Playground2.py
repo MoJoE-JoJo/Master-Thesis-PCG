@@ -38,7 +38,7 @@ def train(arl: ARLPCG2, hours_run):
 #--------------------------------------------------------------------------------------------
 generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MAFGym", "") + "\\generated_levels\\"
 
-arl_save_folder = "saved_arl/38/"
+arl_save_folder = "saved_arl/39/"
 arl= None
 arl = ARLPCG2(
     load_path="", 
@@ -46,15 +46,11 @@ arl = ARLPCG2(
     save_name="arl-dev", 
     internal=1, 
     external=1,
-    gen_steps=800, 
-    aux_switch=10,
+    gen_steps=400, 
+    aux_switch=1,
     solver_type=SolverType.PRETRAINED)
 
-train(arl, 3)
-validate_arl2(arl, 100, 10, "38_arl_3")
-train(arl, 3)
-validate_arl2(arl, 100, 10, "38_arl_6")
-train(arl, 3)
-validate_arl2(arl, 100, 10, "38_arl_9")
-train(arl, 3)
-validate_arl2(arl, 100, 10, "38_arl_12")
+train(arl, 12)
+validate_arl2(arl, 100, 10, "39_arl_12")
+train(arl, 6)
+validate_arl2(arl, 100, 10, "39_arl_18")

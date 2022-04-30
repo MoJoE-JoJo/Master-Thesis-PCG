@@ -174,21 +174,27 @@ Action-space will be one of 17 (essentially height of ground, 0-15, and a flag 1
 It will always start with the same 16x16 grid, and it will always end with the same 1x16 end slice.
 Internal reward will just promote placing more tiles, to try and incentivise longer levels, while external reward will still be based on the solver.
 Max length of level will be 19*16, after which it will place an end-slice (always placing end slice at the end, but level cannot be longer than 20*16, so it will overwrite final action if it is not the action for end slice).
-Number of steps before update will be 800 (a little more than 2 levels if making them max level length, to have large trajectories to learn over, hoepefully decreasing instability. While I feel like 1000, and thus over 3 runs, might be a little too much, as it can also generate shorter levels than the max length).
+Number of steps before update will be 400 (a little more than 1 levels if making them max level length, to have large trajectories to learn over, hoepefully decreasing instability. Doing 800, just made it take too long between updates, and it will usually also generate much shorter levels as it can also generate shorter levels than the max length).
 It will not be iterative, but jsut use the pretrained for the solver.
 Make new script for environment and the ARLPCG.
-Internal reward will give 5 points per extra slice, but will give -10 if it is more than 4 higher than the most current slice
+Internal reward will give 10 points per extra slice, but will give -100 if it is more than 4 higher than the most current slice
 #Using avg_return reward + winrate, as avg_return should be better at indicating to the generator how far the solver got, and thus give more nuanced image of hwo good the level is, and the winrate will give concrete of how well the solver performs
 Using only winrate reward, as that gives the most precise indicator of whether or not the level can be completed and how hard it is, though it also gives less frequent rewards, so it might take longer and be a bit harder to learn from it
-
+Aux-switch if set to 5 instead of 10, due to time constraints, but it should still use update several times per aux input (it would take too long between the switches between logging and no logging, if it was 10, at least that is what was feared, and besides since so many factors are changed this can be changed too)
+(the thing with measuring time between logs, is just to not have too many gigabytes of logs, so 5 was thought to be a good middleground)
+Doing it only aux_switch 1, as it would otherwise take too lomng to run an iteration
 
 39_arl:
-Same as 38, but will do iterative learning instead of using pretrained.
+same as 38, but even simpler, it will always just apply 160 actions
+With levels of this length, I can also reduce the amount of time that the agents have to play to 15 seconds
+
+40_arl:
+Same as 39, but will do iterative learning instead of using pretrained.
 The solver will train in the same way it has done up until now, no need to change that, as it has been proven to work.
 (Using the method of 38, it would also never have to specifically handle the level generation, as it will always only be able to generate levels that are syntactically valid)
 
-40_arl(maybe):
-Same as 38, but using the pretrained solver trained on random stuff, to have a more generalized solver, and try to explore the role of the generalizability of the solver in the performance of the generator (though it should just change the form of the space it is searching through)
+41_arl(maybe):
+Same as 39, but using the pretrained solver trained on random stuff, to have a more generalized solver, and try to explore the role of the generalizability of the solver in the performance of the generator (though it should just change the form of the space it is searching through)
 
 
 38_arl(maybe)(NOT DOING):
@@ -217,3 +223,8 @@ Test generalizability of the trained agent in the pretrained vs the ARL-trained 
 Maybe the RL has not have had long enough to converge, even though the graphs shows it, it is based on highly erratic data, and very unstable training, so it could be that maybe it would stabilize more later, or that it needs to be trained with lower learning-rate, but for much longer (there was not time to train with lower learning-rate for much longer)
 
 Tensorboard logs are only to give an indication of how well something performs, but there has been some issues with how it works for this specific usecase, that has reduced their reliatbility and precision, as the actual final measure of how well it works, is to check how well it maps the range of aux-input to winrate.
+
+Space could also be so simple now, that a low winrate is infeasible
+
+Potentially, even for these simple spaces, more complex neural networks are needed for the generator policy, for it to even make something that is passable
+Or maybe they just need to train longer

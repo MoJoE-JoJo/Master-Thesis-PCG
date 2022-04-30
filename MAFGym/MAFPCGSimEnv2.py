@@ -19,7 +19,7 @@ class MAFPCGSimEnv2(gym.Env):
     aux_input = 0
 
     total_reward = 0
-    max_actions = 320
+    max_actions = 175
     observation = []
 
     state = []
@@ -39,28 +39,28 @@ class MAFPCGSimEnv2(gym.Env):
         self.solver_agent = solver_agent
         
         self.aux_input = aux
-        self.action_space = spaces.Discrete(17)
-        low = np.array([16,-1])
-        high = np.array([320,1])
+        self.action_space = spaces.Discrete(16)
+        low = np.array([-1])
+        high = np.array([1])
         for n in range(256):
             low = np.append(low, 0)
             high = np.append(high, 1)
-        self.observation_space = spaces.Box(low=low, high=high, shape=(258,), dtype=np.int32)
+        self.observation_space = spaces.Box(low=low, high=high, shape=(257,), dtype=np.int32)
         self.state = self.reset()
     
 
     def step(self, action):
         action = int(action)
         done = False
-        if(action == 16):
-            done = True
-        elif(self.num_of_slices == self.max_actions):
-            done = True
-            action = 16
         self.actions.append(action)
         self.num_of_slices = len(self.actions)
-
-
+        #if(action == 16):
+        #    done = True
+        if(self.num_of_slices == self.max_actions):
+            done = True
+        #   action = 16
+        #   self.actions[-1] = 16
+        
         win_rate = 0
         avg_return = 0
 
@@ -83,7 +83,8 @@ class MAFPCGSimEnv2(gym.Env):
         for act in self.observation:
             obs += self.action_to_ints(act)
         
-        self.state = [self.num_of_slices, self.aux_input] + obs
+        #self.state = [self.num_of_slices, self.aux_input] + obs
+        self.state = [self.aux_input] + obs
         
         #print("Reward: " + str(reward))
         dict = {"Yolo": "Yolo", "Result" : "Result", "ReturnScore": "ReturnScore"}
@@ -139,6 +140,11 @@ class MAFPCGSimEnv2(gym.Env):
     def reset(self):
         # Reset the state of the environment to an initial state
         actions_string = "["
+        if(len(self.actions) > 0):
+            if(self.actions[-1] == 16):
+                self.actions.pop()
+            for i in range(16):
+                self.actions.pop(0)
         for action in self.actions:
             actions_string += str(action)+", "
         actions_string += "]"
@@ -165,7 +171,8 @@ class MAFPCGSimEnv2(gym.Env):
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,
         ]
         self.observation = [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
-        self.state = [self.num_of_slices, self.aux_input] + start_obs
+        self.state = [self.aux_input] + start_obs
+        #self.state = [self.num_of_slices, self.aux_input] + start_obs
         return self.state
 
     def action_to_ints(self, action):
@@ -209,6 +216,7 @@ class MAFPCGSimEnv2(gym.Env):
 
     def actions_to_string(self, actions):
         lines = [""] * 16
+        actions.append(16)
         for i in range(len(actions)):
             if i == 0:
                 lines[0] = "-"
@@ -285,10 +293,10 @@ class MAFPCGSimEnv2(gym.Env):
         external_rew = self.winrate_rew(win_rate, done) * self.external_factor
         #external_rew += self.avg_return_rew(avg_return, done) * self.external_factor
         internal_rew = 0
-        if action > self.actions[-2] + 4 and action != 16:
+        if action > self.actions[-2]+ 4: # and action != 16:
             internal_rew = -100 * self.internal_factor
         else:
-            internal_rew = 5 * self.internal_factor
+            internal_rew = 10 * self.internal_factor
         return external_rew + internal_rew
 
     def winrate_rew(self, win_rate, done):

@@ -172,7 +172,7 @@ class ARLPCG2():
             self.increment_steps_trained(1)
 
         elif(self.solver_type == SolverType.PRETRAINED):
-            generator_steps = self.generator_steps*self.aux_switch_ratio
+            generator_steps = self.generator_steps*self.aux_switch_ratio * 5
             self.train_generator(generator_steps, log_tensorboard)
             self.increment_steps_trained(1)
 
@@ -227,10 +227,10 @@ class ARLPCG2():
         env3 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)
         env4 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)
         env5 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)
-        env6 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)
-        env7 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)
-        env8 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)
-        env9 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)
-        env10 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)        
-        env_1 = DummyVecEnv([lambda: env1,lambda: env2,lambda: env3,lambda: env4,lambda: env5,lambda: env6,lambda: env7,lambda: env8,lambda: env9,lambda: env10])
+        #env6 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)
+        #env7 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)
+        #env8 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)
+        #env9 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)
+        #env10 = MAFPCGSimEnv2(0, self.generate_path, self.env_solver, self.solver)        
+        env_1 = DummyVecEnv([lambda: env1,lambda: env2,lambda: env3,lambda: env4,lambda: env5])#,lambda: env6,lambda: env7,lambda: env8,lambda: env9,lambda: env10])
         return env_1

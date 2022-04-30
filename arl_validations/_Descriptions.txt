@@ -190,7 +190,7 @@ With levels of this length, I can also reduce the amount of time that the agents
 Also set aux-switch back to 10, as it does not spend as much time on simulations now compared to actions of the policy
 
 40_arl:
-same as 39, but with a vectorized generator environment, with 10 generators
+same as 39, but with a vectorized generator environment, with 5 generators (not 10, beacause of like computation time limitations with how the tensorboard logging is set up)
 
 41_arl:
 Same as 39, but will do iterative learning instead of using pretrained.
@@ -232,3 +232,5 @@ Space could also be so simple now, that a low winrate is infeasible
 
 Potentially, even for these simple spaces, more complex neural networks are needed for the generator policy, for it to even make something that is passable
 Or maybe they just need to train longer
+
+I am not gonna make variant that outright fails the generator action-sequence if a degenerate action is performed, as that means there needs to be a mechanism to handle what should happen when it fails, and that adds a lot of complexity to the iterative training (like if no valid levels are generated, then what is the solver trained on, or is it just skipped)

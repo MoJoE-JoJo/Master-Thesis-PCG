@@ -198,6 +198,8 @@ same as 39, but with a vectorized generator environment, with 5 generators (not 
 Same as 40, but will do iterative learning instead of using pretrained.
 The solver will train in the same way it has done up until now, no need to change that, as it has been proven to work.
 (Using the method of 38, it would also never have to specifically handle the level generation, as it will always only be able to generate levels that are syntactically valid)
+Also training solver for 5120 steps at a time, as it needs to train about 10 times more than the generator
+
 
 42_arl(maybe):
 Same as 39, but using the pretrained solver trained on random stuff, to have a more generalized solver, and try to explore the role of the generalizability of the solver in the performance of the generator (though it should just change the form of the space it is searching through)

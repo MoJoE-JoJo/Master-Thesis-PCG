@@ -108,7 +108,7 @@ class ARLPCG2():
             with thezip.open('generator.zip',mode='r') as generator_file:
                 self.generator = PPO2.load(generator_file, self.env_generator,tensorboard_log="logs/"+self.save_name+"-generator/")
             with thezip.open("solver.zip", mode="r") as solver_file:
-                self.solver = PPO2.load(solver_file, self.env_solver,tensorboard_log="logs/"+self.save_name+"-solver/")
+                self.solver = PPO2.load(solver_file, self.env_solver,tensorboard_log="logs/"+self.save_name+"-generator/")
             for env in self.env_generator.envs:
                 env.solver_agent = self.solver
 
@@ -166,7 +166,7 @@ class ARLPCG2():
     def train(self, log_tensorboard):
         if(self.solver_type == SolverType.LEARNING):
             generator_steps = self.generator_steps * self.aux_switch_ratio * 5
-            solver_steps = self.solver_steps * 10
+            solver_steps = self.solver_steps * 100
             self.train_generator(generator_steps, log_tensorboard)
             self.train_solver(solver_steps, log_tensorboard)
             self.increment_steps_trained(1)
@@ -200,7 +200,7 @@ class ARLPCG2():
         print("LEVEL VALID: " + str(succes))
         if self.solver_type is SolverType.LEARNING:
             if (log_tensorboard):
-                self.generator.tensorboard_log = "logs/"+self.save_name+"-solver/"
+                self.solver.tensorboard_log = "logs/"+self.save_name+"-generator/"
                 self.solver.learn(num_of_steps, log_interval=100, tb_log_name="PPO-Solver", reset_num_timesteps=False)
             else:
                 self.solver.tensorboard_log = None

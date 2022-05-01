@@ -46,7 +46,8 @@ arl = ARLPCG2(
     save_name="arl-dev", 
     internal=1, 
     external=1,
-    gen_steps=400, 
+    gen_steps=400,
+    sol_steps=512, 
     aux_switch=10,
     solver_type=SolverType.LEARNING)
 

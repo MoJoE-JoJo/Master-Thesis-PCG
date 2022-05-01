@@ -165,7 +165,7 @@ class ARLPCG2():
 
     def train(self, log_tensorboard):
         if(self.solver_type == SolverType.LEARNING):
-            generator_steps = self.generator_steps * self.aux_switch_ratio
+            generator_steps = self.generator_steps * self.aux_switch_ratio * 5
             solver_steps = self.solver_steps * 10
             self.train_generator(generator_steps, log_tensorboard)
             self.train_solver(solver_steps, log_tensorboard)

@@ -199,6 +199,9 @@ Same as 40, but will do iterative learning instead of using pretrained.
 The solver will train in the same way it has done up until now, no need to change that, as it has been proven to work.
 (Using the method of 38, it would also never have to specifically handle the level generation, as it will always only be able to generate levels that are syntactically valid)
 Also training solver for 5120 steps at a time, as it needs to train about 10 times more than the generator
+(If it looks like the solver does not get good enough on the distribution, as happened in 39 and 40, it could be that the ratio between training the solver and the generator is skewed too much towards the generator, and that it is simply because the solver has not had enough time during the experiment)
+(potentially by doing some pretraining of one or the otehr agents, it could amke the learnign process more optimal, as the solver cannot really start learnign anything before the generator as acheived a certain minimum and makes completable levels)
+(evaluated after 12 hours, saw the results were not good enough and that evaluation took very long, so decided to postspone evaluations and do them more infrequently)
 
 
 42_arl(maybe):

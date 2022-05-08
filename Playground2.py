@@ -41,7 +41,7 @@ generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MA
 arl_save_folder = "saved_arl/41/"
 arl= None
 arl = ARLPCG2(
-    load_path="saved_arl/41/arl-dev_379.zip", 
+    load_path="saved_arl/41/arl-dev_499.zip", 
     generate_path=generated_level_path, 
     save_name="arl-dev", 
     internal=1, 
@@ -51,5 +51,4 @@ arl = ARLPCG2(
     aux_switch=10,
     solver_type=SolverType.LEARNING)
 
-train(arl, 23)
-validate_arl2(arl, 100, 10, "41_arl_96")
+validate_arl2(arl, 100, 10, "41_arl_30_sec")

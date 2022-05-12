@@ -88,7 +88,7 @@ def play(path, env):
         env.render()
         if done:
             obs = env.reset()
-        sleep(0.033)
+        sleep(0.5)
 
 
 #env2 = MAFEnv([levelString], 60, False)

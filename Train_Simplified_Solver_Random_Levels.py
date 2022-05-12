@@ -64,7 +64,7 @@ def play(path, env):
         env.render()
         if done:
             obs = env.reset()
-        sleep(0.033)
+        sleep(0.33)
 
 
 #env2 = MAFEnv([levelString], 60, False)
@@ -114,17 +114,17 @@ env__2_10 = MAFEnv([levelString2], 60, False, 10)
 env__7_10 = MAFEnv([levelString7], 60, False, 10)
 env__8_10 = MAFEnv([levelString8], 60, False, 10)
 
-env_rand = make_dummyVecEnv(level_strings, 10)
+#env_rand = make_dummyVecEnv(level_strings, 10)
 
 
-train(512,"simplified_solver/random/", env_rand, 0.00005, 170000000, 6, 5000000, 0.99)
-validate_agent(env__2_10, "simplified_solver/random/", 100, "simplified_solver_random;lvl-2")
-validate_agent(env__7_10, "simplified_solver/random/", 100, "simplified_solver_random;lvl-7")
-validate_agent(env__8_10, "simplified_solver/random/", 100, "simplified_solver_random;lvl-8")
-validate_agent(env__1_10, "simplified_solver/random/", 100, "simplified_solver_random;lvl-1")
+#train(512,"simplified_solver/random/", env_rand, 0.00005, 170000000, 6, 5000000, 0.99)
+#validate_agent(env__2_10, "simplified_solver/random/", 100, "simplified_solver_random;lvl-2")
+#validate_agent(env__7_10, "simplified_solver/random/", 100, "simplified_solver_random;lvl-7")
+#validate_agent(env__8_10, "simplified_solver/random/", 100, "simplified_solver_random;lvl-8")
+#validate_agent(env__1_10, "simplified_solver/random/", 100, "simplified_solver_random;lvl-1")
 
 
 
-#env_strange = MAFEnv([levelString8], 60, True, 10)
-#play("simplified_solver/saved/mario_80000000", env_strange)
+env_strange = MAFEnv([levelString1], 60, True, 10)
+play("simplified_solver/saved/mario_80000000", env_strange)
 #----------------------------------------------------------------------------------------------------------

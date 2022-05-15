@@ -77,21 +77,21 @@ def play(path, env):
 #normal_env = MAFEnv(levelString, 100, True, 1, 1)
 #play("saved_agents/vectorized/lvl_7/mario_10000000", env1)
 def make_dummyVecEnv(levelStrings, rewardFunction):
-    env1 = MAFEnv(levelStrings, 60, False, rewardFunction)
-    env2 = MAFEnv(levelStrings, 60, False, rewardFunction)
-    env3 = MAFEnv(levelStrings, 60, False, rewardFunction)
-    env4 = MAFEnv(levelStrings, 60, False, rewardFunction)
-    env5 = MAFEnv(levelStrings, 60, False, rewardFunction)
-    env6 = MAFEnv(levelStrings, 60, False, rewardFunction)
-    env7 = MAFEnv(levelStrings, 60, False, rewardFunction)
-    env8 = MAFEnv(levelStrings, 60, False, rewardFunction)
-    env9 = MAFEnv(levelStrings, 60, False, rewardFunction)
-    env10 = MAFEnv(levelStrings, 60, False, rewardFunction)
+    env1 = MAFEnv(levelStrings, 30, False, rewardFunction)
+    env2 = MAFEnv(levelStrings, 30, False, rewardFunction)
+    env3 = MAFEnv(levelStrings, 30, False, rewardFunction)
+    env4 = MAFEnv(levelStrings, 30, False, rewardFunction)
+    env5 = MAFEnv(levelStrings, 30, False, rewardFunction)
+    env6 = MAFEnv(levelStrings, 30, False, rewardFunction)
+    env7 = MAFEnv(levelStrings, 30, False, rewardFunction)
+    env8 = MAFEnv(levelStrings, 30, False, rewardFunction)
+    env9 = MAFEnv(levelStrings, 30, False, rewardFunction)
+    env10 = MAFEnv(levelStrings, 30, False, rewardFunction)
 
     env_1 = DummyVecEnv([lambda: env1,lambda: env2,lambda: env3,lambda: env4,lambda: env5,lambda: env6,lambda: env7,lambda: env8,lambda: env9,lambda: env10,])
     return env_1
 
-mypath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\subset\\simplified\\random\\"
+mypath = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\subset\\simplified\\custom\\"
 
 onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 
@@ -109,13 +109,13 @@ levelString7 = readLevelFile(levelFilePath7)
 levelFilePath8 = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\subset\\simplified\\lvl-8.txt"
 levelString8 = readLevelFile(levelFilePath8)
 
-env__1_10 = MAFEnv([levelString1], 60, False, 10)
-env__2_10 = MAFEnv([levelString2], 60, False, 10)
-env__7_10 = MAFEnv([levelString7], 60, False, 10)
-env__8_10 = MAFEnv([levelString8], 60, False, 10)
+#env__1_10 = MAFEnv([levelString1], 60, False, 10)
+#env__2_10 = MAFEnv([levelString2], 60, False, 10)
+#env__7_10 = MAFEnv([levelString7], 60, False, 10)
+#env__8_10 = MAFEnv([levelString8], 60, False, 10)
 
 #env_rand = make_dummyVecEnv(level_strings, 10)
-
+env_rand = MAFEnv(level_strings, 30, False, 10)
 
 #train(512,"simplified_solver/random/", env_rand, 0.00005, 170000000, 6, 5000000, 0.99)
 #validate_agent(env__2_10, "simplified_solver/random/", 100, "simplified_solver_random;lvl-2")
@@ -123,8 +123,11 @@ env__8_10 = MAFEnv([levelString8], 60, False, 10)
 #validate_agent(env__8_10, "simplified_solver/random/", 100, "simplified_solver_random;lvl-8")
 #validate_agent(env__1_10, "simplified_solver/random/", 100, "simplified_solver_random;lvl-1")
 
+validate_agent(env_rand, "simplified_solver/random/", 1000, "simplified_solver_random;random")
+validate_agent(env_rand, "simplified_solver/saved/", 1000, "simplified_solver;random")
 
 
-env_strange = MAFEnv([levelString1], 60, True, 10)
-play("simplified_solver/saved/mario_80000000", env_strange)
+
+#env_strange = MAFEnv([levelString1], 60, True, 10)
+#play("simplified_solver/saved/mario_80000000", env_strange)
 #----------------------------------------------------------------------------------------------------------

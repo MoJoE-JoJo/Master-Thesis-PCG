@@ -1,0 +1,2 @@
+The randomly generated levels are just harder than the handcrafted levels. This could also lead to it being harder for a generator to actually generate solvable levels. 
+This goes to show, that even though this solver can solve the levels, it would have been beneficial to have a better agent that could generalize better, or have it trained for a longer time

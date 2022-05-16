@@ -147,7 +147,7 @@ class ARLPCG2():
         return self.env_generator.envs[0].actions_to_string(level)
 
     def generate_level_to_file(self):
-        level = self.generate_level()
+        level = self.generate_level(True)
                      
         if not os.path.exists(self.generate_path):
             os.makedirs(self.generate_path)

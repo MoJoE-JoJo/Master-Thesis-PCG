@@ -1,9 +1,11 @@
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import engine.core.MarioGame;
 import engine.core.MarioResult;
+import engine.helper.GameStatus;
 
 public class PlayLevel {
     public static void printResults(MarioResult result) {
@@ -35,7 +37,20 @@ public class PlayLevel {
         MarioGame game = new MarioGame();
         // printResults(game.playGame(getLevel("../levels/original/lvl-1.txt"), 200, 0));
         try{
-            printResults(game.runGame(new agents.robinBaumgarten.Agent(), getLevel("./levels/original/lvl-1.txt"), 30, 0, true));
+            int wins = 0;
+            File folder = new File("../../generated_levels/analysis/not_trained");
+            File[] listOfFiles = folder.listFiles();
+            for (File levelFile: listOfFiles) {
+                MarioResult result = game.runGame(new agents.robinBaumgarten.Agent(), getLevel(levelFile.getPath()), 30, 0, false);
+                GameStatus status = result.getGameStatus();
+                if (status == GameStatus.WIN){
+                    wins++;
+                }
+                System.out.println(levelFile.getName() + " Completed");
+            }
+            float winPercent = (float) wins;
+            winPercent = winPercent/ listOfFiles.length;
+            System.out.println("Completable: " + wins + " : Completable Percent: " + winPercent);
         }catch (Exception e){
             System.out.println(e);
         }

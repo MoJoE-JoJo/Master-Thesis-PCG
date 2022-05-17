@@ -1,0 +1,16 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------X---X---X---X------------------X-X---------------X-------------X----X----XX------------------------------------------------------X--------
+-----------X----------X---X---X---X------------------X-X-X----X---X--X-X---X-----X---X----X----XX----X-------X------------------X----------------------X--------
+--X--------X--X-------X---X-X-X---X------------------X-X-X----X---X--X-X---X-----X---X----X----XXX---X-------XX----X----X-------X---X---X--------------X--------
+--X--X-----X--X-X-----XX--X-X-X---X-----------X------X-X-X-X--X---XX-X-X---X-----X---X----X--X-XXX---X-------XX----X----X-------X---X---X-----X---X----X------X-
+--X--X---X-X--X-X-----XX--XXX-X-X-X-----X---X-X------XXX-X-X--X---XX-XXX---X---X-X---XX---X--X-XXX---X-------XX----X----X-------X---X--XX-----X--XX--X-X------X-
+--X--X-X-X-X--X-X-----XX--XXX-X-X-XX---XX---X-X------XXX-XXX--XX--XX-XXX---X---X-X---XX---XX-X-XXX---X-------XX----X--X-X---XX--X---X--XX---X-X--XXX-X-X--X---X-
+--X--X-X-X-X--X-X---X-XXX-XXX-X-X-XX---XX---X-X------XXX-XXX--XX-XXX-XXX-X-X---X-X---XX---XXXX-XXX---X----X--XX---XX--X-X---XX--X---X--XX---X-XX-XXX-XXX--X---X-
+--X--X-X-X-X--X-X---X-XXXXXXX-X-X-XX---XX---X-XX-----XXX-XXXX-XX-XXX-XXX-X-X---X-X---XX---XXXX-XXX---XX---X--XX---XX--X-X---XX--X-X-X--XX---XXXX-XXX-XXX--X---X-
+--X--X-X-X-X--X-X-X-XXXXXXXXXXX-X-XX-X-XX---X-XX-X---XXX-XXXX-XX-XXXXXXX-X-X---X-X---XX---XXXX-XXX---XX---X--XX---XX--X-X---XX--XXXXX--XX---XXXX-XXX-XXX--X-X-X-
+--X--XXX-X-X--X-XXX-XXXXXXXXXXX-X-XX-X-XX---X-XX-X---XXXXXXXXXXXXXXXXXXX-X-X-X-X-X--XXX---XXXXXXXX---XX--XXX-XX---XX-XX-X---XX--XXXXX--XX---XXXX-XXX-XXX--X-X-X-
+--X-XXXX-X-X--X-XXX-XXXXXXXXXXX-X-XX-X-XX---X-XXXX-X-XXXXXXXXXXXXXXXXXXX-XXX-XXX-X--XXX---XXXXXXXXX--XX--XXX-XXX--XX-XX-X---XX--XXXXX--XXX--XXXX-XXX-XXX--XXX-X-
+--X-XXXX-X-X-XX-XXX-XXXXXXXXXXX-X-XXXX-XX---X-XXXX-X-XXXXXXXXXXXXXXXXXXXXXXX-XXX-X-XXXX---XXXXXXXXX--XX--XXX-XXXX-XXXXX-X---XX--XXXXX-XXXX--XXXX-XXX-XXXX-XXX-X-
+M-XXXXXXXXXX-XX-XXX-XXXXXXXXXXX-X-XXXX-XX---XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-X-XXXX---XXXXXXXXX-XXX-XXXXXXXXX-XXXXXXX---XX--XXXXX-XXXXXXXXXXXXXXXXXXX-XXX-XF
+XXXXXXXXXXXX-XX-XXX-XXXXXXXXXXX-X-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-X-XXXX---XXXXXXXXX-XXX-XXXXXXXXXXXXXXXXXX-XXX--XXXXXXXXXXXXXXXXXXXXXXXXX-XXX-XX
+XXXXXXXXXXXXXXX-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-XXXX-X-XXXXXXXXX-XXX-XXXXXXXXXXXXXXXXXXXXXX--XXXXXXXXXXXXXXXXXXXXXXXXX-XXXXXX

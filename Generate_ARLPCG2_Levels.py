@@ -11,10 +11,10 @@ import random
 
 level_folder ="MAFGym/levels/original/subset/simplified/completable/"
 #--------------------------------------------------------------------------------------------
-generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MAFGym", "") + "\\generated_levels\\analysis\\not_trained\\"
+generated_level_path = os.path.dirname(os.path.realpath(__file__)).replace("\\MAFGym", "") + "\\generated_levels\\"
 
 arl = ARLPCG2(
-    load_path="", 
+    load_path="saved_arl/41/arl-dev_499.zip", 
     generate_path=generated_level_path, 
     save_name="arl-dev", 
     internal=1, 
@@ -23,6 +23,7 @@ arl = ARLPCG2(
     sol_steps=512, 
     aux_switch=10,
     solver_type=SolverType.LEARNING)
+arl.set_aux(0)
 
-for i in range(100):
+for i in range(4):
     arl.generate_level_to_file()

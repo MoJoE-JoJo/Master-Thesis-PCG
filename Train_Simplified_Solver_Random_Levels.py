@@ -109,7 +109,7 @@ levelString7 = readLevelFile(levelFilePath7)
 levelFilePath8 = os.path.dirname(os.path.realpath(__file__)) + "\\MAFGym\\levels\\original\\subset\\simplified\\lvl-8.txt"
 levelString8 = readLevelFile(levelFilePath8)
 
-#env__1_10 = MAFEnv([levelString1], 60, False, 10)
+env__1_10 = MAFEnv([levelString1], 60, True, 10)
 #env__2_10 = MAFEnv([levelString2], 60, False, 10)
 #env__7_10 = MAFEnv([levelString7], 60, False, 10)
 env__8_10 = MAFEnv([levelString8], 60, True, 10)
@@ -129,5 +129,5 @@ env_rand = MAFEnv(level_strings, 30, False, 10)
 
 
 #env_strange = MAFEnv([levelString1], 60, True, 10)
-play("simplified_solver/saved/mario_100000000", env__8_10)
+play("simplified_solver/saved/mario_100000000", env__1_10)
 #----------------------------------------------------------------------------------------------------------
